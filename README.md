@@ -1,11 +1,48 @@
-# Setup Tutorial
+# TCC: Context Importance in LLM Development Tasks
 
-1. ```nvm install```
+This repository contains the code and experiments for my TCC project on analyzing the importance of context in development tasks using Large Language Models (LLMs).
 
-2. ```pnpm install```
+## 🚀 Setup
 
-3. ```pnpm dev```
+Follow these steps to get the project running locally:
 
-# Adding an external repository to experiments
+1. **Install Node version** (using nvm):
 
-```pnpm add-experiment-repo https://github.com/user/repo_name.git```
+```bash
+nvm install
+```
+
+2. **Install dependencies**:
+
+```bash
+pnpm install
+```
+
+3. **Fetch all experiment repositories**:
+
+```bash
+pnpm run experiment-repo:fetch-all
+```
+
+4. **Run the development environment**:
+
+```bash
+pnpm dev
+```
+
+> The project uses **Node.js 20**, **TypeScript**, **ESLint** and **tsx** for development.
+
+## 🧪 Experiment Repositories Commands
+
+All commands related to managing the experiment repositories are grouped under the `experiment-repo:` prefix.
+
+| Command | Description |
+|---------|-------------|
+| `pnpm run experiment-repo:add <repo-url>` | Adds a new external repository as a git submodule inside `experiment-repos/`. The folder name is automatically derived from the repository name. |
+| `pnpm run experiment-repo:fetch-all` | Initializes and fetches all existing submodules recursively. |
+| `pnpm run experiment-repo:refresh` | Updates all submodules to the latest commit from their remote repositories. |
+
+## 📚 References
+
+```
+```

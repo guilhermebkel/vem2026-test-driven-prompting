@@ -6,7 +6,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx src/index.ts",
-    "add-experiment-repo": "bash ./scripts/add-experiment-repo.sh"
+    "experiment-repo:add": "bash ./scripts/add-experiment-repo.sh",
+    "experiment-repo:fetch-all": "git submodule update --init --recursive",
+    "experiment-repo:refresh": "git submodule update --remote"
   },
   "author": "",
   "license": "ISC",
