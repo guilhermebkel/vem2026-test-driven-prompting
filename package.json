@@ -5,7 +5,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx src/index.ts"
+    "dev": "tsx src/index.ts",
+    "add-experiment-repo": "bash ./scripts/add-experiment-repo.sh"
   },
   "author": "",
   "license": "ISC",

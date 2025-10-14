@@ -1,0 +1,6 @@
+[submodule "repos/date-fns"]
+	path = repos/date-fns
+	url = git@github.com:date-fns/date-fns.git
+[submodule "experiment-repos/date-fns"]
+	path = experiment-repos/date-fns
+	url = git@github.com:date-fns/date-fns.git
