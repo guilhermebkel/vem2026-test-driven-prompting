@@ -1,6 +1,6 @@
 import { generateText } from "ai"
 
-import { MethodDefinition, MethodReconstructionOptions, RunExperimentOptions } from "@/Protocols/ExperimentProtocol"
+import { ExperimentResult, MethodDefinition, MethodReconstructionOptions, RunExperimentOptions } from "@/Protocols/ExperimentProtocol"
 
 import ModelUtil from "@/Utils/ModelUtil"
 import FileUtil from "@/Utils/FileUtil"
@@ -10,10 +10,12 @@ import PromptService from "@/Services/PromptService"
 import ContextService from "@/Services/ContextService"
 
 class ExperimentService {
-	async runExperiment(options: RunExperimentOptions): Promise<void> {
+	async runExperiment(options: RunExperimentOptions): Promise<ExperimentResult> {
 		const reconstructedMethod = await this.reconstructMethod(options.method, options.reconstructionOptions)
 
-		console.log(reconstructedMethod)
+		return {
+			reconstructedMethod
+		}
 	}
 
 	private async reconstructMethod(methodDefinition: MethodDefinition, options: MethodReconstructionOptions): Promise<string> {

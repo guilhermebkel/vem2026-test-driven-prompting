@@ -14,6 +14,10 @@ export type RunExperimentOptions = {
 	reconstructionOptions: MethodReconstructionOptions
 }
 
+export type ExperimentResult = {
+	reconstructedMethod: string
+}
+
 export type MethodReconstructionOptions = {
 	context: ContextDefinition
 	model: {
