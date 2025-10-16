@@ -1,6 +1,8 @@
-export type GlobalContextSlug = "project-metadata" | "repository-root-structure"
-export type LocalContextSlug = "typing"
-export type SemanticContextSlug = "similar-method"
+import { AnyOtherString } from "@/Protocols/TypeUtilityProtocol"
+
+export type GlobalContextSlug = "project-metadata" | "repository-root-structure" | AnyOtherString
+export type LocalContextSlug = "typing" | AnyOtherString
+export type SemanticContextSlug = "similar-method" | AnyOtherString
 
 export type ContextType = ContextDefinitionItem["type"]
 export type ContextSlug = LocalContextSlug | SemanticContextSlug | GlobalContextSlug
