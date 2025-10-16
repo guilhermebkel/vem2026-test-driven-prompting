@@ -1,5 +1,5 @@
 import { LanguageModelName } from "@/Protocols/ModelProtocol"
-import { ContextDefinitionItem } from "./ContextProtocol"
+import { ContextDefinition } from "@/Protocols/ContextProtocol"
 
 export type RepositoryName = "date-fns"
 
@@ -15,7 +15,7 @@ export type RunExperimentOptions = {
 }
 
 export type MethodReconstructionOptions = {
-	context: ContextDefinitionItem[]
+	context: ContextDefinition
 	model: {
 		name: LanguageModelName
 		reasoning: boolean

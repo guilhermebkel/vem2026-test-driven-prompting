@@ -1,11 +1,10 @@
 import { generateText } from "ai"
-import path from "path"
 
-import { MethodDefinition, MethodReconstructionOptions, RepositoryName, RunExperimentOptions } from "@/Protocols/ExperimentProtocol"
-import { ContextDefinitionItem } from "@/Protocols/ContextProtocol"
+import { MethodDefinition, MethodReconstructionOptions, RunExperimentOptions } from "@/Protocols/ExperimentProtocol"
 
 import ModelUtil from "@/Utils/ModelUtil"
 import FileUtil from "@/Utils/FileUtil"
+import ExperimentUtil from "@/Utils/ExperimentUtil"
 
 import PromptService from "@/Services/PromptService"
 import ContextService from "@/Services/ContextService"
@@ -18,18 +17,13 @@ class ExperimentService {
 	}
 
 	private async reconstructMethod(methodDefinition: MethodDefinition, options: MethodReconstructionOptions): Promise<string> {
-		const contextWithPaths: ContextDefinitionItem[] = options.context.map((contextItem) => {
-			return {
-				...contextItem,
-				...(contextItem.path && { path: this.getExperimentRepoFilePath(methodDefinition.repositoryName, contextItem.path) })
-			} as ContextDefinitionItem
-		})
+		const contextWithResolvedRelativePath = ExperimentUtil.resolveContextRelativeFilePath(options.context, methodDefinition.repositoryName)
+		const buildedContext = await ContextService.buildContext(contextWithResolvedRelativePath)
 
-		const buildedContext = await ContextService.buildContext(contextWithPaths)
-
-		const methodTestFilePath = this.getExperimentRepoFilePath(methodDefinition.repositoryName, methodDefinition.testRelativeFilePath)
+		const methodTestFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.testRelativeFilePath)
 		const methodTestContent = await FileUtil.getFileContent(methodTestFilePath)
 
+		const model = ModelUtil.getLanguageModel(options.model.name)
 		const systemPrompt = PromptService.buildSystemPrompt()
 		const userPrompt = PromptService.buildUserPrompt({
 			method: {
@@ -38,8 +32,6 @@ class ExperimentService {
 			},
 			buildedContext
 		})
-
-		const model = ModelUtil.getLanguageModel(options.model.name)
 
 		const { text: reconstructedMethodInString } = await generateText({
 			model,
@@ -66,13 +58,6 @@ class ExperimentService {
 		})
 
 		return reconstructedMethodInString
-	}
-
-	private getExperimentRepoFilePath(experimentRepo: RepositoryName, filePath: string): string {
-		const rootDirectoryPath = process.cwd()
-		const experimentRepoFilePath = path.join(rootDirectoryPath, "experiment-repos", experimentRepo, filePath)
-
-		return experimentRepoFilePath
 	}
 }
 

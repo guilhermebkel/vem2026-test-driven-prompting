@@ -1,9 +1,9 @@
-import { BuildedContext, ContextDefinitionItem, ContextSlug } from "@/Protocols/ContextProtocol"
+import { BuildedContext, ContextDefinition, ContextDefinitionItem, ContextSlug } from "@/Protocols/ContextProtocol"
 
 import FileUtil from "@/Utils/FileUtil"
 
 class ContextService {
-	async buildContext(contextDefinition: ContextDefinitionItem[]): Promise<BuildedContext> {
+	async buildContext(contextDefinition: ContextDefinition): Promise<BuildedContext> {
 		const contextSlugToContentHandlerFn: Record<ContextSlug, (contextItem: ContextDefinitionItem) => Promise<string>> = {
 			"typing": async (contextItem) => await FileUtil.getFileContent(contextItem.path!),
 			"project-metadata": async (contextItem) => await FileUtil.getFileContent(contextItem.path!),
