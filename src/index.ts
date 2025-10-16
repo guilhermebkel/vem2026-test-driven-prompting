@@ -15,7 +15,13 @@ async function start(): Promise<void> {
 				reasoning: false,
 				temperature: 0
 			},
-			context: []
+			context: [
+				{
+					type: "global",
+					slug: "project-metadata",
+					path: "/package.json"
+				}
+			]
 		}
 	})
 }
