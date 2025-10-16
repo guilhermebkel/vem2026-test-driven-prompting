@@ -1,14 +1,23 @@
 import "dotenv/config"
-import { generateText } from "ai"
-import { google } from "@ai-sdk/google"
+
+import { runExperiment } from "@/run-experiment"
 
 async function start(): Promise<void> {
-	const { text } = await generateText({
-		model: google("gemini-2.5-flash"),
-		prompt: "What is love?"
+	await runExperiment({
+		method: {
+			name: "addDays",
+			repositoryName: "date-fns",
+			testRelativeFilePath: "/src/addDays/test.ts"
+		},
+		reconstructionOptions: {
+			model: {
+				name: "gemini-2.5-flash",
+				reasoning: false,
+				temperature: 0
+			},
+			context: []
+		}
 	})
-
-	console.log(text)
 }
 
 start()

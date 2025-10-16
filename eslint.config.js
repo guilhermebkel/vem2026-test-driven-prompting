@@ -17,14 +17,7 @@ export default [
     rules: {
       ...eslintPluginTs.configs.recommended.rules,
       quotes: ["error", "double", { avoidEscape: true }],
-      "@typescript-eslint/explicit-function-return-type": [
-        "error",
-        {
-          allowExpressions: false,
-          allowTypedFunctionExpressions: false, 
-          allowHigherOrderFunctions: false
-        }
-      ],
+      "@typescript-eslint/explicit-function-return-type": "error",
       "@typescript-eslint/explicit-module-boundary-types": "error",
       semi: ["error", "never"],
 			indent: ["error", "tab", { SwitchCase: 1 }],
