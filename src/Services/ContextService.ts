@@ -39,9 +39,15 @@ class ContextService {
 	}
 
 	private async handleContentFolder(contextItem: ContextDefinitionItem): Promise<string> {
-		const folderPathList = await FileUtil.getFolderPathList(contextItem.path!)
+		if (contextItem.path) {
+			const folderPathList = await FileUtil.getFolderPathList(contextItem.path!)
 
-		return folderPathList.join("\n")
+			const mergedFolderPathList = folderPathList.join("\n")
+
+			return mergedFolderPathList
+		}
+
+		return "N/A"
 	}
 }
 
