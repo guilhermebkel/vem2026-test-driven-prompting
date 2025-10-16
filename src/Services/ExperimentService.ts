@@ -17,8 +17,8 @@ class ExperimentService {
 	}
 
 	private async reconstructMethod(methodDefinition: MethodDefinition, options: MethodReconstructionOptions): Promise<string> {
-		const contextWithResolvedRelativePath = ExperimentUtil.resolveContextRelativeFilePath(options.context, methodDefinition.repositoryName)
-		const buildedContext = await ContextService.buildContext(contextWithResolvedRelativePath)
+		const contextDefinitionWithResolvedRelativePath = ExperimentUtil.resolveContextRelativeFilePath(options.context, methodDefinition.repositoryName)
+		const buildedContext = await ContextService.buildContext(contextDefinitionWithResolvedRelativePath)
 
 		const methodTestFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.testRelativeFilePath)
 		const methodTestContent = await FileUtil.getFileContent(methodTestFilePath)
