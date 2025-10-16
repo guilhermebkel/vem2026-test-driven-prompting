@@ -17,9 +17,9 @@ async function start(): Promise<void> {
 			},
 			context: [
 				{
-					type: "global",
-					slug: "project-metadata",
-					path: "/package.json"
+					type: "local",
+					slug: "typing",
+					path: "/src/types.ts"
 				}
 			]
 		}
