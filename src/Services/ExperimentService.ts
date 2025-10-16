@@ -23,9 +23,9 @@ class ExperimentService {
 		const methodTestFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.testRelativeFilePath)
 		const methodTestContent = await FileUtil.getFileContent(methodTestFilePath)
 
-		const model = ModelUtil.getLanguageModel(options.model.name)
-		const systemPrompt = PromptService.buildSystemPrompt()
-		const userPrompt = PromptService.buildUserPrompt({
+		const languageModel = ModelUtil.getLanguageModel(options.model.name)
+		const buildedSystemPrompt = PromptService.buildSystemPrompt()
+		const buildedUserPrompt = PromptService.buildUserPrompt({
 			method: {
 				name: methodDefinition.name,
 				testContent: methodTestContent
@@ -34,15 +34,15 @@ class ExperimentService {
 		})
 
 		const { text: reconstructedMethodInString } = await generateText({
-			model,
+			model: languageModel,
 			messages: [
 				{
 					role: "system",
-					content: systemPrompt
+					content: buildedSystemPrompt
 				},
 				{
 					role: "user",
-					content: userPrompt
+					content: buildedUserPrompt
 				}
 			],
 			temperature: options.model.temperature,
