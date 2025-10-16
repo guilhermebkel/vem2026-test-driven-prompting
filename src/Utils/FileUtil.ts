@@ -8,22 +8,23 @@ class FileUtil {
 		return fileContent
 	}
 
-	async getFolderPathList(dir: string): Promise<string[]> {
-		let results: string[] = []
+	async getFolderPathList(directoryPath: string): Promise<string[]> {
+		let folderPathList: string[] = []
 
-		const entries = await fs.readdir(dir, { withFileTypes: true })
+		const entries = await fs.readdir(directoryPath, { withFileTypes: true })
 
 		for (const entry of entries) {
-			const fullPath = path.join(dir, entry.name)
+			const fullPath = path.join(directoryPath, entry.name)
 
 			if (entry.isDirectory()) {
-				results = results.concat(await this.getFolderPathList(fullPath))
+				const recursiveFolderPathList = await this.getFolderPathList(fullPath)
+				folderPathList = folderPathList.concat(recursiveFolderPathList)
 			} else {
-				results.push(fullPath)
+				folderPathList.push(fullPath)
 			}
 		}
 
-		return results
+		return folderPathList
 	}
 }
 
