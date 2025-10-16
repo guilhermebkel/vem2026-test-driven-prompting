@@ -30,8 +30,15 @@ class ExperimentService {
 		const methodTestFilePath = this.getExperimentRepoFilePath(methodDefinition.repositoryName, methodDefinition.testRelativeFilePath)
 		const methodTestContent = await FileUtil.getFileContent(methodTestFilePath)
 
-		const systemPrompt = PromptService.buildSystemPrompt({ methodName: methodDefinition.name, methodTestContent })
-		const userPrompt = PromptService.buildUserPrompt(buildedContext)
+		const systemPrompt = PromptService.buildSystemPrompt()
+		const userPrompt = PromptService.buildUserPrompt({
+			method: {
+				name: methodDefinition.name,
+				testContent: methodTestContent
+			},
+			buildedContext
+		})
+
 		const model = ModelUtil.getLanguageModel(options.model.name)
 
 		const { text: reconstructedMethodInString } = await generateText({

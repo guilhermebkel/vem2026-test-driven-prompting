@@ -1,4 +1,9 @@
-export type SystemPromptOptions = {
-	methodName: string
-	methodTestContent: string
+import { BuildedContext } from "@/Protocols/ContextProtocol"
+
+export type UserPromptOptions = {
+	method: {
+		name: string
+		testContent: string
+	}
+	buildedContext: BuildedContext
 }

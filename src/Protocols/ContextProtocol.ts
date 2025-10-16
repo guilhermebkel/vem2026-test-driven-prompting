@@ -10,7 +10,9 @@ export type ContextDefinitionItem =
 	| { type: "semantic"; slug: SemanticContextSlug; path?: string; content?: string }
 	| { type: "global"; slug: GlobalContextSlug; path?: string; content?: string }
 
-export type BuildedContext = {
+export type BuildedContextItem = {
 	name: string
 	content: string
 }
+
+export type BuildedContext = BuildedContextItem[]

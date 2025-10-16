@@ -3,7 +3,7 @@ import { BuildedContext, ContextDefinitionItem, ContextSlug } from "@/Protocols/
 import FileUtil from "@/Utils/FileUtil"
 
 class ContextService {
-	async buildContext(contextDefinition: ContextDefinitionItem[]): Promise<BuildedContext[]> {
+	async buildContext(contextDefinition: ContextDefinitionItem[]): Promise<BuildedContext> {
 		const contextSlugToContentHandlerFn: Record<ContextSlug, (contextItem: ContextDefinitionItem) => Promise<string>> = {
 			"typing": async (contextItem) => await FileUtil.getFileContent(contextItem.path!),
 			"project-metadata": async (contextItem) => await FileUtil.getFileContent(contextItem.path!),
@@ -11,7 +11,7 @@ class ContextService {
 			"similar-method": async (contextItem) => await FileUtil.getFileContent(contextItem.path!)
 		}
 
-		const buildedContext: BuildedContext[] = await Promise.all(
+		const buildedContext: BuildedContext = await Promise.all(
 			contextDefinition.map(async (contextItem) => {
 				const contentHandlerFn = contextSlugToContentHandlerFn[contextItem.slug]
 				const content = await contentHandlerFn?.(contextItem)
@@ -23,7 +23,7 @@ class ContextService {
 			})
 		)
 
-		return Promise.resolve(buildedContext)
+		return buildedContext
 	}
 }
 

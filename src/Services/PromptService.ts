@@ -1,20 +1,9 @@
-import { BuildedContext } from "@/Protocols/ContextProtocol"
-import { SystemPromptOptions } from "@/Protocols/PromptProtocol"
+import { UserPromptOptions } from "@/Protocols/PromptProtocol"
 
 class PromptService {
-	buildSystemPrompt(options: SystemPromptOptions): string {
+	buildSystemPrompt(): string {
 		return `
 			# SYSTEM PROMPT: METHOD RECONSTRUCTOR
-
-			## 0. Initial Context
-
-			### 0.1. Method Name
-
-			${options.methodName}
-
-			### 0.2. Method Test
-
-			${options.methodTestContent}
 
 			## 1. Identity Module
 
@@ -22,14 +11,14 @@ class PromptService {
 
 			## 2. Decision Module
 
-			Reconstruct the method implementation, using the **0. Initial Context** and context provided by the user.
+			Reconstruct the method implementation, using the information provided by the user.
 
 			## 3. Formatting Module
 
 			- The model must output only the reconstruct method implementation code without code block markdown.
 			- The reconstruct code must:
 				- Contain only the rewritten method implementation, plus any necessary helper functions (e.g., input normalization).
-				- Include inline code comments explaining the rationale for key implementation decisions, explicitly referencing elements from **2. Decision Module**.
+				- Include inline code comments explaining the rationale for key implementation decisions, explicitly referencing the information provided by the user.
 				- Preserve the original method signature (name, parameters, return type), unless the context specifies otherwise.
 			- No lists, headings, or explanations inside or outside the code block — all justification must be expressed as comments within the code.
 
@@ -45,12 +34,26 @@ class PromptService {
 		`
 	}
 
-	buildUserPrompt(context: BuildedContext[]): string {
-		const contextSections = context.map((buildedContext) => (
-			`# Context: ${buildedContext.name}\n${buildedContext.content}`
+	buildUserPrompt(options: UserPromptOptions): string {
+		const contextSections = options.buildedContext.map((item) => (
+			`## ${item.name}\n${item.content}`
 		))
 
-		return contextSections.join("\n\n")
+		const mergedContextSections = contextSections.join("\n\n")
+
+		return `
+			# Method Name
+
+			${options.method.name}
+
+			# Method Test
+
+			${options.method.testContent}
+
+			# Context
+
+			${mergedContextSections}
+		`
 	}
 }
 
