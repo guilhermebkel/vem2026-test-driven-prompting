@@ -1,0 +1,1 @@
+export type LanguageModelName = "gemini-2.5-flash"

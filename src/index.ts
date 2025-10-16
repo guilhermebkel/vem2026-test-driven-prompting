@@ -1,9 +1,9 @@
 import "dotenv/config"
 
-import { runExperiment } from "@/run-experiment"
+import ExperimentService from "@/Services/ExperimentService"
 
 async function start(): Promise<void> {
-	await runExperiment({
+	await ExperimentService.runExperiment({
 		method: {
 			name: "addDays",
 			repositoryName: "date-fns",
