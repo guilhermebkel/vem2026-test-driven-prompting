@@ -7,6 +7,7 @@ export type MethodDefinition = {
 	name: string
 	repositoryName: RepositoryName
 	testRelativeFilePath: string
+	methodRelativeFilePath: string
 }
 
 export type RunExperimentOptions = {
@@ -16,6 +17,7 @@ export type RunExperimentOptions = {
 
 export type ExperimentResult = {
 	reconstructedMethod: string
+	changedMethodFile: string
 }
 
 export type MethodReconstructionOptions = {

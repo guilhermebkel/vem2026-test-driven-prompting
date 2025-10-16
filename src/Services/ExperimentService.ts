@@ -8,13 +8,17 @@ import ExperimentUtil from "@/Utils/ExperimentUtil"
 
 import PromptService from "@/Services/PromptService"
 import ContextService from "@/Services/ContextService"
+import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
 
 class ExperimentService {
 	async runExperiment(options: RunExperimentOptions): Promise<ExperimentResult> {
 		const reconstructedMethod = await this.reconstructMethod(options.method, options.reconstructionOptions)
 
+		const changedMethodFile = await this.replaceOriginalMethod(options.method, reconstructedMethod)
+
 		return {
-			reconstructedMethod
+			reconstructedMethod,
+			changedMethodFile
 		}
 	}
 
@@ -60,6 +64,18 @@ class ExperimentService {
 		})
 
 		return reconstructedMethod
+	}
+
+	private async replaceOriginalMethod(methodDefinition: MethodDefinition, reconstructedMethod: string): Promise<string> {
+		const methodFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
+
+		const sourceCodeWithChanges = NodeJSCodeParserUtil.replaceSpecificCode(
+			methodFilePath,
+			{ kind: "function", name: methodDefinition.name },
+			reconstructedMethod
+		)
+
+		return sourceCodeWithChanges
 	}
 }
 

@@ -3,11 +3,12 @@ import "dotenv/config"
 import ExperimentService from "@/Services/ExperimentService"
 
 async function start(): Promise<void> {
-	const { reconstructedMethod } = await ExperimentService.runExperiment({
+	const result = await ExperimentService.runExperiment({
 		method: {
 			name: "addDays",
 			repositoryName: "date-fns",
-			testRelativeFilePath: "/src/addDays/test.ts"
+			testRelativeFilePath: "/src/addDays/test.ts",
+			methodRelativeFilePath: "/src/addDays/index.ts"
 		},
 		reconstructionOptions: {
 			model: {
@@ -25,7 +26,7 @@ async function start(): Promise<void> {
 		}
 	})
 
-	console.log(reconstructedMethod)
+	console.log(result)
 }
 
 start()
