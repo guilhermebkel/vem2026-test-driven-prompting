@@ -35,7 +35,7 @@ class ExperimentService {
 			buildedContext
 		})
 
-		const { text: reconstructedMethodInString } = await generateText({
+		const { text: reconstructedMethod } = await generateText({
 			model: languageModel,
 			messages: [
 				{
@@ -59,7 +59,7 @@ class ExperimentService {
 			})
 		})
 
-		return reconstructedMethodInString
+		return reconstructedMethod
 	}
 }
 
