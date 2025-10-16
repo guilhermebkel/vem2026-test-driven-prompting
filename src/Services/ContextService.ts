@@ -5,10 +5,10 @@ import FileUtil from "@/Utils/FileUtil"
 class ContextService {
 	async buildContext(contextDefinition: ContextDefinition): Promise<BuildedContext> {
 		const contextSlugToContentHandlerFn: Record<ContextSlug, (contextItem: ContextDefinitionItem) => Promise<string>> = {
-			"typing": async (contextItem) => await this.handleContentDefault(contextItem),
-			"project-metadata": async (contextItem) => await this.handleContentDefault(contextItem),
-			"repository-root-structure": async (contextItem) => await this.handleContentFolder(contextItem),
-			"similar-method": async (contextItem) => await this.handleContentDefault(contextItem)
+			"typing": async (contextItem) => await this.handleGenericContent(contextItem),
+			"project-metadata": async (contextItem) => await this.handleGenericContent(contextItem),
+			"repository-root-structure": async (contextItem) => await this.handleFolderContent(contextItem),
+			"similar-method": async (contextItem) => await this.handleGenericContent(contextItem)
 		}
 
 		const buildedContext: BuildedContext = await Promise.all(
@@ -26,7 +26,7 @@ class ContextService {
 		return buildedContext
 	}
 
-	private async handleContentDefault(contextItem: ContextDefinitionItem): Promise<string> {
+	private async handleGenericContent(contextItem: ContextDefinitionItem): Promise<string> {
 		if (contextItem.content) {
 			return contextItem.content
 		}
@@ -38,7 +38,7 @@ class ContextService {
 		return "N/A"
 	}
 
-	private async handleContentFolder(contextItem: ContextDefinitionItem): Promise<string> {
+	private async handleFolderContent(contextItem: ContextDefinitionItem): Promise<string> {
 		if (contextItem.path) {
 			const folderPathList = await FileUtil.getFolderPathList(contextItem.path!)
 
