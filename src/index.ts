@@ -43,7 +43,7 @@ async function start(): Promise<void> {
 		}
 	})
 
-	// await FileUtil.setFileContent("./result.txt", result.repositoryTestSuiteResult.failureMessage!)
+	await FileUtil.setFileContent("./result.txt", result.repositoryTestSuiteResult.failureMessage!)
 }
 
 start()
