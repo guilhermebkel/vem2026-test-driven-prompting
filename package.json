@@ -8,7 +8,8 @@
     "dev": "tsx src/index.ts",
     "experiment-repo:add": "bash ./scripts/add-experiment-repo.sh",
     "experiment-repo:fetch-all": "git submodule update --init --recursive",
-    "experiment-repo:refresh": "git submodule update --remote"
+    "experiment-repo:refresh": "git submodule update --remote",
+    "experiment-repo:setup:date-fns": "bash ./scripts/setup-experiment-repo.sh date-fns"
   },
   "author": "",
   "license": "ISC",
