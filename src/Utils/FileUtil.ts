@@ -9,6 +9,9 @@ class FileUtil {
 	}
 
 	async setFileContent(filePath: string, content: string): Promise<void> {
+		const fileDirectoryPath = path.dirname(filePath)
+		await fs.mkdir(fileDirectoryPath, { recursive: true })
+
 		await fs.writeFile(filePath, content, "utf-8")
 	}
 

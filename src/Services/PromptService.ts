@@ -2,7 +2,7 @@ import { UserPromptOptions } from "@/Protocols/PromptProtocol"
 
 class PromptService {
 	buildSystemPrompt(): string {
-		return `
+		return this.sanitizePrompt(`
 			# SYSTEM PROMPT: METHOD RECONSTRUCTOR
 
 			## 1. Identity Module
@@ -31,31 +31,51 @@ class PromptService {
 			- NEVER alter unrelated parts of the code or invent unrelated functionality.
 			- NEVER leave parts of the method unimplemented.
 			- NEVER enclose the output in a Markdown code block.
-		`
+		`)
 	}
 
 	buildUserPrompt(options: UserPromptOptions): string {
-		const contextSections = options.buildedContext.map((item) => (
-			`## ${this.formatCodeBlock(item.name, item.content)}`
-		))
-
+		const contextSections = options.buildedContext.map((item) => this.formatCodeBlock(item.content))
 		const mergedContextSections = contextSections.join("\n\n")
 
-		return `
+		return this.sanitizePrompt(`
 			# Method Name
 
 			${options.method.name}
 
-			# ${this.formatCodeBlock("Method Test", options.method.testContent)}
+			# Method Test
+			
+			${this.formatCodeBlock(options.method.testContent)}
 
 			# Context
 
 			${mergedContextSections}
-		`
+		`)
 	}
 
-	private formatCodeBlock(blockTitle: string, blockContent: string): string {
-		return `${blockTitle}\n\`\`\`\n${blockContent}\n\`\`\``
+	private formatCodeBlock(blockContent: string): string {
+		return `\`\`\`\n${blockContent}\n\`\`\``
+	}
+
+	private sanitizePrompt(prompt: string): string {
+		let sanitizedPrompt: string = prompt
+
+		const trimmedPrompt = sanitizedPrompt.trim()
+		sanitizedPrompt = trimmedPrompt
+
+		const promptLines = trimmedPrompt.split("\n")
+		const firstIndentedLineIndex = promptLines.findIndex(line => line.startsWith("\t"))
+		const isThereAnyIndentation = firstIndentedLineIndex != -1
+
+		if (isThereAnyIndentation) {
+			const indentMatch = promptLines[firstIndentedLineIndex].match(/^[\t ]*/)
+			const indentation = String(indentMatch?.[0])
+			const promptWithoutIndentation = sanitizedPrompt.replace(new RegExp(`^${indentation}`, "gm"), "")
+
+			sanitizedPrompt = promptWithoutIndentation
+		}
+
+		return sanitizedPrompt
 	}
 }
 

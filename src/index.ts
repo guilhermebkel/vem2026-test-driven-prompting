@@ -4,13 +4,15 @@ import ExperimentService from "@/Services/ExperimentService"
 import FileUtil from "@/Utils/FileUtil"
 
 async function start(): Promise<void> {
+	const METHOD_NAME = "subBusinessDays"
+
 	const result = await ExperimentService.runExperiment({
 		method: {
-			name: "addDays",
+			name: METHOD_NAME,
 			repositoryName: "date-fns",
 			repositoryTestSuiteCommand: "pnpm run test",
-			testRelativeFilePath: "/src/addDays/test.ts",
-			methodRelativeFilePath: "/src/addDays/index.ts"
+			testRelativeFilePath: `/src/${METHOD_NAME}/test.ts`,
+			methodRelativeFilePath: `/src/${METHOD_NAME}/index.ts`
 		},
 		reconstructionOptions: {
 			model: {
@@ -23,27 +25,18 @@ async function start(): Promise<void> {
 					type: "local",
 					slug: "typing",
 					path: "/src/types.ts"
-				},
-				{
-					type: "semantic",
-					slug: "dependent-method",
-					path: "src/subDays/index.ts"
-				},
-				{
-					type: "semantic",
-					slug: "dependent-test",
-					path: "src/subDays/test.ts"
-				},
-				{
-					type: "semantic",
-					slug: "dependent-test",
-					path: "src/setISODay/test.ts"
 				}
 			]
 		}
 	})
 
-	await FileUtil.setFileContent("./result.txt", result.repositoryTestSuiteResult.failureMessage!)
+	await FileUtil.setFileContent(`./experiment-results/${METHOD_NAME}/failureMessage.txt`, result.repositoryTestSuiteResult.failureMessage!)
+	await FileUtil.setFileContent(`./experiment-results/${METHOD_NAME}/sourceFileWithReconstructedMethod.txt`, result.sourceFileWithReconstructedMethod)
+	await FileUtil.setFileContent(`./experiment-results/${METHOD_NAME}/sourceFileWithOriginalMethod.txt`, result.sourceFileWithOriginalMethod)
+	await FileUtil.setFileContent(`./experiment-results/${METHOD_NAME}/userPrompt.txt`, result.methodReconstructionResult.userPrompt)
+	await FileUtil.setFileContent(`./experiment-results/${METHOD_NAME}/systemPrompt.txt`, result.methodReconstructionResult.systemPrompt)
+
+	console.log({ success: result.repositoryTestSuiteResult.success })
 }
 
 start()

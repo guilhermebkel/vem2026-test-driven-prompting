@@ -11,15 +11,16 @@ export type MethodDefinition = {
 	methodRelativeFilePath: string
 }
 
-export type RunExperimentOptions = {
+export type ExperimentOptions = {
 	method: MethodDefinition
 	reconstructionOptions: MethodReconstructionOptions
 }
 
 export type ExperimentResult = {
-	reconstructedMethod: string
-	sourceFileWithReconstructedMethod: string
+	methodReconstructionResult: MethodReconstructionResult
 	repositoryTestSuiteResult: RepositoryTestSuiteResult
+	sourceFileWithReconstructedMethod: string
+	sourceFileWithOriginalMethod: string
 }
 
 export type RepositoryTestSuiteResult = {
@@ -34,4 +35,10 @@ export type MethodReconstructionOptions = {
 		reasoningBudget: number
 		temperature: number
 	}
+}
+
+export type MethodReconstructionResult = {
+	reconstructedMethod: string
+	systemPrompt: string
+	userPrompt: string
 }

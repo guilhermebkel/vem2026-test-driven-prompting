@@ -2,7 +2,14 @@ import { generateText } from "ai"
 import { exec } from "child_process"
 import { promisify } from "util"
 
-import { ExperimentResult, MethodDefinition, MethodReconstructionOptions, RepositoryTestSuiteResult, RunExperimentOptions } from "@/Protocols/ExperimentProtocol"
+import {
+	ExperimentOptions,
+	ExperimentResult,
+	MethodDefinition,
+	MethodReconstructionOptions,
+	MethodReconstructionResult,
+	RepositoryTestSuiteResult
+} from "@/Protocols/ExperimentProtocol"
 
 import ModelUtil from "@/Utils/ModelUtil"
 import FileUtil from "@/Utils/FileUtil"
@@ -14,22 +21,23 @@ import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
 import ErrorHandlerUtil from "@/Utils/ErrorHandlerUtil"
 
 class ExperimentService {
-	async runExperiment(options: RunExperimentOptions): Promise<ExperimentResult> {
+	async runExperiment(options: ExperimentOptions): Promise<ExperimentResult> {
 		const sourceFileWithOriginalMethod = await this.getSourceFileWithOriginalMethod(options.method)
 
 		try {
-			const reconstructedMethod = await this.getReconstructedMethod(options.method, options.reconstructionOptions)
+			const methodReconstructionResult = await this.reconstructedMethod(options.method, options.reconstructionOptions)
 
-			const sourceFileWithReconstructedMethod = await this.getSourceFileWithReconstructedMethod(options.method, reconstructedMethod)
+			const sourceFileWithReconstructedMethod = await this.getSourceFileWithReconstructedMethod(options.method, methodReconstructionResult.reconstructedMethod)
 
 			await this.replaceSourceFile(options.method, sourceFileWithReconstructedMethod)
 
 			const repositoryTestSuiteResult = await this.runRepositoryTestSuite(options.method)
 
 			return {
-				reconstructedMethod,
+				methodReconstructionResult,
+				repositoryTestSuiteResult,
 				sourceFileWithReconstructedMethod,
-				repositoryTestSuiteResult
+				sourceFileWithOriginalMethod
 			}
 		} catch (error) {
 			ErrorHandlerUtil.handle(error)
@@ -39,7 +47,7 @@ class ExperimentService {
 		}
 	}
 
-	private async getReconstructedMethod(methodDefinition: MethodDefinition, options: MethodReconstructionOptions): Promise<string> {
+	private async reconstructedMethod(methodDefinition: MethodDefinition, options: MethodReconstructionOptions): Promise<MethodReconstructionResult> {
 		const contextDefinitionWithResolvedRelativePath = ExperimentUtil.resolveContextRelativeFilePath(options.context, methodDefinition.repositoryName)
 		const buildedContext = await ContextService.buildContext(contextDefinitionWithResolvedRelativePath)
 
@@ -78,7 +86,11 @@ class ExperimentService {
 			}
 		})
 
-		return reconstructedMethod
+		return {
+			reconstructedMethod,
+			systemPrompt: buildedSystemPrompt,
+			userPrompt: buildedUserPrompt
+		}
 	}
 
 	private async getSourceFileWithReconstructedMethod(methodDefinition: MethodDefinition, reconstructedMethod: string): Promise<string> {

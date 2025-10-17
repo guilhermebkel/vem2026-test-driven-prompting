@@ -1,2 +1,10 @@
+# Dependencies
 node_modules/
+
+# Env Variables
 .env
+
+# Experiment Results
+experiment-results/*
+!experiment-results/
+!experiment-results/.gitkeep
