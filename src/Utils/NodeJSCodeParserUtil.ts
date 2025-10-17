@@ -1,4 +1,4 @@
-import { Project, SourceFile, Node } from "ts-morph"
+import { Project, SourceFile } from "ts-morph"
 
 import { ExtractionRule, NodeType } from "@/Protocols/NodeJSCodeParserProtocol"
 
@@ -21,19 +21,12 @@ class NodeJSCodeParserUtil {
 	}
 
 	replaceSpecificCodeInSourceFile(filePath: string, extractionRule: ExtractionRule, changedCode: string): string {
-		const changedCodeSourceFile = this.project.createSourceFile(`${Date.now().toString()}.ts`, changedCode)
-		const [changedNode] = this.extractNodes(changedCodeSourceFile, [extractionRule])
-
 		const originalSourceFile = this.project.addSourceFileAtPath(filePath)
 		const [originalNode] = this.extractNodes(originalSourceFile, [extractionRule])
 
-		const needToAddExportKeyword = Node.isExportable(originalNode) && !changedNode.getText().includes("export ")
-
-		originalNode.replaceWithText(`${needToAddExportKeyword ? "export " : ""}${changedNode.getText()}`)
-
+		originalNode.replaceWithText(changedCode)
 		const sourceCodeWithChanges = originalSourceFile.getText()
 
-		this.project.removeSourceFile(changedCodeSourceFile)
 		this.project.removeSourceFile(originalSourceFile)
 
 		return sourceCodeWithChanges

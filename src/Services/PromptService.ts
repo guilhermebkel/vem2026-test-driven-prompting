@@ -11,15 +11,16 @@ class PromptService {
 
 			## 2. Decision Module
 
-			Reconstruct the method implementation, using the information provided by the user.
+			- Reconstruct the method implementation using the information provided in the user input.
+			- The regenerated code must strictly adhere to the following guidelines:
+				- Output only the reconstructed method implementation, along with any necessary helper functions (e.g., input normalization utilities) required for correct behavior.
+				- Preserve the original method signature — including its name, parameters, and return type — unless the provided context explicitly specifies changes.
+				- Provide inline comments within the code that clearly explain the rationale behind key implementation decisions, explicitly referencing relevant parts of the user-provided context.
+				- Use external functions or libraries only when explicitly mentioned in the context. If external usage is required, include the corresponding import statements (e.g., from a library or local path) as part of the output.
 
 			## 3. Formatting Module
 
 			- The model must output only the reconstruct method implementation code without code block markdown.
-			- The reconstruct code must:
-				- Contain only the rewritten method implementation, plus any necessary helper functions (e.g., input normalization).
-				- Include inline code comments explaining the rationale for key implementation decisions, explicitly referencing the information provided by the user.
-				- Preserve the original method signature (name, parameters, return type), unless the context specifies otherwise.
 			- No lists, headings, or explanations inside or outside the code block — all justification must be expressed as comments within the code.
 
 			## 4. Compliance Module
@@ -35,7 +36,9 @@ class PromptService {
 	}
 
 	buildUserPrompt(options: UserPromptOptions): string {
-		const contextSections = options.buildedContext.map((item) => this.formatCodeBlock(item.content))
+		const contextSections = options.buildedContext.map((item) => (
+			`## ${item.name}\n\n${this.formatCodeBlock(item.content)}`
+		))
 		const mergedContextSections = contextSections.join("\n\n")
 
 		return this.sanitizePrompt(`

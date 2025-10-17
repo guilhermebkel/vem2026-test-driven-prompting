@@ -16,27 +16,19 @@ async function start(): Promise<void> {
 		},
 		reconstructionOptions: {
 			model: {
-				name: "gemini-2.5-flash",
-				reasoningBudget: 0,
+				name: "gemini-2.5-pro",
+				reasoningBudget: 1000,
 				temperature: 0
 			},
-			context: [
-				{
-					type: "local",
-					slug: "typing",
-					path: "/src/types.ts"
-				}
-			]
+			context: []
 		}
 	})
 
-	if (!result.repositoryTestSuiteResult.success) {
-		await FileUtil.setFileContent(`./experiment-results/${METHOD_NAME}/failureMessage.txt`, result.repositoryTestSuiteResult.failureMessage!)
-		await FileUtil.setFileContent(`./experiment-results/${METHOD_NAME}/sourceFileWithReconstructedMethod.txt`, result.sourceFileWithReconstructedMethod)
-		await FileUtil.setFileContent(`./experiment-results/${METHOD_NAME}/sourceFileWithOriginalMethod.txt`, result.sourceFileWithOriginalMethod)
-		await FileUtil.setFileContent(`./experiment-results/${METHOD_NAME}/userPrompt.txt`, result.methodReconstructionResult.userPrompt)
-		await FileUtil.setFileContent(`./experiment-results/${METHOD_NAME}/systemPrompt.txt`, result.methodReconstructionResult.systemPrompt)
-	}
+	await FileUtil.setFileContent(`./experiment-results/${METHOD_NAME}/failureMessage.txt`, result.repositoryTestSuiteResult.failureMessage || "")
+	await FileUtil.setFileContent(`./experiment-results/${METHOD_NAME}/sourceFileWithReconstructedMethod.txt`, result.sourceFileWithReconstructedMethod)
+	await FileUtil.setFileContent(`./experiment-results/${METHOD_NAME}/sourceFileWithOriginalMethod.txt`, result.sourceFileWithOriginalMethod)
+	await FileUtil.setFileContent(`./experiment-results/${METHOD_NAME}/userPrompt.txt`, result.methodReconstructionResult.userPrompt)
+	await FileUtil.setFileContent(`./experiment-results/${METHOD_NAME}/systemPrompt.txt`, result.methodReconstructionResult.systemPrompt)
 
 	console.log({ success: result.repositoryTestSuiteResult.success })
 }
