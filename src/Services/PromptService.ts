@@ -36,7 +36,7 @@ class PromptService {
 
 	buildUserPrompt(options: UserPromptOptions): string {
 		const contextSections = options.buildedContext.map((item) => (
-			`## ${item.name}\n${item.content}`
+			`## ${this.formatCodeBlock(item.name, item.content)}`
 		))
 
 		const mergedContextSections = contextSections.join("\n\n")
@@ -46,14 +46,16 @@ class PromptService {
 
 			${options.method.name}
 
-			# Method Test
-
-			${options.method.testContent}
+			# ${this.formatCodeBlock("Method Test", options.method.testContent)}
 
 			# Context
 
 			${mergedContextSections}
 		`
+	}
+
+	private formatCodeBlock(blockTitle: string, blockContent: string): string {
+		return `${blockTitle}\n\`\`\`\n${blockContent}\n\`\`\``
 	}
 }
 

@@ -5,10 +5,19 @@ import { ContextDefinition, ContextDefinitionItem } from "@/Protocols/ContextPro
 
 class ExperimentUtil {
 	resolveRelativeFilePath(repositoryName: RepositoryName, relativeFilePath: string): string {
-		const rootDirectoryPath = process.cwd()
-		const resolvedRelativeFilePath = path.join(rootDirectoryPath, "experiment-repos", repositoryName, relativeFilePath)
+		const repositoryRootPath = this.getRepositoryRootPath(repositoryName)
+
+		const resolvedRelativeFilePath = path.join(repositoryRootPath, relativeFilePath)
 
 		return resolvedRelativeFilePath
+	}
+
+	getRepositoryRootPath(repositoryName: RepositoryName): string {
+		const rootDirectoryPath = process.cwd()
+
+		const repositoryRootPath = path.join(rootDirectoryPath, "experiment-repos", repositoryName)
+
+		return repositoryRootPath
 	}
 
 	resolveContextRelativeFilePath(contextDefinition: ContextDefinition, repositoryName: RepositoryName): ContextDefinition {

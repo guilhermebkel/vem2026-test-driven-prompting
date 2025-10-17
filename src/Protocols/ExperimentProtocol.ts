@@ -6,6 +6,7 @@ export type RepositoryName = "date-fns"
 export type MethodDefinition = {
 	name: string
 	repositoryName: RepositoryName
+	repositoryTestSuiteCommand: string
 	testRelativeFilePath: string
 	methodRelativeFilePath: string
 }
@@ -17,14 +18,20 @@ export type RunExperimentOptions = {
 
 export type ExperimentResult = {
 	reconstructedMethod: string
-	changedMethodFile: string
+	sourceFileWithReconstructedMethod: string
+	repositoryTestSuiteResult: RepositoryTestSuiteResult
+}
+
+export type RepositoryTestSuiteResult = {
+	success: boolean
+	failureMessage?: string
 }
 
 export type MethodReconstructionOptions = {
 	context: ContextDefinition
 	model: {
 		name: LanguageModelName
-		reasoning: boolean
+		reasoningBudget: number
 		temperature: number
 	}
 }

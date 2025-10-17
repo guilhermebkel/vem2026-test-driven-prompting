@@ -1,6 +1,8 @@
 import { generateText } from "ai"
+import { exec } from "child_process"
+import { promisify } from "util"
 
-import { ExperimentResult, MethodDefinition, MethodReconstructionOptions, RunExperimentOptions } from "@/Protocols/ExperimentProtocol"
+import { ExperimentResult, MethodDefinition, MethodReconstructionOptions, RepositoryTestSuiteResult, RunExperimentOptions } from "@/Protocols/ExperimentProtocol"
 
 import ModelUtil from "@/Utils/ModelUtil"
 import FileUtil from "@/Utils/FileUtil"
@@ -16,15 +18,18 @@ class ExperimentService {
 		const sourceFileWithOriginalMethod = await this.getSourceFileWithOriginalMethod(options.method)
 
 		try {
-			const reconstructedMethod = await this.getReconstructMethod(options.method, options.reconstructionOptions)
+			const reconstructedMethod = await this.getReconstructedMethod(options.method, options.reconstructionOptions)
 
 			const sourceFileWithReconstructedMethod = await this.getSourceFileWithReconstructedMethod(options.method, reconstructedMethod)
 
 			await this.replaceSourceFile(options.method, sourceFileWithReconstructedMethod)
 
+			const repositoryTestSuiteResult = await this.runRepositoryTestSuite(options.method)
+
 			return {
 				reconstructedMethod,
-				changedMethodFile: sourceFileWithReconstructedMethod
+				sourceFileWithReconstructedMethod,
+				repositoryTestSuiteResult
 			}
 		} catch (error) {
 			ErrorHandlerUtil.handle(error)
@@ -34,7 +39,7 @@ class ExperimentService {
 		}
 	}
 
-	private async getReconstructMethod(methodDefinition: MethodDefinition, options: MethodReconstructionOptions): Promise<string> {
+	private async getReconstructedMethod(methodDefinition: MethodDefinition, options: MethodReconstructionOptions): Promise<string> {
 		const contextDefinitionWithResolvedRelativePath = ExperimentUtil.resolveContextRelativeFilePath(options.context, methodDefinition.repositoryName)
 		const buildedContext = await ContextService.buildContext(contextDefinitionWithResolvedRelativePath)
 
@@ -64,15 +69,13 @@ class ExperimentService {
 				}
 			],
 			temperature: options.model.temperature,
-			...(!options.model.reasoning && {
-				providerOptions: {
-					google: {
-						thinkingConfig: {
-							thinkingBudget: 0
-						}
+			providerOptions: {
+				google: {
+					thinkingConfig: {
+						thinkingBudget: options.model.reasoningBudget
 					}
 				}
-			})
+			}
 		})
 
 		return reconstructedMethod
@@ -101,6 +104,27 @@ class ExperimentService {
 	private async replaceSourceFile(methodDefinition: MethodDefinition, changedSourceCode: string): Promise<void> {
 		const methodFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
 		await FileUtil.setFileContent(methodFilePath, changedSourceCode)
+	}
+
+	private async runRepositoryTestSuite(methodDefinition: MethodDefinition): Promise<RepositoryTestSuiteResult> {
+		try {
+			const repositoryRootPath = ExperimentUtil.getRepositoryRootPath(methodDefinition.repositoryName)
+
+			const execAsync = promisify(exec)
+
+			await execAsync(methodDefinition.repositoryTestSuiteCommand, {
+				cwd: repositoryRootPath
+			})
+
+			return {
+				success: true
+			}
+		} catch (error) {
+			return {
+				success: false,
+				failureMessage: (error as Error).message
+			}
+		}
 	}
 }
 
