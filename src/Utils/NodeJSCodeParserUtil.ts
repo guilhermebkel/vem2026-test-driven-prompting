@@ -27,7 +27,7 @@ class NodeJSCodeParserUtil {
 		const originalSourceFile = this.project.addSourceFileAtPath(filePath)
 		const [originalNode] = this.extractNodes(originalSourceFile, [extractionRule])
 
-		const needToAddExportKeyword = Node.isExportable(originalNode)
+		const needToAddExportKeyword = Node.isExportable(originalNode) && !changedNode.getText().includes("export ")
 
 		originalNode.replaceWithText(`${needToAddExportKeyword ? "export " : ""}${changedNode.getText()}`)
 

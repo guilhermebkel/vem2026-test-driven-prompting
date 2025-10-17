@@ -30,11 +30,13 @@ async function start(): Promise<void> {
 		}
 	})
 
-	await FileUtil.setFileContent(`./experiment-results/${METHOD_NAME}/failureMessage.txt`, result.repositoryTestSuiteResult.failureMessage!)
-	await FileUtil.setFileContent(`./experiment-results/${METHOD_NAME}/sourceFileWithReconstructedMethod.txt`, result.sourceFileWithReconstructedMethod)
-	await FileUtil.setFileContent(`./experiment-results/${METHOD_NAME}/sourceFileWithOriginalMethod.txt`, result.sourceFileWithOriginalMethod)
-	await FileUtil.setFileContent(`./experiment-results/${METHOD_NAME}/userPrompt.txt`, result.methodReconstructionResult.userPrompt)
-	await FileUtil.setFileContent(`./experiment-results/${METHOD_NAME}/systemPrompt.txt`, result.methodReconstructionResult.systemPrompt)
+	if (!result.repositoryTestSuiteResult.success) {
+		await FileUtil.setFileContent(`./experiment-results/${METHOD_NAME}/failureMessage.txt`, result.repositoryTestSuiteResult.failureMessage!)
+		await FileUtil.setFileContent(`./experiment-results/${METHOD_NAME}/sourceFileWithReconstructedMethod.txt`, result.sourceFileWithReconstructedMethod)
+		await FileUtil.setFileContent(`./experiment-results/${METHOD_NAME}/sourceFileWithOriginalMethod.txt`, result.sourceFileWithOriginalMethod)
+		await FileUtil.setFileContent(`./experiment-results/${METHOD_NAME}/userPrompt.txt`, result.methodReconstructionResult.userPrompt)
+		await FileUtil.setFileContent(`./experiment-results/${METHOD_NAME}/systemPrompt.txt`, result.methodReconstructionResult.systemPrompt)
+	}
 
 	console.log({ success: result.repositoryTestSuiteResult.success })
 }
