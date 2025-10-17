@@ -10,7 +10,7 @@ class NodeJSCodeParserUtil {
 		skipAddingFilesFromTsConfig: true
 	})
 
-	extractSpecificCode(filePath: string, extractionRules: ExtractionRule[]): string {
+	extractSpecificCodeFromSourceFile(filePath: string, extractionRules: ExtractionRule[]): string {
 		const sourceFile = this.project.addSourceFileAtPath(filePath)
 
 		const extractedNodes = this.extractNodes(sourceFile, extractionRules)
@@ -20,7 +20,7 @@ class NodeJSCodeParserUtil {
 		return extractedCode
 	}
 
-	replaceSpecificCode(filePath: string, extractionRule: ExtractionRule, changedCode: string): string {
+	replaceSpecificCodeInSourceFile(filePath: string, extractionRule: ExtractionRule, changedCode: string): string {
 		const changedCodeSourceFile = this.project.createSourceFile(`${Date.now().toString()}.ts`, changedCode)
 		const [changedNode] = this.extractNodes(changedCodeSourceFile, [extractionRule])
 

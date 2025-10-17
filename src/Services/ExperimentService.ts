@@ -9,20 +9,32 @@ import ExperimentUtil from "@/Utils/ExperimentUtil"
 import PromptService from "@/Services/PromptService"
 import ContextService from "@/Services/ContextService"
 import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
+import ErrorHandlerUtil from "@/Utils/ErrorHandlerUtil"
 
 class ExperimentService {
 	async runExperiment(options: RunExperimentOptions): Promise<ExperimentResult> {
-		const reconstructedMethod = await this.reconstructMethod(options.method, options.reconstructionOptions)
+		const sourceFileWithOriginalMethod = await this.getSourceFileWithOriginalMethod(options.method)
 
-		const changedMethodFile = await this.replaceOriginalMethod(options.method, reconstructedMethod)
+		try {
+			const reconstructedMethod = await this.getReconstructMethod(options.method, options.reconstructionOptions)
 
-		return {
-			reconstructedMethod,
-			changedMethodFile
+			const sourceFileWithReconstructedMethod = await this.getSourceFileWithReconstructedMethod(options.method, reconstructedMethod)
+
+			await this.replaceSourceFile(options.method, sourceFileWithReconstructedMethod)
+
+			return {
+				reconstructedMethod,
+				changedMethodFile: sourceFileWithReconstructedMethod
+			}
+		} catch (error) {
+			ErrorHandlerUtil.handle(error)
+			throw error
+		} finally {
+			await this.replaceSourceFile(options.method, sourceFileWithOriginalMethod)
 		}
 	}
 
-	private async reconstructMethod(methodDefinition: MethodDefinition, options: MethodReconstructionOptions): Promise<string> {
+	private async getReconstructMethod(methodDefinition: MethodDefinition, options: MethodReconstructionOptions): Promise<string> {
 		const contextDefinitionWithResolvedRelativePath = ExperimentUtil.resolveContextRelativeFilePath(options.context, methodDefinition.repositoryName)
 		const buildedContext = await ContextService.buildContext(contextDefinitionWithResolvedRelativePath)
 
@@ -66,16 +78,29 @@ class ExperimentService {
 		return reconstructedMethod
 	}
 
-	private async replaceOriginalMethod(methodDefinition: MethodDefinition, reconstructedMethod: string): Promise<string> {
+	private async getSourceFileWithReconstructedMethod(methodDefinition: MethodDefinition, reconstructedMethod: string): Promise<string> {
 		const methodFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
 
-		const sourceCodeWithChanges = NodeJSCodeParserUtil.replaceSpecificCode(
+		const sourceFileWithReconstructedMethod = NodeJSCodeParserUtil.replaceSpecificCodeInSourceFile(
 			methodFilePath,
 			{ kind: "function", name: methodDefinition.name },
 			reconstructedMethod
 		)
 
-		return sourceCodeWithChanges
+		return sourceFileWithReconstructedMethod
+	}
+
+	private async getSourceFileWithOriginalMethod(methodDefinition: MethodDefinition): Promise<string> {
+		const methodFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
+
+		const sourceFileWithOriginalMethod = await FileUtil.getFileContent(methodFilePath)
+
+		return sourceFileWithOriginalMethod
+	}
+
+	private async replaceSourceFile(methodDefinition: MethodDefinition, changedSourceCode: string): Promise<void> {
+		const methodFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
+		await FileUtil.setFileContent(methodFilePath, changedSourceCode)
 	}
 }
 

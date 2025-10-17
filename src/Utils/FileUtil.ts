@@ -8,6 +8,10 @@ class FileUtil {
 		return fileContent
 	}
 
+	async setFileContent(filePath: string, content: string): Promise<void> {
+		await fs.writeFile(filePath, content, "utf-8")
+	}
+
 	async getFolderPathList(directoryPath: string): Promise<string[]> {
 		let folderPathList: string[] = []
 
