@@ -1,7 +1,7 @@
 import "dotenv/config"
 
 import ExperimentService from "@/Services/ExperimentService"
-import FileUtil from "./Utils/FileUtil"
+import FileUtil from "@/Utils/FileUtil"
 
 async function start(): Promise<void> {
 	const result = await ExperimentService.runExperiment({
