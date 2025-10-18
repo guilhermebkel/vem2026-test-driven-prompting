@@ -3,7 +3,7 @@ import "dotenv/config"
 import ExperimentService from "@/Services/ExperimentService"
 
 async function start(): Promise<void> {
-	const METHOD_NAME = "addQuarters"
+	const METHOD_NAME = "endOfQuarter"
 
 	const result = await ExperimentService.runExperiment({
 		method: {
@@ -20,7 +20,13 @@ async function start(): Promise<void> {
 				reasoningBudget: 0,
 				temperature: 0
 			},
-			context: []
+			context: [
+				{
+					type: "semantic",
+					slug: "similar-method",
+					path: "/src/endOfMonth/index.ts"
+				}
+			]
 		}
 	})
 
