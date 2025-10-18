@@ -33,12 +33,16 @@ class ExperimentService {
 
 			const repositoryTestSuiteResult = await this.runRepositoryTestSuite(options.method)
 
-			return {
+			const experimentResult: ExperimentResult = {
 				methodReconstructionResult,
 				repositoryTestSuiteResult,
 				sourceFileWithReconstructedMethod,
 				sourceFileWithOriginalMethod
 			}
+
+			await this.saveExperimentResultLogs(options.method, experimentResult)
+
+			return experimentResult
 		} catch (error) {
 			ErrorHandlerUtil.handle(error)
 			throw error
@@ -55,7 +59,7 @@ class ExperimentService {
 		const methodTestContent = await FileUtil.getFileContent(methodTestFilePath)
 
 		const methodFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
-		const methodFileContentWithoutMethodBody = NodeJSCodeParserUtil.removeSpecificMethodOrFunctionBodyInSourceFile(methodFilePath, { kind: "function", name: methodDefinition.name })
+		const methodFileContentWithoutMethodBody = NodeJSCodeParserUtil.removeSpecificMethodOrFunctionBodyInSourceFile(methodFilePath, { type: methodDefinition.declarationType, name: methodDefinition.name })
 
 		const languageModel = ModelUtil.getLanguageModel(options.model.name)
 		const buildedSystemPrompt = PromptService.buildSystemPrompt()
@@ -102,7 +106,7 @@ class ExperimentService {
 
 		const sourceFileWithReconstructedMethod = NodeJSCodeParserUtil.replaceSpecificMethodOrFunctionBodyInSourceFile(
 			methodFilePath,
-			{ kind: "function", name: methodDefinition.name },
+			{ type: methodDefinition.declarationType, name: methodDefinition.name },
 			reconstructedMethodBody
 		)
 
@@ -141,6 +145,14 @@ class ExperimentService {
 				failureMessage: (error as Error).message
 			}
 		}
+	}
+
+	private async saveExperimentResultLogs(methodDefinition: MethodDefinition, experimentResult: ExperimentResult): Promise<void> {
+		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(methodDefinition, "failureMessage"), experimentResult.repositoryTestSuiteResult.failureMessage || "")
+		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(methodDefinition, "sourceFileWithReconstructedMethod"), experimentResult.sourceFileWithReconstructedMethod)
+		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(methodDefinition, "sourceFileWithOriginalMethod"), experimentResult.sourceFileWithOriginalMethod)
+		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(methodDefinition, "userPrompt"), experimentResult.methodReconstructionResult.userPrompt)
+		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(methodDefinition, "systemPrompt"), experimentResult.methodReconstructionResult.systemPrompt)
 	}
 }
 

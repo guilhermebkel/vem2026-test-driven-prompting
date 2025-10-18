@@ -1,10 +1,12 @@
 import { LanguageModelName } from "@/Protocols/ModelProtocol"
 import { ContextDefinition } from "@/Protocols/ContextProtocol"
+import { DeclarationType } from "@/Protocols/NodeJSCodeParserProtocol"
 
 export type RepositoryName = "date-fns"
 
 export type MethodDefinition = {
 	name: string
+	declarationType: DeclarationType
 	repositoryName: RepositoryName
 	repositoryTestSuiteCommand: string
 	testRelativeFilePath: string

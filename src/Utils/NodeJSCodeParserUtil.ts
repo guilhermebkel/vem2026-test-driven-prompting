@@ -1,6 +1,6 @@
 import { FunctionDeclaration, MethodDeclaration, Project, SourceFile } from "ts-morph"
 
-import { ExtractionRule, NodeType } from "@/Protocols/NodeJSCodeParserProtocol"
+import { DeclarationType, ExtractionRule, NodeType } from "@/Protocols/NodeJSCodeParserProtocol"
 
 class NodeJSCodeParserUtil {
 	private readonly project = new Project({
@@ -54,7 +54,7 @@ class NodeJSCodeParserUtil {
 	}
 
 	private extractNodes(sourceFile: SourceFile, extractionRules: ExtractionRule[]): NodeType[] {
-		const ruleKindToNodeExtractorFn: Record<ExtractionRule["kind"], (rule: ExtractionRule) => Array<NodeType | undefined>> = {
+		const ruleKindToNodeExtractorFn: Record<DeclarationType, (rule: ExtractionRule) => Array<NodeType | undefined>> = {
 			class: (rule) => rule.name ? (
 				[sourceFile.getClass(rule.name)]
 			) : (
@@ -87,7 +87,7 @@ class NodeJSCodeParserUtil {
 		}
 
 		const extractedNodes: NodeType[] = extractionRules.flatMap(rule => (
-			ruleKindToNodeExtractorFn[rule.kind](rule).filter((node): node is NodeType => node !== undefined)
+			ruleKindToNodeExtractorFn[rule.type](rule).filter((node): node is NodeType => node !== undefined)
 		))
 
 		return extractedNodes || []
