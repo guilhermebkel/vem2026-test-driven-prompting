@@ -121,9 +121,9 @@ class ExperimentService {
 		return sourceFileWithOriginalMethod
 	}
 
-	private async replaceSourceFile(methodDefinition: MethodDefinition, changedSourceCode: string): Promise<void> {
+	private async replaceSourceFile(methodDefinition: MethodDefinition, changedSourceFile: string): Promise<void> {
 		const methodFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
-		await FileUtil.setFileContent(methodFilePath, changedSourceCode)
+		await FileUtil.setFileContent(methodFilePath, changedSourceFile)
 	}
 
 	private async runRepositoryTestSuite(methodDefinition: MethodDefinition): Promise<RepositoryTestSuiteResult> {
@@ -132,23 +132,26 @@ class ExperimentService {
 
 			const execAsync = promisify(exec)
 
-			await execAsync(methodDefinition.repositoryTestSuiteCommand, {
+			const { stdout } = await execAsync(methodDefinition.repositoryTestSuiteCommand, {
 				cwd: repositoryRootPath
 			})
 
 			return {
-				success: true
+				success: true,
+				debugMessage: stdout
 			}
 		} catch (error) {
+			const typedError = error as Error
+
 			return {
 				success: false,
-				failureMessage: (error as Error).message
+				debugMessage: typedError.message
 			}
 		}
 	}
 
 	private async saveExperimentResultLogs(methodDefinition: MethodDefinition, experimentResult: ExperimentResult): Promise<void> {
-		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(methodDefinition, "failureMessage"), experimentResult.repositoryTestSuiteResult.failureMessage || "")
+		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(methodDefinition, "testSuiteDebugMessage"), experimentResult.repositoryTestSuiteResult.debugMessage)
 		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(methodDefinition, "sourceFileWithReconstructedMethod"), experimentResult.sourceFileWithReconstructedMethod)
 		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(methodDefinition, "sourceFileWithOriginalMethod"), experimentResult.sourceFileWithOriginalMethod)
 		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(methodDefinition, "userPrompt"), experimentResult.methodReconstructionResult.userPrompt)

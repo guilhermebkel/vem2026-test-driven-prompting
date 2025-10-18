@@ -48,7 +48,7 @@ class PromptService {
 
 			# Method File Content Without Method Body
 
-			${options.methodFileContentWithoutMethodBody}
+			${this.formatCodeBlock(options.methodFileContentWithoutMethodBody)}
 
 			# Method Test
 			

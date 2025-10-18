@@ -27,7 +27,7 @@ export type ExperimentResult = {
 
 export type RepositoryTestSuiteResult = {
 	success: boolean
-	failureMessage?: string
+	debugMessage: string
 }
 
 export type MethodReconstructionOptions = {

@@ -3,7 +3,7 @@ import "dotenv/config"
 import ExperimentService from "@/Services/ExperimentService"
 
 async function start(): Promise<void> {
-	const METHOD_NAME = "addBusinessDays"
+	const METHOD_NAME = "addQuarters"
 
 	const result = await ExperimentService.runExperiment({
 		method: {
