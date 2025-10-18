@@ -44,7 +44,7 @@ class PromptService {
 		return this.sanitizePrompt(`
 			# Method Name
 
-			${options.method.name}
+			${options.methodName}
 
 			# Method File Content Without Method Body
 
@@ -52,7 +52,7 @@ class PromptService {
 
 			# Method Test
 			
-			${this.formatCodeBlock(options.method.testContent)}
+			${this.formatCodeBlock(options.methodTestContent)}
 
 			# Context
 

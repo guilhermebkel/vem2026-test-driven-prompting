@@ -63,14 +63,7 @@ class ExperimentService {
 
 		const languageModel = ModelUtil.getLanguageModel(options.model.name)
 		const buildedSystemPrompt = PromptService.buildSystemPrompt()
-		const buildedUserPrompt = PromptService.buildUserPrompt({
-			method: {
-				name: methodDefinition.name,
-				testContent: methodTestContent
-			},
-			buildedContext,
-			methodFileContentWithoutMethodBody
-		})
+		const buildedUserPrompt = PromptService.buildUserPrompt({ methodName: methodDefinition.name, methodTestContent, methodFileContentWithoutMethodBody, buildedContext })
 
 		const { text: reconstructedMethodBody } = await generateText({
 			model: languageModel,
