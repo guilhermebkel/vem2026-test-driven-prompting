@@ -16,8 +16,8 @@ async function start(): Promise<void> {
 		},
 		reconstructionOptions: {
 			model: {
-				name: "gemini-2.5-pro",
-				reasoningBudget: 1000,
+				name: "gemini-2.5-flash",
+				reasoningBudget: 0,
 				temperature: 0
 			},
 			context: []

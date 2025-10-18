@@ -11,9 +11,9 @@ class PromptService {
 
 			## 2. Decision Module
 
-			- Reconstruct the method implementation using the information provided in the user input.
+			- Reconstruct the method body implementation using the information provided in the user input.
 			- The regenerated code must strictly adhere to the following guidelines:
-				- Output only the reconstructed method implementation, along with any necessary helper functions (e.g., input normalization utilities) required for correct behavior.
+				- Output only the reconstructed method body implementation, along with any necessary helper functions (e.g., input normalization utilities) required for correct behavior.
 				- Preserve the original method signature — including its name, parameters, and return type — unless the provided context explicitly specifies changes.
 				- Provide inline comments within the code that clearly explain the rationale behind key implementation decisions, explicitly referencing relevant parts of the user-provided context.
 				- Use external functions or libraries only when explicitly mentioned in the context. If external usage is required, include the corresponding import statements (e.g., from a library or local path) as part of the output.
@@ -45,6 +45,10 @@ class PromptService {
 			# Method Name
 
 			${options.method.name}
+
+			# Method File Content Without Method Body
+
+			${options.methodFileContentWithoutMethodBody}
 
 			# Method Test
 			

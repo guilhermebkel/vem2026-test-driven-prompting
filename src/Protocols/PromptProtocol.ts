@@ -6,4 +6,5 @@ export type UserPromptOptions = {
 		testContent: string
 	}
 	buildedContext: BuildedContext
+	methodFileContentWithoutMethodBody: string
 }

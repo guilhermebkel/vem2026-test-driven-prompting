@@ -25,9 +25,9 @@ class ExperimentService {
 		const sourceFileWithOriginalMethod = await this.getSourceFileWithOriginalMethod(options.method)
 
 		try {
-			const methodReconstructionResult = await this.reconstructedMethod(options.method, options.reconstructionOptions)
+			const methodReconstructionResult = await this.reconstructMethod(options.method, options.reconstructionOptions)
 
-			const sourceFileWithReconstructedMethod = await this.getSourceFileWithReconstructedMethod(options.method, methodReconstructionResult.reconstructedMethod)
+			const sourceFileWithReconstructedMethod = await this.getSourceFileWithReconstructedMethod(options.method, methodReconstructionResult.reconstructedMethodBody)
 
 			await this.replaceSourceFile(options.method, sourceFileWithReconstructedMethod)
 
@@ -47,12 +47,15 @@ class ExperimentService {
 		}
 	}
 
-	private async reconstructedMethod(methodDefinition: MethodDefinition, options: MethodReconstructionOptions): Promise<MethodReconstructionResult> {
+	private async reconstructMethod(methodDefinition: MethodDefinition, options: MethodReconstructionOptions): Promise<MethodReconstructionResult> {
 		const contextDefinitionWithResolvedRelativePath = ExperimentUtil.resolveContextRelativeFilePath(options.context, methodDefinition.repositoryName)
 		const buildedContext = await ContextService.buildContext(contextDefinitionWithResolvedRelativePath)
 
 		const methodTestFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.testRelativeFilePath)
 		const methodTestContent = await FileUtil.getFileContent(methodTestFilePath)
+
+		const methodFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
+		const methodFileContentWithoutMethodBody = NodeJSCodeParserUtil.removeSpecificMethodOrFunctionBodyInSourceFile(methodFilePath, { kind: "function", name: methodDefinition.name })
 
 		const languageModel = ModelUtil.getLanguageModel(options.model.name)
 		const buildedSystemPrompt = PromptService.buildSystemPrompt()
@@ -61,10 +64,11 @@ class ExperimentService {
 				name: methodDefinition.name,
 				testContent: methodTestContent
 			},
-			buildedContext
+			buildedContext,
+			methodFileContentWithoutMethodBody
 		})
 
-		const { text: reconstructedMethod } = await generateText({
+		const { text: reconstructedMethodBody } = await generateText({
 			model: languageModel,
 			messages: [
 				{
@@ -87,19 +91,19 @@ class ExperimentService {
 		})
 
 		return {
-			reconstructedMethod,
+			reconstructedMethodBody,
 			systemPrompt: buildedSystemPrompt,
 			userPrompt: buildedUserPrompt
 		}
 	}
 
-	private async getSourceFileWithReconstructedMethod(methodDefinition: MethodDefinition, reconstructedMethod: string): Promise<string> {
+	private async getSourceFileWithReconstructedMethod(methodDefinition: MethodDefinition, reconstructedMethodBody: string): Promise<string> {
 		const methodFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
 
-		const sourceFileWithReconstructedMethod = NodeJSCodeParserUtil.replaceSpecificCodeInSourceFile(
+		const sourceFileWithReconstructedMethod = NodeJSCodeParserUtil.replaceSpecificMethodOrFunctionBodyInSourceFile(
 			methodFilePath,
 			{ kind: "function", name: methodDefinition.name },
-			reconstructedMethod
+			reconstructedMethodBody
 		)
 
 		return sourceFileWithReconstructedMethod

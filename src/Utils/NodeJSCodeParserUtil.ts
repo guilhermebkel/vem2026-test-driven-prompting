@@ -1,4 +1,4 @@
-import { Project, SourceFile } from "ts-morph"
+import { FunctionDeclaration, MethodDeclaration, Project, SourceFile } from "ts-morph"
 
 import { ExtractionRule, NodeType } from "@/Protocols/NodeJSCodeParserProtocol"
 
@@ -25,6 +25,27 @@ class NodeJSCodeParserUtil {
 		const [originalNode] = this.extractNodes(originalSourceFile, [extractionRule])
 
 		originalNode.replaceWithText(changedCode)
+		const sourceCodeWithChanges = originalSourceFile.getText()
+
+		this.project.removeSourceFile(originalSourceFile)
+
+		return sourceCodeWithChanges
+	}
+
+	removeSpecificMethodOrFunctionBodyInSourceFile(filePath: string, extractionRule: ExtractionRule): string {
+		return this.replaceSpecificMethodOrFunctionBodyInSourceFile(filePath, extractionRule, "")
+	}
+
+	replaceSpecificMethodOrFunctionBodyInSourceFile(filePath: string, extractionRule: ExtractionRule, changedCode: string): string {
+		const originalSourceFile = this.project.addSourceFileAtPath(filePath)
+		const [originalNode] = this.extractNodes(originalSourceFile, [extractionRule])
+
+		const isFunctionOrMethod = originalNode instanceof FunctionDeclaration || originalNode instanceof MethodDeclaration
+
+		if (isFunctionOrMethod) {
+			originalNode.setBodyText(changedCode)
+		}
+
 		const sourceCodeWithChanges = originalSourceFile.getText()
 
 		this.project.removeSourceFile(originalSourceFile)
