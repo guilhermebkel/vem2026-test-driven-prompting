@@ -46,6 +46,22 @@ const REPOSITORY_EXPERIMENTS: RepositoryExperiment[] = [
 				]
 			}
 		]
+	},
+	{
+		repositoryName: "directus",
+		repositoryTestSuiteCommand: "pnpm --workspace-root test",
+		experiments: [
+			{
+				title: "min-max-point_withoutContext",
+				method: {
+					name: "minMaxPoint",
+					declarationType: "function",
+					testRelativeFilePath: "/app/src/modules/settings/routes/flows/components/arrows/utils/min-max-point.test.ts",
+					methodRelativeFilePath: "/app/src/modules/settings/routes/flows/components/arrows/utils/min-max-point.ts"
+				},
+				context: []
+			}
+		]
 	}
 ]
 
@@ -73,7 +89,7 @@ async function start(): Promise<void> {
 				}
 			})
 
-			console.log(`=> Experiment [${experiment.title}] resulted in: ${result.repositoryTestSuiteResult.success ? "SUCCESS" : "FAILED"}!`)
+			console.log(`=> Experiment [${experiment.title}] resulted in: ${result.repositoryTestSuiteResult.success ? "SUCCESS" : "FAILURE"}!`)
 		}
 	}
 }
