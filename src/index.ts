@@ -9,55 +9,58 @@ type RepositoryExperiment = {
 	repositoryTestSuiteCommand: string
 	experiments: Array<{
 		title: ExperimentOptions["title"]
-		method: Omit<ExperimentOptions["method"], "repositoryName" | "repositoryTestSuiteCommand">
+		method: Omit<ExperimentOptions["method"], "repositoryName" | "repositoryTestSuiteCommand"> & {
+			specificTestSuiteCommand?: string
+		}
 		context: ExperimentOptions["reconstructionOptions"]["context"]
 	}>
 }
 
 const REPOSITORY_EXPERIMENTS: RepositoryExperiment[] = [
-	{
-		repositoryName: "date-fns",
-		repositoryTestSuiteCommand: "pnpm run test",
-		experiments: [
-			{
-				title: "endOfQuarter_withoutContext",
-				method: {
-					name: "endOfQuarter",
-					declarationType: "function",
-					testRelativeFilePath: "/src/endOfQuarter/test.ts",
-					methodRelativeFilePath: "/src/endOfQuarter/index.ts"
-				},
-				context: []
-			},
-			{
-				title: "endOfQuarter_withSimilarMethodContext",
-				method: {
-					name: "endOfQuarter",
-					declarationType: "function",
-					testRelativeFilePath: "/src/endOfQuarter/test.ts",
-					methodRelativeFilePath: "/src/endOfQuarter/index.ts"
-				},
-				context: [
-					{
-						type: "semantic",
-						slug: "similar-method",
-						path: "/src/endOfMonth/index.ts"
-					}
-				]
-			}
-		]
-	},
+	// {
+	// 	repositoryName: "date-fns",
+	// 	repositoryTestSuiteCommand: "pnpm run test",
+	// 	experiments: [
+	// 		{
+	// 			title: "endOfQuarter_withoutContext",
+	// 			method: {
+	// 				name: "endOfQuarter",
+	// 				declarationType: "function",
+	// 				testRelativeFilePath: "/src/endOfQuarter/test.ts",
+	// 				methodRelativeFilePath: "/src/endOfQuarter/index.ts"
+	// 			},
+	// 			context: []
+	// 		},
+	// 		{
+	// 			title: "endOfQuarter_withSimilarMethodContext",
+	// 			method: {
+	// 				name: "endOfQuarter",
+	// 				declarationType: "function",
+	// 				testRelativeFilePath: "/src/endOfQuarter/test.ts",
+	// 				methodRelativeFilePath: "/src/endOfQuarter/index.ts"
+	// 			},
+	// 			context: [
+	// 				{
+	// 					type: "semantic",
+	// 					slug: "similar-method",
+	// 					path: "/src/endOfMonth/index.ts"
+	// 				}
+	// 			]
+	// 		}
+	// 	]
+	// },
 	{
 		repositoryName: "directus",
 		repositoryTestSuiteCommand: "pnpm --workspace-root test",
 		experiments: [
 			{
-				title: "min-max-point_withoutContext",
+				title: "publish_withoutContext",
 				method: {
-					name: "minMaxPoint",
-					declarationType: "function",
-					testRelativeFilePath: "/app/src/modules/settings/routes/flows/components/arrows/utils/min-max-point.test.ts",
-					methodRelativeFilePath: "/app/src/modules/settings/routes/flows/components/arrows/utils/min-max-point.ts"
+					name: "publish",
+					declarationType: "method",
+					specificTestSuiteCommand: "pnpm --filter memory test",
+					testRelativeFilePath: "/packages/memory/src/bus/lib/local.test.ts",
+					methodRelativeFilePath: "/packages/memory/src/bus/lib/local.ts"
 				},
 				context: []
 			}
@@ -77,7 +80,7 @@ async function start(): Promise<void> {
 				method: {
 					...experiment.method,
 					repositoryName: repositoryExperiment.repositoryName,
-					repositoryTestSuiteCommand: repositoryExperiment.repositoryTestSuiteCommand
+					repositoryTestSuiteCommand: experiment.method?.specificTestSuiteCommand || repositoryExperiment.repositoryTestSuiteCommand
 				},
 				reconstructionOptions: {
 					model: {
@@ -89,7 +92,7 @@ async function start(): Promise<void> {
 				}
 			})
 
-			console.log(`=> Experiment [${experiment.title}] resulted in: ${result.repositoryTestSuiteResult.success ? "SUCCESS" : "FAILURE"}!`)
+			console.log(`=> Experiment [${experiment.title}] result: ${result.repositoryTestSuiteResult.success ? "SUCCESS" : "FAILURE"}!`)
 		}
 	}
 }

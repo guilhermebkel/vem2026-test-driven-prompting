@@ -45,6 +45,7 @@ case "$REPO_NAME" in
       "nvm use 22"
       "npm install -g pnpm"
       "pnpm install"
+      "pnpm build"
     )
     ;;
   "tabnews.com.br")

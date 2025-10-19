@@ -36,7 +36,7 @@ pnpm run experiment-repo:setup-all
 pnpm dev
 ```
 
-> The project uses **Node.js 20**, **TypeScript**, **ESLint** and **tsx** for development.
+> The project uses **Node.js 22**, **TypeScript**, **ESLint** and **tsx** for development.
 
 ## 🧪 Experiment Repositories Commands
 
