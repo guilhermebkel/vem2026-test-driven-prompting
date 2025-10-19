@@ -24,20 +24,20 @@ import ErrorHandlerUtil from "@/Utils/ErrorHandlerUtil"
 
 class ExperimentService {
 	async runExperiment(options: ExperimentOptions): Promise<ExperimentResult> {
-		const sourceFileWithOriginalMethod = await this.getSourceFileWithOriginalMethod(options.method)
+		const sourceFileWithOriginalMethodBody = await this.getSourceFileWithOriginalMethodBody(options.method)
 
 		try {
 			const methodReconstructionResult = await this.reconstructMethod(options.method, options.reconstructionOptions)
 
-			const sourceFileWithReconstructedMethod = await this.replaceSourceFileWithReconstructedMethodBody(options.method, methodReconstructionResult.reconstructedMethodBody)
+			const sourceFileWithReconstructedMethodBody = await this.replaceSourceFileWithReconstructedMethodBody(options.method, methodReconstructionResult.reconstructedMethodBody)
 
 			const repositoryTestSuiteResult = await this.runRepositoryTestSuite(options.method)
 
 			const experimentResult: ExperimentResult = {
 				methodReconstructionResult,
 				repositoryTestSuiteResult,
-				sourceFileWithReconstructedMethod,
-				sourceFileWithOriginalMethod
+				sourceFileWithReconstructedMethodBody,
+				sourceFileWithOriginalMethodBody
 			}
 
 			await this.saveExperimentResultLogs(options, experimentResult)
@@ -47,7 +47,7 @@ class ExperimentService {
 			ErrorHandlerUtil.handle(error)
 			throw error
 		} finally {
-			await this.revertSourceFileChanges(options.method, sourceFileWithOriginalMethod)
+			await this.revertSourceFileChanges(options.method, sourceFileWithOriginalMethodBody)
 		}
 	}
 
@@ -121,34 +121,34 @@ class ExperimentService {
 		})
 	}
 
-	private async revertSourceFileChanges(methodDefinition: MethodDefinition, originalSourceFile: string): Promise<void> {
+	private async revertSourceFileChanges(methodDefinition: MethodDefinition, sourceFileWithOriginalMethodBody: string): Promise<void> {
 		return await TracingUtil.traceAction("Reverting source file changes...", async () => {
 			const methodFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
-			await FileUtil.setFileContent(methodFilePath, originalSourceFile)
+			await FileUtil.setFileContent(methodFilePath, sourceFileWithOriginalMethodBody)
 		})
 	}
 
-	private async getSourceFileWithOriginalMethod(methodDefinition: MethodDefinition): Promise<string> {
+	private async getSourceFileWithOriginalMethodBody(methodDefinition: MethodDefinition): Promise<string> {
 		const methodFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
 
-		const sourceFileWithOriginalMethod = await FileUtil.getFileContent(methodFilePath)
+		const sourceFileWithOriginalMethodBody = await FileUtil.getFileContent(methodFilePath)
 
-		return sourceFileWithOriginalMethod
+		return sourceFileWithOriginalMethodBody
 	}
 
 	private async replaceSourceFileWithReconstructedMethodBody(methodDefinition: MethodDefinition, reconstructedMethodBody: string): Promise<string> {
 		return await TracingUtil.traceAction("Replacing source file with reconstructed method body...", async () => {
 			const methodFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
 
-			const sourceFileWithReconstructedMethod = NodeJSCodeParserUtil.replaceSpecificMethodOrFunctionBodyInSourceFile(
+			const sourceFileWithReconstructedMethodBody = NodeJSCodeParserUtil.replaceSpecificMethodOrFunctionBodyInSourceFile(
 				methodFilePath,
 				{ type: methodDefinition.declarationType, name: methodDefinition.name },
 				reconstructedMethodBody
 			)
 
-			await FileUtil.setFileContent(methodFilePath, sourceFileWithReconstructedMethod)
+			await FileUtil.setFileContent(methodFilePath, sourceFileWithReconstructedMethodBody)
 
-			return sourceFileWithReconstructedMethod
+			return sourceFileWithReconstructedMethodBody
 		})
 	}
 
@@ -185,11 +185,11 @@ class ExperimentService {
 			const testSuiteDebugMessageLogFilePath = ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "testSuiteDebugMessage")
 			await FileUtil.setFileContent(testSuiteDebugMessageLogFilePath, experimentResult.repositoryTestSuiteResult.debugMessage)
 
-			const sourceFileWithReconstructedMethodLogFilePath = ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "sourceFileWithReconstructedMethod", sourceFileExtension)
-			await FileUtil.setFileContent(sourceFileWithReconstructedMethodLogFilePath, experimentResult.sourceFileWithReconstructedMethod)
+			const sourceFileWithReconstructedMethodBodyLogFilePath = ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "sourceFileWithReconstructedMethodBody", sourceFileExtension)
+			await FileUtil.setFileContent(sourceFileWithReconstructedMethodBodyLogFilePath, experimentResult.sourceFileWithReconstructedMethodBody)
 
-			const sourceFileWithOriginalMethodLogFilePath = ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "sourceFileWithOriginalMethod", sourceFileExtension)
-			await FileUtil.setFileContent(sourceFileWithOriginalMethodLogFilePath, experimentResult.sourceFileWithOriginalMethod)
+			const sourceFileWithOriginalMethodBodyLogFilePath = ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "sourceFileWithOriginalMethodBody", sourceFileExtension)
+			await FileUtil.setFileContent(sourceFileWithOriginalMethodBodyLogFilePath, experimentResult.sourceFileWithOriginalMethodBody)
 
 			const sourceFileWithoutOriginalMethodBodyLogFilePath = ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "sourceFileWithoutOriginalMethodBody", sourceFileExtension)
 			await FileUtil.setFileContent(sourceFileWithoutOriginalMethodBodyLogFilePath, experimentResult.methodReconstructionResult.methodFileContentWithoutMethodBody)

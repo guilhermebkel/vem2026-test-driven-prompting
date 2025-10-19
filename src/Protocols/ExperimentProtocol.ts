@@ -22,8 +22,8 @@ export type ExperimentOptions = {
 export type ExperimentResult = {
 	methodReconstructionResult: MethodReconstructionResult
 	repositoryTestSuiteResult: RepositoryTestSuiteResult
-	sourceFileWithReconstructedMethod: string
-	sourceFileWithOriginalMethod: string
+	sourceFileWithReconstructedMethodBody: string
+	sourceFileWithOriginalMethodBody: string
 }
 
 export type RepositoryTestSuiteResult = {

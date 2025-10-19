@@ -20,10 +20,10 @@ class ExperimentUtil {
 		return repositoryRootPath
 	}
 
-	getExperimentResultLogFilePath(experimentOptions: ExperimentOptions, logFileName: string, logFileExtension = "txt"): string {
+	getExperimentResultLogFilePath(experimentOptions: ExperimentOptions, logFileName: string, logFileExtension = ".txt"): string {
 		const experimentResultDirectoryPath = this.getExperimentResultDirectoryPath()
 
-		const experimentResultLogFilePath = path.join(experimentResultDirectoryPath, experimentOptions.method.repositoryName, experimentOptions.title, `${logFileName}.${logFileExtension}`)
+		const experimentResultLogFilePath = path.join(experimentResultDirectoryPath, experimentOptions.method.repositoryName, experimentOptions.title, `${logFileName}${logFileExtension}`)
 
 		return experimentResultLogFilePath
 	}
