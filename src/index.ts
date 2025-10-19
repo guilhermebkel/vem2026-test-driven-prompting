@@ -187,6 +187,22 @@ const REPOSITORY_EXPERIMENTS: RepositoryExperiment[] = [
 					methodRelativeFilePath: "/packages/storage-driver-supabase/src/index.ts"
 				},
 				context: []
+			},
+			{
+				title: "create-directus-project:checkRequirements_withoutContext",
+				model: {
+					name: "gemini-2.5-flash",
+					reasoningBudget: 0,
+					temperature: 0
+				},
+				method: {
+					name: "checkRequirements",
+					declarationType: "function",
+					specificTestSuiteCommand: "pnpm --filter create-directus-project test",
+					testRelativeFilePath: "/packages/create-directus-project/lib/check-requirements.test.js",
+					methodRelativeFilePath: "/packages/create-directus-project/lib/check-requirements.js"
+				},
+				context: []
 			}
 		]
 	}
