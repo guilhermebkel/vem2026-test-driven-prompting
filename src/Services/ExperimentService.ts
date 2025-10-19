@@ -1,6 +1,7 @@
 import { generateText } from "ai"
 import { exec } from "child_process"
 import { promisify } from "util"
+import path from "path"
 
 import {
 	ExperimentOptions,
@@ -179,12 +180,25 @@ class ExperimentService {
 
 	private async saveExperimentResultLogs(experimentOptions: ExperimentOptions, experimentResult: ExperimentResult): Promise<void> {
 		return await TracingUtil.traceAction("Saving experiment result logs...", async () => {
-			await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "testSuiteDebugMessage"), experimentResult.repositoryTestSuiteResult.debugMessage)
-			await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "sourceFileWithReconstructedMethod"), experimentResult.sourceFileWithReconstructedMethod)
-			await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "sourceFileWithOriginalMethod"), experimentResult.sourceFileWithOriginalMethod)
-			await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "sourceFileWithoutOriginalMethodBody"), experimentResult.methodReconstructionResult.methodFileContentWithoutMethodBody)
-			await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "userPrompt"), experimentResult.methodReconstructionResult.userPrompt)
-			await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "systemPrompt"), experimentResult.methodReconstructionResult.systemPrompt)
+			const sourceFileExtension = path.extname(experimentOptions.method.methodRelativeFilePath)
+
+			const testSuiteDebugMessageLogFilePath = ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "testSuiteDebugMessage")
+			await FileUtil.setFileContent(testSuiteDebugMessageLogFilePath, experimentResult.repositoryTestSuiteResult.debugMessage)
+
+			const sourceFileWithReconstructedMethodLogFilePath = ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "sourceFileWithReconstructedMethod", sourceFileExtension)
+			await FileUtil.setFileContent(sourceFileWithReconstructedMethodLogFilePath, experimentResult.sourceFileWithReconstructedMethod)
+
+			const sourceFileWithOriginalMethodLogFilePath = ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "sourceFileWithOriginalMethod", sourceFileExtension)
+			await FileUtil.setFileContent(sourceFileWithOriginalMethodLogFilePath, experimentResult.sourceFileWithOriginalMethod)
+
+			const sourceFileWithoutOriginalMethodBodyLogFilePath = ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "sourceFileWithoutOriginalMethodBody", sourceFileExtension)
+			await FileUtil.setFileContent(sourceFileWithoutOriginalMethodBodyLogFilePath, experimentResult.methodReconstructionResult.methodFileContentWithoutMethodBody)
+
+			const userPromptLogFilePath = ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "userPrompt")
+			await FileUtil.setFileContent(userPromptLogFilePath, experimentResult.methodReconstructionResult.userPrompt)
+
+			const systemPromptLogFilePath = ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "systemPrompt")
+			await FileUtil.setFileContent(systemPromptLogFilePath, experimentResult.methodReconstructionResult.systemPrompt)
 		})
 	}
 }
