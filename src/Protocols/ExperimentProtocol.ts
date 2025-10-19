@@ -41,6 +41,7 @@ export type MethodReconstructionOptions = {
 }
 
 export type MethodReconstructionResult = {
+	methodFileContentWithoutMethodBody: string
 	reconstructedMethodBody: string
 	systemPrompt: string
 	userPrompt: string

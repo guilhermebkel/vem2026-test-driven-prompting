@@ -22,7 +22,7 @@ const REPOSITORY_EXPERIMENTS: RepositoryExperiment[] = [
 	// 	repositoryTestSuiteCommand: "pnpm run test",
 	// 	experiments: [
 	// 		{
-	// 			title: "endOfQuarter_withoutContext",
+	// 			title: "endOfQuarter:index_withoutContext",
 	// 			method: {
 	// 				name: "endOfQuarter",
 	// 				declarationType: "function",
@@ -32,7 +32,7 @@ const REPOSITORY_EXPERIMENTS: RepositoryExperiment[] = [
 	// 			context: []
 	// 		},
 	// 		{
-	// 			title: "endOfQuarter_withSimilarMethodContext",
+	// 			title: "endOfQuarter:index_withSimilarMethodContext",
 	// 			method: {
 	// 				name: "endOfQuarter",
 	// 				declarationType: "function",
@@ -54,13 +54,24 @@ const REPOSITORY_EXPERIMENTS: RepositoryExperiment[] = [
 		repositoryTestSuiteCommand: "pnpm --workspace-root test",
 		experiments: [
 			{
-				title: "publish_withoutContext",
+				title: "memory:bus:local:publish:local_withoutContext",
 				method: {
 					name: "publish",
 					declarationType: "method",
 					specificTestSuiteCommand: "pnpm --filter memory test",
 					testRelativeFilePath: "/packages/memory/src/bus/lib/local.test.ts",
 					methodRelativeFilePath: "/packages/memory/src/bus/lib/local.ts"
+				},
+				context: []
+			},
+			{
+				title: "storage-driver-supabase:index:publish_withoutContext",
+				method: {
+					name: "getClient",
+					declarationType: "method",
+					specificTestSuiteCommand: "pnpm --filter storage-driver-supabase test",
+					testRelativeFilePath: "/packages/storage-driver-supabase/src/index.test.ts",
+					methodRelativeFilePath: "/packages/storage-driver-supabase/src/index.ts"
 				},
 				context: []
 			}

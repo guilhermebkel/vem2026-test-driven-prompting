@@ -88,6 +88,7 @@ class ExperimentService {
 		})
 
 		return {
+			methodFileContentWithoutMethodBody,
 			reconstructedMethodBody,
 			systemPrompt: buildedSystemPrompt,
 			userPrompt: buildedUserPrompt
@@ -147,6 +148,7 @@ class ExperimentService {
 		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "testSuiteDebugMessage"), experimentResult.repositoryTestSuiteResult.debugMessage)
 		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "sourceFileWithReconstructedMethod"), experimentResult.sourceFileWithReconstructedMethod)
 		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "sourceFileWithOriginalMethod"), experimentResult.sourceFileWithOriginalMethod)
+		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "sourceFileWithoutOriginalMethodBody"), experimentResult.methodReconstructionResult.methodFileContentWithoutMethodBody)
 		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "userPrompt"), experimentResult.methodReconstructionResult.userPrompt)
 		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "systemPrompt"), experimentResult.methodReconstructionResult.systemPrompt)
 	}
