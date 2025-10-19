@@ -20,7 +20,7 @@ class PromptService {
 
 			## 3. Formatting Module
 
-			- Output **only** the reconstructed method body implementation.
+			- Output **only** the reconstructed method body implementation without code block markdown.
 			- Do **not** include any markdown formatting, code block delimiters, lists, or explanations outside the code.
 			- All justifications must appear as inline comments inside the code.
 

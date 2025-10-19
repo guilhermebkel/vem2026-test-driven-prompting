@@ -2,7 +2,7 @@ import { AnyOtherString } from "@/Protocols/TypeUtilityProtocol"
 
 export type GlobalContextSlug = "project-metadata" | "repository-root-structure" | AnyOtherString
 export type LocalContextSlug = "typing" | AnyOtherString
-export type SemanticContextSlug = "similar-method" | "dependent-method" | "dependent-test" | AnyOtherString
+export type SemanticContextSlug = "similar-method" | "imported-dependency" | "dependent-method" | "dependent-test" | AnyOtherString
 
 export type ContextType = ContextDefinitionItem["type"]
 export type ContextSlug = LocalContextSlug | SemanticContextSlug | GlobalContextSlug

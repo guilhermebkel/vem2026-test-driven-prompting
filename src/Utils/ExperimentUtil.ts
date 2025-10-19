@@ -23,7 +23,7 @@ class ExperimentUtil {
 	getExperimentResultLogFilePath(experimentOptions: ExperimentOptions, logFileName: string): string {
 		const experimentResultDirectoryPath = this.getExperimentResultDirectoryPath()
 
-		const experimentResultLogFilePath = path.join(experimentResultDirectoryPath, experimentOptions.title, `${logFileName}.txt`)
+		const experimentResultLogFilePath = path.join(experimentResultDirectoryPath, experimentOptions.method.repositoryName, experimentOptions.title, `${logFileName}.txt`)
 
 		return experimentResultLogFilePath
 	}
