@@ -24,7 +24,13 @@ pnpm install
 pnpm run experiment-repo:fetch-all
 ```
 
-4. **Run the development environment**:
+4. **Setup all experiment repositories**:
+
+```bash
+pnpm run experiment-repo:setup-all
+```
+
+5. **Run the development environment**:
 
 ```bash
 pnpm dev
@@ -40,6 +46,7 @@ All commands related to managing the experiment repositories are grouped under t
 |---------|-------------|
 | `pnpm run experiment-repo:add <repo-url>` | Adds a new external repository as a git submodule inside `experiment-repos/`. The folder name is automatically derived from the repository name. |
 | `pnpm run experiment-repo:fetch-all` | Initializes and fetches all existing submodules recursively. |
+| `pnpm run experiment-repo:setup-all` | Setup dependencies for all existing submodules. |
 | `pnpm run experiment-repo:refresh` | Updates all submodules to the latest commit from their remote repositories. |
 
 ## 📚 References

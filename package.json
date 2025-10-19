@@ -9,7 +9,11 @@
     "experiment-repo:add": "bash ./scripts/add-experiment-repo.sh",
     "experiment-repo:fetch-all": "git submodule update --init --recursive",
     "experiment-repo:refresh": "git submodule update --remote",
-    "experiment-repo:setup:date-fns": "bash ./scripts/setup-experiment-repo.sh date-fns"
+    "experiment-repo:setup-all": "pnpm run experiment-repo:setup:date-fns && pnpm run experiment-repo:setup:directus && pnpm run experiment-repo:setup:fastify && pnpm run experiment-repo:setup:tabnews.com.br",
+    "experiment-repo:setup:date-fns": "bash ./scripts/setup-experiment-repo.sh date-fns",
+    "experiment-repo:setup:directus": "bash ./scripts/setup-experiment-repo.sh directus",
+    "experiment-repo:setup:fastify": "bash ./scripts/setup-experiment-repo.sh fastify",
+    "experiment-repo:setup:tabnews.com.br": "bash ./scripts/setup-experiment-repo.sh tabnews.com.br"
   },
   "author": "",
   "license": "ISC",

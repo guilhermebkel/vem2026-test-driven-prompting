@@ -1,3 +1,12 @@
 [submodule "experiment-repos/date-fns"]
 	path = experiment-repos/date-fns
 	url = git@github.com:date-fns/date-fns.git
+[submodule "experiment-repos/tabnews.com.br"]
+	path = experiment-repos/tabnews.com.br
+	url = git@github.com:filipedeschamps/tabnews.com.br.git
+[submodule "experiment-repos/fastify"]
+	path = experiment-repos/fastify
+	url = git@github.com:fastify/fastify.git
+[submodule "experiment-repos/directus"]
+	path = experiment-repos/directus
+	url = git@github.com:directus/directus.git

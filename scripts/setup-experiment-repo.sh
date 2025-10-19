@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # Isso carrega o nvm
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
 REPO_NAME="$1"
 
@@ -24,18 +24,35 @@ case "$REPO_NAME" in
     COMMANDS=(
       "cd $REPO_PATH"
       "nvm install"
+      "nvm use"
       "npm install -g pnpm"
       "pnpm install"
     )
     ;;
-  "another-repo")
+  "fastify")
     COMMANDS=(
       "cd $REPO_PATH"
-      "nvm install 18"
-      "nvm use 18"
+      "nvm install 22"
+      "nvm use 22"
+      "npm install -g pnpm"
+      "pnpm install"
+    )
+    ;;
+  "directus")
+    COMMANDS=(
+      "cd $REPO_PATH"
+      "nvm install 22"
+      "nvm use 22"
+      "npm install -g pnpm"
+      "pnpm install"
+    )
+    ;;
+  "tabnews.com.br")
+    COMMANDS=(
+      "cd $REPO_PATH"
+      "nvm install"
+      "nvm use"
       "npm install"
-      "npm run build"
-      "npm test"
     )
     ;;
   *)
