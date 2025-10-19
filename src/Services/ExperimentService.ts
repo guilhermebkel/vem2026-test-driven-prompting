@@ -14,6 +14,7 @@ import {
 import ModelUtil from "@/Utils/ModelUtil"
 import FileUtil from "@/Utils/FileUtil"
 import ExperimentUtil from "@/Utils/ExperimentUtil"
+import NotificationUtil from "@/Utils/NotificationUtil"
 
 import PromptService from "@/Services/PromptService"
 import ContextService from "@/Services/ContextService"
@@ -27,9 +28,7 @@ class ExperimentService {
 		try {
 			const methodReconstructionResult = await this.reconstructMethod(options.method, options.reconstructionOptions)
 
-			const sourceFileWithReconstructedMethod = await this.getSourceFileWithReconstructedMethod(options.method, methodReconstructionResult.reconstructedMethodBody)
-
-			await this.replaceSourceFile(options.method, sourceFileWithReconstructedMethod)
+			const sourceFileWithReconstructedMethod = await this.replaceSourceFileWithReconstructedMethodBody(options.method, methodReconstructionResult.reconstructedMethodBody)
 
 			const repositoryTestSuiteResult = await this.runRepositoryTestSuite(options.method)
 
@@ -47,64 +46,85 @@ class ExperimentService {
 			ErrorHandlerUtil.handle(error)
 			throw error
 		} finally {
-			await this.replaceSourceFile(options.method, sourceFileWithOriginalMethod)
+			await this.revertSourceFileChanges(options.method, sourceFileWithOriginalMethod)
 		}
 	}
 
 	private async reconstructMethod(methodDefinition: MethodDefinition, options: MethodReconstructionOptions): Promise<MethodReconstructionResult> {
-		const contextDefinitionWithResolvedRelativePath = ExperimentUtil.resolveContextRelativeFilePath(options.context, methodDefinition.repositoryName)
-		const buildedContext = await ContextService.buildContext(contextDefinitionWithResolvedRelativePath)
+		return await NotificationUtil.task("Reconstruct method body", async () => {
+			const {
+				buildedContext,
+				methodFileContentWithoutMethodBody,
+				methodTestContent
+			} = await NotificationUtil.task("Retrieve context, test content and source file without method body", async () => {
+				const contextDefinitionWithResolvedRelativePath = ExperimentUtil.resolveContextRelativeFilePath(options.context, methodDefinition.repositoryName)
+				const buildedContext = await ContextService.buildContext(contextDefinitionWithResolvedRelativePath)
 
-		const methodTestFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.testRelativeFilePath)
-		const methodTestContent = await FileUtil.getFileContent(methodTestFilePath)
+				const methodTestFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.testRelativeFilePath)
+				const methodTestContent = await FileUtil.getFileContent(methodTestFilePath)
 
-		const methodFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
-		const methodFileContentWithoutMethodBody = NodeJSCodeParserUtil.removeSpecificMethodOrFunctionBodyInSourceFile(methodFilePath, { type: methodDefinition.declarationType, name: methodDefinition.name })
+				const methodFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
+				const methodFileContentWithoutMethodBody = NodeJSCodeParserUtil.removeSpecificMethodOrFunctionBodyInSourceFile(methodFilePath, { type: methodDefinition.declarationType, name: methodDefinition.name })
 
-		const languageModel = ModelUtil.getLanguageModel(options.model.name)
-		const buildedSystemPrompt = PromptService.buildSystemPrompt()
-		const buildedUserPrompt = PromptService.buildUserPrompt({ methodName: methodDefinition.name, methodTestContent, methodFileContentWithoutMethodBody, buildedContext })
-
-		const { text: reconstructedMethodBody } = await generateText({
-			model: languageModel,
-			messages: [
-				{
-					role: "system",
-					content: buildedSystemPrompt
-				},
-				{
-					role: "user",
-					content: buildedUserPrompt
+				return {
+					buildedContext,
+					methodTestContent,
+					methodFileContentWithoutMethodBody
 				}
-			],
-			temperature: options.model.temperature,
-			providerOptions: {
-				google: {
-					thinkingConfig: {
-						thinkingBudget: options.model.reasoningBudget
+			})
+
+			const {
+				reconstructedMethodBody,
+				systemPrompt,
+				userPrompt
+			} = await NotificationUtil.task("Reconstruct method body with LLM", async () => {
+				const languageModel = ModelUtil.getLanguageModel(options.model.name)
+				const buildedSystemPrompt = PromptService.buildSystemPrompt()
+				const buildedUserPrompt = PromptService.buildUserPrompt({ methodName: methodDefinition.name, methodTestContent, methodFileContentWithoutMethodBody, buildedContext })
+
+				const { text: reconstructedMethodBody } = await generateText({
+					model: languageModel,
+					messages: [
+						{
+							role: "system",
+							content: buildedSystemPrompt
+						},
+						{
+							role: "user",
+							content: buildedUserPrompt
+						}
+					],
+					temperature: options.model.temperature,
+					providerOptions: {
+						google: {
+							thinkingConfig: {
+								thinkingBudget: options.model.reasoningBudget
+							}
+						}
 					}
+				})
+
+				return {
+					userPrompt: buildedUserPrompt,
+					systemPrompt: buildedSystemPrompt,
+					reconstructedMethodBody
 				}
+			})
+
+			return {
+				methodFileContentWithoutMethodBody,
+				reconstructedMethodBody,
+				systemPrompt,
+				userPrompt
 			}
 		})
-
-		return {
-			methodFileContentWithoutMethodBody,
-			reconstructedMethodBody,
-			systemPrompt: buildedSystemPrompt,
-			userPrompt: buildedUserPrompt
-		}
 	}
 
-	private async getSourceFileWithReconstructedMethod(methodDefinition: MethodDefinition, reconstructedMethodBody: string): Promise<string> {
-		const methodFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
-
-		const sourceFileWithReconstructedMethod = NodeJSCodeParserUtil.replaceSpecificMethodOrFunctionBodyInSourceFile(
-			methodFilePath,
-			{ type: methodDefinition.declarationType, name: methodDefinition.name },
-			reconstructedMethodBody
-		)
-
-		return sourceFileWithReconstructedMethod
+	private async revertSourceFileChanges(methodDefinition: MethodDefinition, originalSourceFile: string): Promise<void> {
+		return await NotificationUtil.task("Revert source file changes", async () => {
+			const methodFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
+			await FileUtil.setFileContent(methodFilePath, originalSourceFile)
+		})
 	}
 
 	private async getSourceFileWithOriginalMethod(methodDefinition: MethodDefinition): Promise<string> {
@@ -115,42 +135,59 @@ class ExperimentService {
 		return sourceFileWithOriginalMethod
 	}
 
-	private async replaceSourceFile(methodDefinition: MethodDefinition, changedSourceFile: string): Promise<void> {
-		const methodFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
-		await FileUtil.setFileContent(methodFilePath, changedSourceFile)
+	private async replaceSourceFileWithReconstructedMethodBody(methodDefinition: MethodDefinition, reconstructedMethodBody: string): Promise<string> {
+		return await NotificationUtil.task("Replace source file with reconstructed method body", async () => {
+			const methodFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
+
+			const sourceFileWithReconstructedMethod = NodeJSCodeParserUtil.replaceSpecificMethodOrFunctionBodyInSourceFile(
+				methodFilePath,
+				{ type: methodDefinition.declarationType, name: methodDefinition.name },
+				reconstructedMethodBody
+			)
+
+			await FileUtil.setFileContent(methodFilePath, sourceFileWithReconstructedMethod)
+
+			return sourceFileWithReconstructedMethod
+		})
 	}
 
 	private async runRepositoryTestSuite(methodDefinition: MethodDefinition): Promise<RepositoryTestSuiteResult> {
-		try {
-			const repositoryRootPath = ExperimentUtil.getRepositoryRootPath(methodDefinition.repositoryName)
+		return await NotificationUtil.task("Run method tests", async ({ setWarning }) => {
+			try {
+				const repositoryRootPath = ExperimentUtil.getRepositoryRootPath(methodDefinition.repositoryName)
 
-			const execAsync = promisify(exec)
+				const execAsync = promisify(exec)
 
-			const { stdout } = await execAsync(methodDefinition.repositoryTestSuiteCommand, {
-				cwd: repositoryRootPath
-			})
+				const { stdout } = await execAsync(methodDefinition.repositoryTestSuiteCommand, {
+					cwd: repositoryRootPath
+				})
 
-			return {
-				success: true,
-				debugMessage: stdout
+				return {
+					success: true,
+					debugMessage: stdout
+				}
+			} catch (error) {
+				setWarning("Tests failed")
+
+				const typedError = error as Error
+
+				return {
+					success: false,
+					debugMessage: typedError.message
+				}
 			}
-		} catch (error) {
-			const typedError = error as Error
-
-			return {
-				success: false,
-				debugMessage: typedError.message
-			}
-		}
+		})
 	}
 
 	private async saveExperimentResultLogs(experimentOptions: ExperimentOptions, experimentResult: ExperimentResult): Promise<void> {
-		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "testSuiteDebugMessage"), experimentResult.repositoryTestSuiteResult.debugMessage)
-		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "sourceFileWithReconstructedMethod"), experimentResult.sourceFileWithReconstructedMethod)
-		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "sourceFileWithOriginalMethod"), experimentResult.sourceFileWithOriginalMethod)
-		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "sourceFileWithoutOriginalMethodBody"), experimentResult.methodReconstructionResult.methodFileContentWithoutMethodBody)
-		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "userPrompt"), experimentResult.methodReconstructionResult.userPrompt)
-		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "systemPrompt"), experimentResult.methodReconstructionResult.systemPrompt)
+		return await NotificationUtil.task("Save experiment result logs", async () => {
+			await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "testSuiteDebugMessage"), experimentResult.repositoryTestSuiteResult.debugMessage)
+			await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "sourceFileWithReconstructedMethod"), experimentResult.sourceFileWithReconstructedMethod)
+			await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "sourceFileWithOriginalMethod"), experimentResult.sourceFileWithOriginalMethod)
+			await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "sourceFileWithoutOriginalMethodBody"), experimentResult.methodReconstructionResult.methodFileContentWithoutMethodBody)
+			await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "userPrompt"), experimentResult.methodReconstructionResult.userPrompt)
+			await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "systemPrompt"), experimentResult.methodReconstructionResult.systemPrompt)
+		})
 	}
 }
 

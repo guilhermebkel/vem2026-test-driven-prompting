@@ -2,6 +2,8 @@ import "dotenv/config"
 
 import ExperimentService from "@/Services/ExperimentService"
 
+import NotificationUtil from "@/Utils/NotificationUtil"
+
 import { ExperimentOptions, RepositoryName } from "@/Protocols/ExperimentProtocol"
 
 type RepositoryExperiment = {
@@ -17,38 +19,38 @@ type RepositoryExperiment = {
 }
 
 const REPOSITORY_EXPERIMENTS: RepositoryExperiment[] = [
-	// {
-	// 	repositoryName: "date-fns",
-	// 	repositoryTestSuiteCommand: "pnpm run test",
-	// 	experiments: [
-	// 		{
-	// 			title: "endOfQuarter:index_withoutContext",
-	// 			method: {
-	// 				name: "endOfQuarter",
-	// 				declarationType: "function",
-	// 				testRelativeFilePath: "/src/endOfQuarter/test.ts",
-	// 				methodRelativeFilePath: "/src/endOfQuarter/index.ts"
-	// 			},
-	// 			context: []
-	// 		},
-	// 		{
-	// 			title: "endOfQuarter:index_withSimilarMethodContext",
-	// 			method: {
-	// 				name: "endOfQuarter",
-	// 				declarationType: "function",
-	// 				testRelativeFilePath: "/src/endOfQuarter/test.ts",
-	// 				methodRelativeFilePath: "/src/endOfQuarter/index.ts"
-	// 			},
-	// 			context: [
-	// 				{
-	// 					type: "semantic",
-	// 					slug: "similar-method",
-	// 					path: "/src/endOfMonth/index.ts"
-	// 				}
-	// 			]
-	// 		}
-	// 	]
-	// },
+	{
+		repositoryName: "date-fns",
+		repositoryTestSuiteCommand: "pnpm run test",
+		experiments: [
+			{
+				title: "endOfQuarter:index_withoutContext",
+				method: {
+					name: "endOfQuarter",
+					declarationType: "function",
+					testRelativeFilePath: "/src/endOfQuarter/test.ts",
+					methodRelativeFilePath: "/src/endOfQuarter/index.ts"
+				},
+				context: []
+			},
+			{
+				title: "endOfQuarter:index_withSimilarMethodContext",
+				method: {
+					name: "endOfQuarter",
+					declarationType: "function",
+					testRelativeFilePath: "/src/endOfQuarter/test.ts",
+					methodRelativeFilePath: "/src/endOfQuarter/index.ts"
+				},
+				context: [
+					{
+						type: "semantic",
+						slug: "similar-method",
+						path: "/src/endOfMonth/index.ts"
+					}
+				]
+			}
+		]
+	},
 	{
 		repositoryName: "directus",
 		repositoryTestSuiteCommand: "pnpm --workspace-root test",
@@ -81,30 +83,32 @@ const REPOSITORY_EXPERIMENTS: RepositoryExperiment[] = [
 
 async function start(): Promise<void> {
 	for (const repositoryExperiment of REPOSITORY_EXPERIMENTS) {
-		console.log("\n=> Running experiments for repository: ", repositoryExperiment.repositoryName)
+		await NotificationUtil.task(`Repository: ${repositoryExperiment.repositoryName}`, async () => {
+			for (const experiment of repositoryExperiment.experiments) {
+				await NotificationUtil.task(`Experiment [${experiment.title}]`, async (config) => {
+					const result = await ExperimentService.runExperiment({
+						title: experiment.title,
+						method: {
+							...experiment.method,
+							repositoryName: repositoryExperiment.repositoryName,
+							repositoryTestSuiteCommand: experiment.method?.specificTestSuiteCommand || repositoryExperiment.repositoryTestSuiteCommand
+						},
+						reconstructionOptions: {
+							model: {
+								name: "gemini-2.5-flash",
+								reasoningBudget: 0,
+								temperature: 0
+							},
+							context: experiment.context
+						}
+					})
 
-		for (const experiment of repositoryExperiment.experiments) {
-			console.log(`=> Experiment [${experiment.title}] is running... `)
-
-			const result = await ExperimentService.runExperiment({
-				title: experiment.title,
-				method: {
-					...experiment.method,
-					repositoryName: repositoryExperiment.repositoryName,
-					repositoryTestSuiteCommand: experiment.method?.specificTestSuiteCommand || repositoryExperiment.repositoryTestSuiteCommand
-				},
-				reconstructionOptions: {
-					model: {
-						name: "gemini-2.5-flash",
-						reasoningBudget: 0,
-						temperature: 0
-					},
-					context: experiment.context
-				}
-			})
-
-			console.log(`=> Experiment [${experiment.title}] result: ${result.repositoryTestSuiteResult.success ? "SUCCESS" : "FAILURE"}!`)
-		}
+					if (!result.repositoryTestSuiteResult.success) {
+						config.setError(new Error())
+					}
+				})
+			}
+		})
 	}
 }
 
