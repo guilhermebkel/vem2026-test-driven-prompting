@@ -83,9 +83,9 @@ const REPOSITORY_EXPERIMENTS: RepositoryExperiment[] = [
 
 async function start(): Promise<void> {
 	for (const repositoryExperiment of REPOSITORY_EXPERIMENTS) {
-		await NotificationUtil.task(`Repository: ${repositoryExperiment.repositoryName}`, async () => {
+		await NotificationUtil.runTask(`Repository: ${repositoryExperiment.repositoryName}`, async () => {
 			for (const experiment of repositoryExperiment.experiments) {
-				await NotificationUtil.task(`Experiment [${experiment.title}]`, async (config) => {
+				await NotificationUtil.runTask(`Experiment [${experiment.title}]`, async (config) => {
 					const result = await ExperimentService.runExperiment({
 						title: experiment.title,
 						method: {
@@ -104,7 +104,7 @@ async function start(): Promise<void> {
 					})
 
 					if (!result.repositoryTestSuiteResult.success) {
-						config.setError(new Error())
+						config.setError(new Error("Method tests failed..."))
 					}
 				})
 			}

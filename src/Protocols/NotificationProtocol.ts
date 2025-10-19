@@ -7,3 +7,5 @@ export type TaskConfig = {
 }
 
 export type TaskCallback<Result> = (config: TaskConfig) => Promise<Result>
+
+export type InnerActionCallback<Result> = () => Promise<Result>
