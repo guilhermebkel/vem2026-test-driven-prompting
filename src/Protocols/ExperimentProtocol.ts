@@ -14,6 +14,7 @@ export type MethodDefinition = {
 }
 
 export type ExperimentOptions = {
+	title: string
 	method: MethodDefinition
 	reconstructionOptions: MethodReconstructionOptions
 }

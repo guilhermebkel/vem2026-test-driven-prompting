@@ -1,6 +1,6 @@
 import path from "path"
 
-import { MethodDefinition, RepositoryName } from "@/Protocols/ExperimentProtocol"
+import { ExperimentOptions, RepositoryName } from "@/Protocols/ExperimentProtocol"
 import { ContextDefinition, ContextDefinitionItem } from "@/Protocols/ContextProtocol"
 
 class ExperimentUtil {
@@ -20,10 +20,10 @@ class ExperimentUtil {
 		return repositoryRootPath
 	}
 
-	getExperimentResultLogFilePath(methodDefinition: MethodDefinition, logFileName: string): string {
+	getExperimentResultLogFilePath(experimentOptions: ExperimentOptions, logFileName: string): string {
 		const experimentResultDirectoryPath = this.getExperimentResultDirectoryPath()
 
-		const experimentResultLogFilePath = path.join(experimentResultDirectoryPath, methodDefinition.name, `${logFileName}.txt`)
+		const experimentResultLogFilePath = path.join(experimentResultDirectoryPath, experimentOptions.title, `${logFileName}.txt`)
 
 		return experimentResultLogFilePath
 	}

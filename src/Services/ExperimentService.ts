@@ -40,7 +40,7 @@ class ExperimentService {
 				sourceFileWithOriginalMethod
 			}
 
-			await this.saveExperimentResultLogs(options.method, experimentResult)
+			await this.saveExperimentResultLogs(options, experimentResult)
 
 			return experimentResult
 		} catch (error) {
@@ -143,12 +143,12 @@ class ExperimentService {
 		}
 	}
 
-	private async saveExperimentResultLogs(methodDefinition: MethodDefinition, experimentResult: ExperimentResult): Promise<void> {
-		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(methodDefinition, "testSuiteDebugMessage"), experimentResult.repositoryTestSuiteResult.debugMessage)
-		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(methodDefinition, "sourceFileWithReconstructedMethod"), experimentResult.sourceFileWithReconstructedMethod)
-		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(methodDefinition, "sourceFileWithOriginalMethod"), experimentResult.sourceFileWithOriginalMethod)
-		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(methodDefinition, "userPrompt"), experimentResult.methodReconstructionResult.userPrompt)
-		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(methodDefinition, "systemPrompt"), experimentResult.methodReconstructionResult.systemPrompt)
+	private async saveExperimentResultLogs(experimentOptions: ExperimentOptions, experimentResult: ExperimentResult): Promise<void> {
+		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "testSuiteDebugMessage"), experimentResult.repositoryTestSuiteResult.debugMessage)
+		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "sourceFileWithReconstructedMethod"), experimentResult.sourceFileWithReconstructedMethod)
+		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "sourceFileWithOriginalMethod"), experimentResult.sourceFileWithOriginalMethod)
+		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "userPrompt"), experimentResult.methodReconstructionResult.userPrompt)
+		await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "systemPrompt"), experimentResult.methodReconstructionResult.systemPrompt)
 	}
 }
 
