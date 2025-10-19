@@ -129,11 +129,13 @@ class ExperimentService {
 	}
 
 	private async getSourceFileWithOriginalMethodBody(methodDefinition: MethodDefinition): Promise<string> {
-		const methodFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
+		return await TracingUtil.traceAction("Retrieving source file with original method body...", async () => {
+			const methodFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
 
-		const sourceFileWithOriginalMethodBody = await FileUtil.getFileContent(methodFilePath)
+			const sourceFileWithOriginalMethodBody = await FileUtil.getFileContent(methodFilePath)
 
-		return sourceFileWithOriginalMethodBody
+			return sourceFileWithOriginalMethodBody
+		})
 	}
 
 	private async replaceSourceFileWithReconstructedMethodBody(methodDefinition: MethodDefinition, reconstructedMethodBody: string): Promise<string> {
