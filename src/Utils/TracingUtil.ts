@@ -1,14 +1,14 @@
 import task, { Task } from "tasuku"
 import { AsyncLocalStorage } from "node:async_hooks"
 
-import { InnerActionCallback, TaskCallback, TaskConfig } from "@/Protocols/NotificationProtocol"
+import { InnerActionCallback, TaskCallback, TaskConfig } from "@/Protocols/TracingProtocol"
 
 import ErrorHandlerUtil from "@/Utils/ErrorHandlerUtil"
 
-class NotificationUtil {
+class TracingUtil {
 	private readonly taskContextStorage = new AsyncLocalStorage<{ currentTask?: Task, taskConfig?: TaskConfig }>()
 
-	async runTask<Result>(title: string, callbackFn: TaskCallback<Result>): Promise<Result | undefined> {
+	async traceTask<Result>(title: string, callbackFn: TaskCallback<Result>): Promise<Result | undefined> {
 		try {
 			const taskContextStorage = this.taskContextStorage.getStore()
 			const taskFn = taskContextStorage?.currentTask || task
@@ -34,12 +34,13 @@ class NotificationUtil {
 		}
 	}
 
-	async runInnerAction<Result>(title: string, callbackFn: InnerActionCallback<Result>): Promise<Result> {
+	async traceAction<Result>(title: string, callbackFn: InnerActionCallback<Result>): Promise<Result> {
 		const taskContextStorage = this.taskContextStorage.getStore()
 
 		taskContextStorage?.taskConfig?.setStatus(title)
+
 		return await callbackFn()
 	}
 }
 
-export default new NotificationUtil()
+export default new TracingUtil()

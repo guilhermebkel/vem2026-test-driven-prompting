@@ -14,7 +14,7 @@ import {
 import ModelUtil from "@/Utils/ModelUtil"
 import FileUtil from "@/Utils/FileUtil"
 import ExperimentUtil from "@/Utils/ExperimentUtil"
-import NotificationUtil from "@/Utils/NotificationUtil"
+import TracingUtil from "@/Utils/TracingUtil"
 
 import PromptService from "@/Services/PromptService"
 import ContextService from "@/Services/ContextService"
@@ -51,12 +51,12 @@ class ExperimentService {
 	}
 
 	private async reconstructMethod(methodDefinition: MethodDefinition, options: MethodReconstructionOptions): Promise<MethodReconstructionResult> {
-		return await NotificationUtil.runInnerAction("Reconstructing method body...", async () => {
+		return await TracingUtil.traceAction("Reconstructing method body...", async () => {
 			const {
 				buildedContext,
 				methodFileContentWithoutMethodBody,
 				methodTestContent
-			} = await NotificationUtil.runInnerAction("Retrieving context, test content and source file without method body...", async () => {
+			} = await TracingUtil.traceAction("Retrieving context, test content and source file without method body...", async () => {
 				const contextDefinitionWithResolvedRelativePath = ExperimentUtil.resolveContextRelativeFilePath(options.context, methodDefinition.repositoryName)
 				const buildedContext = await ContextService.buildContext(contextDefinitionWithResolvedRelativePath)
 
@@ -77,7 +77,7 @@ class ExperimentService {
 				reconstructedMethodBody,
 				systemPrompt,
 				userPrompt
-			} = await NotificationUtil.runInnerAction("Reconstructing method body with LLM...", async () => {
+			} = await TracingUtil.traceAction("Reconstructing method body with LLM...", async () => {
 				const languageModel = ModelUtil.getLanguageModel(options.model.name)
 				const buildedSystemPrompt = PromptService.buildSystemPrompt()
 				const buildedUserPrompt = PromptService.buildUserPrompt({ methodName: methodDefinition.name, methodTestContent, methodFileContentWithoutMethodBody, buildedContext })
@@ -121,7 +121,7 @@ class ExperimentService {
 	}
 
 	private async revertSourceFileChanges(methodDefinition: MethodDefinition, originalSourceFile: string): Promise<void> {
-		return await NotificationUtil.runInnerAction("Reverting source file changes...", async () => {
+		return await TracingUtil.traceAction("Reverting source file changes...", async () => {
 			const methodFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
 			await FileUtil.setFileContent(methodFilePath, originalSourceFile)
 		})
@@ -136,7 +136,7 @@ class ExperimentService {
 	}
 
 	private async replaceSourceFileWithReconstructedMethodBody(methodDefinition: MethodDefinition, reconstructedMethodBody: string): Promise<string> {
-		return await NotificationUtil.runInnerAction("Replacing source file with reconstructed method body...", async () => {
+		return await TracingUtil.traceAction("Replacing source file with reconstructed method body...", async () => {
 			const methodFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
 
 			const sourceFileWithReconstructedMethod = NodeJSCodeParserUtil.replaceSpecificMethodOrFunctionBodyInSourceFile(
@@ -152,7 +152,7 @@ class ExperimentService {
 	}
 
 	private async runRepositoryTestSuite(methodDefinition: MethodDefinition): Promise<RepositoryTestSuiteResult> {
-		return await NotificationUtil.runInnerAction("Running method tests...", async () => {
+		return await TracingUtil.traceAction("Running method tests...", async () => {
 			try {
 				const repositoryRootPath = ExperimentUtil.getRepositoryRootPath(methodDefinition.repositoryName)
 
@@ -178,7 +178,7 @@ class ExperimentService {
 	}
 
 	private async saveExperimentResultLogs(experimentOptions: ExperimentOptions, experimentResult: ExperimentResult): Promise<void> {
-		return await NotificationUtil.runInnerAction("Saving experiment result logs...", async () => {
+		return await TracingUtil.traceAction("Saving experiment result logs...", async () => {
 			await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "testSuiteDebugMessage"), experimentResult.repositoryTestSuiteResult.debugMessage)
 			await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "sourceFileWithReconstructedMethod"), experimentResult.sourceFileWithReconstructedMethod)
 			await FileUtil.setFileContent(ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "sourceFileWithOriginalMethod"), experimentResult.sourceFileWithOriginalMethod)

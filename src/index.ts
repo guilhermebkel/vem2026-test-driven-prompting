@@ -2,7 +2,7 @@ import "dotenv/config"
 
 import ExperimentService from "@/Services/ExperimentService"
 
-import NotificationUtil from "@/Utils/NotificationUtil"
+import TracingUtil from "@/Utils/TracingUtil"
 
 import { ExperimentOptions, RepositoryName } from "@/Protocols/ExperimentProtocol"
 
@@ -83,9 +83,9 @@ const REPOSITORY_EXPERIMENTS: RepositoryExperiment[] = [
 
 async function start(): Promise<void> {
 	for (const repositoryExperiment of REPOSITORY_EXPERIMENTS) {
-		await NotificationUtil.runTask(`Repository: ${repositoryExperiment.repositoryName}`, async () => {
+		await TracingUtil.traceTask(`Repository: ${repositoryExperiment.repositoryName}`, async () => {
 			for (const experiment of repositoryExperiment.experiments) {
-				await NotificationUtil.runTask(`Experiment [${experiment.title}]`, async (config) => {
+				await TracingUtil.traceTask(`Experiment: ${experiment.title}`, async (config) => {
 					const result = await ExperimentService.runExperiment({
 						title: experiment.title,
 						method: {
