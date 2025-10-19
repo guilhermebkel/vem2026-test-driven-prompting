@@ -6,6 +6,8 @@ import TracingUtil from "@/Utils/TracingUtil"
 
 import { ExperimentOptions, RepositoryName } from "@/Protocols/ExperimentProtocol"
 
+import RepositoryTestSuiteFailedError from "@/Errors/RepositoryTestSuiteFailedError"
+
 type RepositoryExperiment = {
 	repositoryName: RepositoryName
 	repositoryTestSuiteCommand: string
@@ -46,6 +48,22 @@ const REPOSITORY_EXPERIMENTS: RepositoryExperiment[] = [
 						type: "semantic",
 						slug: "similar-method",
 						path: "/src/endOfMonth/index.ts"
+					}
+				]
+			},
+			{
+				title: "addDays:index_withSimilarMethodContext",
+				method: {
+					name: "addDays",
+					declarationType: "function",
+					testRelativeFilePath: "/src/addDays/test.ts",
+					methodRelativeFilePath: "/src/addDays/index.ts"
+				},
+				context: [
+					{
+						type: "semantic",
+						slug: "similar-method",
+						path: "/src/addWeeks/index.ts"
 					}
 				]
 			}
@@ -104,7 +122,7 @@ async function start(): Promise<void> {
 					})
 
 					if (!result.repositoryTestSuiteResult.success) {
-						config.setError(new Error("Method tests failed..."))
+						config.setError(new RepositoryTestSuiteFailedError())
 					}
 				})
 			}
