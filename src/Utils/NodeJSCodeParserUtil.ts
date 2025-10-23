@@ -2,6 +2,8 @@ import { FunctionDeclaration, MethodDeclaration, Project, SourceFile } from "ts-
 
 import { DeclarationType, ExtractionRule, NodeType } from "@/Protocols/NodeJSCodeParserProtocol"
 
+import DataNotFoundError from "@/Errors/DataNotFoundError"
+
 class NodeJSCodeParserUtil {
 	private readonly project = new Project({
 		compilerOptions: {
@@ -15,7 +17,13 @@ class NodeJSCodeParserUtil {
 
 		const extractedNodes = this.extractNodes(sourceFile, extractionRules)
 
+		if (!extractedNodes.length) {
+			throw new DataNotFoundError("No nodes were found for multiple extraction rules. Please verify that the name and type are correct for each one.")
+		}
+
 		const extractedCode = extractedNodes.map(node => node.getText()).join("\n\n")
+
+		this.project.removeSourceFile(sourceFile)
 
 		return extractedCode
 	}
@@ -23,6 +31,10 @@ class NodeJSCodeParserUtil {
 	replaceSpecificCodeInSourceFile(filePath: string, extractionRule: ExtractionRule, changedCode: string): string {
 		const originalSourceFile = this.project.addSourceFileAtPath(filePath)
 		const [originalNode] = this.extractNodes(originalSourceFile, [extractionRule])
+
+		if (!originalNode) {
+			throw new DataNotFoundError(`No node was found for extraction rule "${extractionRule.name}" (${extractionRule.type}). Please verify that the name and type are correct.`)
+		}
 
 		originalNode.replaceWithText(changedCode)
 		const sourceCodeWithChanges = originalSourceFile.getText()
@@ -40,10 +52,16 @@ class NodeJSCodeParserUtil {
 		const originalSourceFile = this.project.addSourceFileAtPath(filePath)
 		const [originalNode] = this.extractNodes(originalSourceFile, [extractionRule])
 
+		if (!originalNode) {
+			throw new DataNotFoundError(`No node was found for extraction rule "${extractionRule.name}" (${extractionRule.type}). Please verify that the name and type are correct.`)
+		}
+
 		const isFunctionOrMethod = originalNode instanceof FunctionDeclaration || originalNode instanceof MethodDeclaration
 
 		if (isFunctionOrMethod) {
 			originalNode.setBodyText(changedCode)
+		} else {
+			throw new DataNotFoundError(`No function or method was found for extraction rule "${extractionRule.name}" (${extractionRule.type}). Please verify that the name and type are correct.`)
 		}
 
 		const sourceCodeWithChanges = originalSourceFile.getText()

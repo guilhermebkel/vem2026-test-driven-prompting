@@ -3,6 +3,8 @@ import { OptionalRecord } from "@/Protocols/TypeUtilityProtocol"
 
 import FileUtil from "@/Utils/FileUtil"
 
+import DataNotFoundError from "@/Errors/DataNotFoundError"
+
 class ContextService {
 	private readonly contextSlugToContentHandlerFn: OptionalRecord<ContextSlug, (contextItem: ContextDefinitionItem) => Promise<string>> = {
 		"repository-root-structure": async (contextItem) => await this.handleFolderContent(contextItem)
@@ -27,27 +29,37 @@ class ContextService {
 	}
 
 	private async handleGenericContent(contextItem: ContextDefinitionItem): Promise<string> {
+		let genericContent: string = ""
+
 		if (contextItem.content) {
-			return contextItem.content
+			genericContent = contextItem.content
 		}
 
 		if (contextItem.path) {
-			return await FileUtil.getFileContent(contextItem.path)
+			genericContent = await FileUtil.getFileContent(contextItem.path)
 		}
 
-		return "N/A"
+		if (!genericContent) {
+			throw new DataNotFoundError(`No generic content was found for context item "${contextItem.slug}". Please provide a valid content source or path.`)
+		}
+
+		return genericContent
 	}
 
 	private async handleFolderContent(contextItem: ContextDefinitionItem): Promise<string> {
+		let folderContent = ""
+
 		if (contextItem.path) {
 			const folderPathList = await FileUtil.getFolderPathList(contextItem.path!)
 
-			const mergedFolderPathList = folderPathList.join("\n")
-
-			return mergedFolderPathList
+			folderContent = folderPathList.join("\n")
 		}
 
-		return "N/A"
+		if (!folderContent) {
+			throw new DataNotFoundError(`No folder content was found for context item "${contextItem.slug}". Please provide a valid folder path.`)
+		}
+
+		return folderContent
 	}
 }
 

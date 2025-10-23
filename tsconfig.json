@@ -10,6 +10,7 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
+    "noUncheckedIndexedAccess": true,
     "baseUrl": "./src",
     "paths": {
       "@/*": ["*"]

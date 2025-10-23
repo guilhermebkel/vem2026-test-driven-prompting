@@ -75,8 +75,8 @@ class PromptService {
 		const isThereAnyIndentation = firstIndentedLineIndex != -1
 
 		if (isThereAnyIndentation) {
-			const indentMatch = promptLines[firstIndentedLineIndex].match(/^[\t ]*/)
-			const indentation = String(indentMatch?.[0])
+			const indentMatch = promptLines[firstIndentedLineIndex]!.match(/^[\t ]*/)
+			const indentation = String(indentMatch![0])
 			const promptWithoutIndentation = sanitizedPrompt.replace(new RegExp(`^${indentation}`, "gm"), "")
 
 			sanitizedPrompt = promptWithoutIndentation
