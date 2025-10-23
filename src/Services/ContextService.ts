@@ -40,7 +40,7 @@ class ContextService {
 		}
 
 		if (!genericContent) {
-			throw new DataNotFoundError(`No generic content was found for context item "${contextItem.slug}". Please provide a valid content source or path.`)
+			throw new DataNotFoundError(`No generic content was found for context item "${contextItem.slug}". Please provide a valid content or path.`)
 		}
 
 		return genericContent
@@ -50,7 +50,7 @@ class ContextService {
 		let folderContent = ""
 
 		if (contextItem.path) {
-			const folderPathList = await FileUtil.getFolderPathList(contextItem.path!)
+			const folderPathList = await FileUtil.getFolderPathList(contextItem.path)
 
 			folderContent = folderPathList.join("\n")
 		}
