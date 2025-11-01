@@ -10,19 +10,19 @@ import {
 	MethodReconstructionOptions,
 	MethodReconstructionResult,
 	RepositoryTestSuiteResult
-} from "@/Protocols/ExperimentProtocol"
+} from "@/Protocols/ExperimentationProtocol"
 
 import ModelUtil from "@/Utils/ModelUtil"
 import FileUtil from "@/Utils/FileUtil"
 import ExperimentUtil from "@/Utils/ExperimentUtil"
 import TracingUtil from "@/Utils/TracingUtil"
-
-import PromptService from "@/Services/PromptService"
-import ContextService from "@/Services/ContextService"
+import PathUtil from "@/Utils/PathUtil"
+import PromptUtil from "@/Utils/PromptUtil"
+import ContextUtil from "@/Utils/ContextUtil"
 import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
 import ErrorHandlerUtil from "@/Utils/ErrorHandlerUtil"
 
-class ExperimentService {
+class ExperimentationModule {
 	async runExperiment(options: ExperimentOptions): Promise<ExperimentResult> {
 		const sourceFileWithOriginalMethodBody = await this.getSourceFileWithOriginalMethodBody(options.method)
 
@@ -59,12 +59,12 @@ class ExperimentService {
 				methodTestContent
 			} = await TracingUtil.traceAction("Retrieving context, test content and source file without method body...", async () => {
 				const contextDefinitionWithResolvedRelativePath = ExperimentUtil.resolveContextRelativeFilePath(options.context, methodDefinition.repositoryName)
-				const buildedContext = await ContextService.buildContext(contextDefinitionWithResolvedRelativePath)
+				const buildedContext = await ContextUtil.buildContext(contextDefinitionWithResolvedRelativePath)
 
-				const methodTestFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.testRelativeFilePath)
+				const methodTestFilePath = PathUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.testRelativeFilePath)
 				const methodTestContent = await FileUtil.getFileContent(methodTestFilePath)
 
-				const methodFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
+				const methodFilePath = PathUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
 				const methodFileContentWithoutMethodBody = NodeJSCodeParserUtil.removeSpecificMethodOrFunctionBodyInSourceFile(methodFilePath, { type: methodDefinition.declarationType, name: methodDefinition.name })
 
 				return {
@@ -81,8 +81,8 @@ class ExperimentService {
 				reasoningText
 			} = await TracingUtil.traceAction("Reconstructing method body with LLM...", async () => {
 				const languageModel = ModelUtil.getLanguageModel(options.model.name)
-				const buildedSystemPrompt = PromptService.buildSystemPrompt()
-				const buildedUserPrompt = PromptService.buildUserPrompt({ methodName: methodDefinition.name, methodTestContent, methodFileContentWithoutMethodBody, buildedContext })
+				const buildedSystemPrompt = PromptUtil.buildSystemPrompt()
+				const buildedUserPrompt = PromptUtil.buildUserPrompt({ methodName: methodDefinition.name, methodTestContent, methodFileContentWithoutMethodBody, buildedContext })
 
 				const { text: reconstructedMethodBody, reasoningText } = await generateText({
 					model: languageModel,
@@ -126,14 +126,14 @@ class ExperimentService {
 
 	private async revertSourceFileChanges(methodDefinition: MethodDefinition, sourceFileWithOriginalMethodBody: string): Promise<void> {
 		return await TracingUtil.traceAction("Reverting source file changes...", async () => {
-			const methodFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
+			const methodFilePath = PathUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
 			await FileUtil.setFileContent(methodFilePath, sourceFileWithOriginalMethodBody)
 		})
 	}
 
 	private async getSourceFileWithOriginalMethodBody(methodDefinition: MethodDefinition): Promise<string> {
 		return await TracingUtil.traceAction("Retrieving source file with original method body...", async () => {
-			const methodFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
+			const methodFilePath = PathUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
 
 			const sourceFileWithOriginalMethodBody = await FileUtil.getFileContent(methodFilePath)
 
@@ -143,7 +143,7 @@ class ExperimentService {
 
 	private async replaceSourceFileWithReconstructedMethodBody(methodDefinition: MethodDefinition, reconstructedMethodBody: string): Promise<string> {
 		return await TracingUtil.traceAction("Replacing source file with reconstructed method body...", async () => {
-			const methodFilePath = ExperimentUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
+			const methodFilePath = PathUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
 
 			const sourceFileWithReconstructedMethodBody = NodeJSCodeParserUtil.replaceSpecificMethodOrFunctionBodyInSourceFile(
 				methodFilePath,
@@ -160,7 +160,7 @@ class ExperimentService {
 	private async runRepositoryTestSuite(methodDefinition: MethodDefinition): Promise<RepositoryTestSuiteResult> {
 		return await TracingUtil.traceAction("Running method tests...", async () => {
 			try {
-				const repositoryRootPath = ExperimentUtil.getRepositoryRootPath(methodDefinition.repositoryName)
+				const repositoryRootPath = PathUtil.getRepositoryRootPath(methodDefinition.repositoryName)
 
 				const execAsync = promisify(exec)
 
@@ -211,4 +211,4 @@ class ExperimentService {
 	}
 }
 
-export default new ExperimentService()
+export default new ExperimentationModule()

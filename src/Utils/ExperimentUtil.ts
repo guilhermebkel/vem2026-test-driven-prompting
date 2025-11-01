@@ -1,25 +1,12 @@
 import path from "path"
 
-import { ExperimentOptions, RepositoryName } from "@/Protocols/ExperimentProtocol"
+import { RepositoryName } from "@/Protocols/RepositoryProtocol"
+import { ExperimentOptions } from "@/Protocols/ExperimentationProtocol"
 import { ContextDefinition, ContextDefinitionItem } from "@/Protocols/ContextProtocol"
 
+import PathUtil from "@/Utils/PathUtil"
+
 class ExperimentUtil {
-	resolveRelativeFilePath(repositoryName: RepositoryName, relativeFilePath: string): string {
-		const repositoryRootPath = this.getRepositoryRootPath(repositoryName)
-
-		const resolvedRelativeFilePath = path.join(repositoryRootPath, relativeFilePath)
-
-		return resolvedRelativeFilePath
-	}
-
-	getRepositoryRootPath(repositoryName: RepositoryName): string {
-		const rootDirectoryPath = process.cwd()
-
-		const repositoryRootPath = path.join(rootDirectoryPath, "experiment-repos", repositoryName)
-
-		return repositoryRootPath
-	}
-
 	getExperimentResultLogFilePath(experimentOptions: ExperimentOptions, logFileName: string, logFileExtension = ".txt"): string {
 		const experimentResultDirectoryPath = this.getExperimentResultDirectoryPath()
 
@@ -40,7 +27,7 @@ class ExperimentUtil {
 		return contextDefinition.map((item) => {
 			return {
 				...item,
-				...(item.path && { path: this.resolveRelativeFilePath(repositoryName, item.path) })
+				...(item.path && { path: PathUtil.resolveRelativeFilePath(repositoryName, item.path) })
 			} as ContextDefinitionItem
 		})
 	}

@@ -1,6 +1,6 @@
 import { UserPromptOptions } from "@/Protocols/PromptProtocol"
 
-class PromptService {
+class PromptUtil {
 	buildSystemPrompt(): string {
 		return this.sanitizePrompt(`
 			# SYSTEM PROMPT: METHOD RECONSTRUCTOR
@@ -86,4 +86,4 @@ class PromptService {
 	}
 }
 
-export default new PromptService()
+export default new PromptUtil()

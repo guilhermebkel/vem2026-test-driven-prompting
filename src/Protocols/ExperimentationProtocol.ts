@@ -1,8 +1,7 @@
 import { LanguageModelName } from "@/Protocols/ModelProtocol"
 import { ContextDefinition } from "@/Protocols/ContextProtocol"
 import { DeclarationType } from "@/Protocols/NodeJSCodeParserProtocol"
-
-export type RepositoryName = "date-fns" | "fastify" | "directus" | "tabnews.com.br"
+import { RepositoryName } from "@/Protocols/RepositoryProtocol"
 
 export type MethodDefinition = {
 	name: string

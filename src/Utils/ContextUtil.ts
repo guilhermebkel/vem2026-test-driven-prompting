@@ -5,7 +5,7 @@ import FileUtil from "@/Utils/FileUtil"
 
 import DataNotFoundError from "@/Errors/DataNotFoundError"
 
-class ContextService {
+class ContextUtil {
 	private readonly contextSlugToContentHandlerFn: OptionalRecord<ContextSlug, (contextItem: ContextDefinitionItem) => Promise<string>> = {
 		"repository-root-structure": async (contextItem) => await this.handleFolderContent(contextItem)
 	}
@@ -63,4 +63,4 @@ class ContextService {
 	}
 }
 
-export default new ContextService()
+export default new ContextUtil()

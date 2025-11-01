@@ -18,6 +18,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/micromatch": "^4.0.10",
     "@types/node": "^20.14.10",
     "@typescript-eslint/eslint-plugin": "^8.46.1",
     "@typescript-eslint/parser": "^8.46.1",
@@ -29,6 +30,8 @@
     "@ai-sdk/google": "^2.0.23",
     "ai": "^5.0.71",
     "dotenv": "^17.2.3",
+    "fast-glob": "^3.3.3",
+    "micromatch": "^4.0.8",
     "tasuku": "^2.0.1",
     "ts-morph": "^27.0.2"
   }

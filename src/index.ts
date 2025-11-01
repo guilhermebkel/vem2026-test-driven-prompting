@@ -1,10 +1,13 @@
 import "dotenv/config"
 
-import ExperimentService from "@/Services/ExperimentService"
+import ExperimentationModule from "@/Modules/ExperimentationModule"
+import ExplorationModule from "@/Modules/ExplorationModule"
 
 import TracingUtil from "@/Utils/TracingUtil"
 
-import { ExperimentOptions, RepositoryName } from "@/Protocols/ExperimentProtocol"
+import { ExperimentOptions } from "@/Protocols/ExperimentationProtocol"
+import { RepositoryName } from "@/Protocols/RepositoryProtocol"
+import { ExploreOptions } from "@/Protocols/MethodExplorerProtocol"
 
 import RepositoryTestSuiteFailedError from "@/Errors/RepositoryTestSuiteFailedError"
 
@@ -213,7 +216,7 @@ async function start(): Promise<void> {
 		await TracingUtil.traceTask(`Repository: ${repositoryExperiment.repositoryName}`, async () => {
 			for (const experiment of repositoryExperiment.experiments) {
 				await TracingUtil.traceTask(`Experiment: ${experiment.title}`, async (config) => {
-					const result = await ExperimentService.runExperiment({
+					const result = await ExperimentationModule.runExperiment({
 						title: experiment.title,
 						method: {
 							...experiment.method,
@@ -235,4 +238,35 @@ async function start(): Promise<void> {
 	}
 }
 
-start()
+type RepositoryMethodExploration = {
+	repositoryName: RepositoryName
+	methodFilePatterns: ExploreOptions["methodFilePatterns"]
+	testFilePatterns: ExploreOptions["methodFilePatterns"]
+}
+
+const REPOSITORY_METHOD_EXPLORATIONS: RepositoryMethodExploration[] = [
+	{
+		repositoryName: "date-fns",
+		methodFilePatterns: ["**/*.ts"],
+		testFilePatterns: ["**/test.ts"]
+	},
+	{
+		repositoryName: "directus",
+		methodFilePatterns: ["**/*.ts", "**/*.js"],
+		testFilePatterns: ["**/*.spec.*", "**/*.test.*"]
+	}
+]
+
+async function start2(): Promise<void> {
+	for (const repositoryMethodExploration of REPOSITORY_METHOD_EXPLORATIONS) {
+		await TracingUtil.traceTask(`Explore Repository Methods: ${repositoryMethodExploration.repositoryName}`, async () => {
+			await ExplorationModule.exploreMethods({
+				repositoryName: repositoryMethodExploration.repositoryName,
+				methodFilePatterns: repositoryMethodExploration.methodFilePatterns,
+				testFilePatterns: repositoryMethodExploration.testFilePatterns
+			})
+		})
+	}
+}
+
+start2()

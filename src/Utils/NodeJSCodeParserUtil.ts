@@ -1,16 +1,12 @@
-import { FunctionDeclaration, MethodDeclaration, Project, SourceFile } from "ts-morph"
+import { FunctionDeclaration, MethodDeclaration, Project, SourceFile, SyntaxKind } from "ts-morph"
 
 import { DeclarationType, ExtractionRule, NodeType } from "@/Protocols/NodeJSCodeParserProtocol"
 
 import DataNotFoundError from "@/Errors/DataNotFoundError"
+import { OptionalRecord } from "@/Protocols/TypeUtilityProtocol"
 
 class NodeJSCodeParserUtil {
-	private readonly project = new Project({
-		compilerOptions: {
-			allowJs: true
-		},
-		skipAddingFilesFromTsConfig: true
-	})
+	private readonly project = this.createProject()
 
 	extractSpecificCodeFromSourceFile(filePath: string, extractionRules: ExtractionRule[]): string {
 		const sourceFile = this.project.addSourceFileAtPath(filePath)
@@ -71,7 +67,16 @@ class NodeJSCodeParserUtil {
 		return sourceCodeWithChanges
 	}
 
-	private extractNodes(sourceFile: SourceFile, extractionRules: ExtractionRule[]): NodeType[] {
+	createProject(): Project {
+		return new Project({
+			compilerOptions: {
+				allowJs: true
+			},
+			skipAddingFilesFromTsConfig: true
+		})
+	}
+
+	extractNodes(sourceFile: SourceFile, extractionRules: ExtractionRule[]): NodeType[] {
 		const ruleKindToNodeExtractorFn: Record<DeclarationType, (rule: ExtractionRule) => Array<NodeType | undefined>> = {
 			class: (rule) => rule.name ? (
 				[sourceFile.getClass(rule.name)]
@@ -109,6 +114,15 @@ class NodeJSCodeParserUtil {
 		))
 
 		return extractedNodes || []
+	}
+
+	turnSyntaxKindIntoDeclarationType(syntaxKind: SyntaxKind): DeclarationType | undefined {
+		const kindNameToDeclarationType: OptionalRecord<SyntaxKind, DeclarationType> = {
+			[SyntaxKind.FunctionDeclaration]: "function",
+			[SyntaxKind.MethodDeclaration]: "method"
+		}
+
+		return kindNameToDeclarationType[syntaxKind]
 	}
 }
 
