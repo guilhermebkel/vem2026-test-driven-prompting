@@ -1,6 +1,4 @@
 import { generateText } from "ai"
-import { exec } from "child_process"
-import { promisify } from "util"
 import path from "path"
 
 import {
@@ -8,8 +6,7 @@ import {
 	ExperimentResult,
 	MethodDefinition,
 	MethodReconstructionOptions,
-	MethodReconstructionResult,
-	RepositoryTestSuiteResult
+	MethodReconstructionResult
 } from "@/Protocols/ExperimentationProtocol"
 
 import ModelUtil from "@/Utils/ModelUtil"
@@ -22,6 +19,8 @@ import ContextUtil from "@/Utils/ContextUtil"
 import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
 import ErrorHandlerUtil from "@/Utils/ErrorHandlerUtil"
 
+import TestExecutorService from "@/Services/TestExecutorService"
+
 class ExperimentationModule {
 	async runExperiment(options: ExperimentOptions): Promise<ExperimentResult> {
 		const sourceFileWithOriginalMethodBody = await this.getSourceFileWithOriginalMethodBody(options.method)
@@ -31,7 +30,7 @@ class ExperimentationModule {
 
 			const sourceFileWithReconstructedMethodBody = await this.replaceSourceFileWithReconstructedMethodBody(options.method, methodReconstructionResult.reconstructedMethodBody)
 
-			const repositoryTestSuiteResult = await this.runRepositoryTestSuite(options.method)
+			const repositoryTestSuiteResult = await TestExecutorService.runRepositoryTestSuite(options.method)
 
 			const experimentResult: ExperimentResult = {
 				methodReconstructionResult,
@@ -154,32 +153,6 @@ class ExperimentationModule {
 			await FileUtil.setFileContent(methodFilePath, sourceFileWithReconstructedMethodBody)
 
 			return sourceFileWithReconstructedMethodBody
-		})
-	}
-
-	private async runRepositoryTestSuite(methodDefinition: MethodDefinition): Promise<RepositoryTestSuiteResult> {
-		return await TracingUtil.traceAction("Running method tests...", async () => {
-			try {
-				const repositoryRootPath = PathUtil.getRepositoryRootPath(methodDefinition.repositoryName)
-
-				const execAsync = promisify(exec)
-
-				const { stdout } = await execAsync(methodDefinition.repositoryTestSuiteCommand, {
-					cwd: repositoryRootPath
-				})
-
-				return {
-					success: true,
-					debugMessage: stdout
-				}
-			} catch (error) {
-				const typedError = error as Error
-
-				return {
-					success: false,
-					debugMessage: typedError.message
-				}
-			}
 		})
 	}
 

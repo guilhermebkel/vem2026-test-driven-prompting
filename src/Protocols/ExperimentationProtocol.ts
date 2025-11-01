@@ -2,6 +2,7 @@ import { LanguageModelName } from "@/Protocols/ModelProtocol"
 import { ContextDefinition } from "@/Protocols/ContextProtocol"
 import { DeclarationType } from "@/Protocols/NodeJSCodeParserProtocol"
 import { RepositoryName } from "@/Protocols/RepositoryProtocol"
+import { RepositoryTestSuiteResult } from "@/Protocols/TestExecutorProtocol"
 
 export type MethodDefinition = {
 	name: string
@@ -23,11 +24,6 @@ export type ExperimentResult = {
 	repositoryTestSuiteResult: RepositoryTestSuiteResult
 	sourceFileWithReconstructedMethodBody: string
 	sourceFileWithOriginalMethodBody: string
-}
-
-export type RepositoryTestSuiteResult = {
-	success: boolean
-	debugMessage: string
 }
 
 export type MethodReconstructionOptions = {

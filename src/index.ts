@@ -269,4 +269,4 @@ async function start2(): Promise<void> {
 	}
 }
 
-start2()
+start()
