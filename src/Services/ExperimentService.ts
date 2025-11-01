@@ -84,7 +84,7 @@ class ExperimentService {
 				const buildedSystemPrompt = PromptService.buildSystemPrompt()
 				const buildedUserPrompt = PromptService.buildUserPrompt({ methodName: methodDefinition.name, methodTestContent, methodFileContentWithoutMethodBody, buildedContext })
 
-				const { text: reconstructedMethodBody, reasoningText, ...rest } = await generateText({
+				const { text: reconstructedMethodBody, reasoningText } = await generateText({
 					model: languageModel,
 					messages: [
 						{
