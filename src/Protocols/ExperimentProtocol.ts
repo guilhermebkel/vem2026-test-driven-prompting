@@ -45,4 +45,5 @@ export type MethodReconstructionResult = {
 	reconstructedMethodBody: string
 	systemPrompt: string
 	userPrompt: string
+	reasoningText?: string
 }

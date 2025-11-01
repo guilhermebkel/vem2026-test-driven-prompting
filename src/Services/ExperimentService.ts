@@ -77,13 +77,14 @@ class ExperimentService {
 			const {
 				reconstructedMethodBody,
 				systemPrompt,
-				userPrompt
+				userPrompt,
+				reasoningText
 			} = await TracingUtil.traceAction("Reconstructing method body with LLM...", async () => {
 				const languageModel = ModelUtil.getLanguageModel(options.model.name)
 				const buildedSystemPrompt = PromptService.buildSystemPrompt()
 				const buildedUserPrompt = PromptService.buildUserPrompt({ methodName: methodDefinition.name, methodTestContent, methodFileContentWithoutMethodBody, buildedContext })
 
-				const { text: reconstructedMethodBody } = await generateText({
+				const { text: reconstructedMethodBody, reasoningText, ...rest } = await generateText({
 					model: languageModel,
 					messages: [
 						{
@@ -108,7 +109,8 @@ class ExperimentService {
 				return {
 					userPrompt: buildedUserPrompt,
 					systemPrompt: buildedSystemPrompt,
-					reconstructedMethodBody
+					reconstructedMethodBody,
+					reasoningText
 				}
 			})
 
@@ -116,7 +118,8 @@ class ExperimentService {
 				methodFileContentWithoutMethodBody,
 				reconstructedMethodBody,
 				systemPrompt,
-				userPrompt
+				userPrompt,
+				reasoningText
 			}
 		})
 	}
@@ -201,6 +204,9 @@ class ExperimentService {
 
 			const systemPromptLogFilePath = ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "systemPrompt", ".md")
 			await FileUtil.setFileContent(systemPromptLogFilePath, experimentResult.methodReconstructionResult.systemPrompt)
+
+			const reasoningLogFilePath = ExperimentUtil.getExperimentResultLogFilePath(experimentOptions, "reasoning", ".txt")
+			await FileUtil.setFileContent(reasoningLogFilePath, experimentResult.methodReconstructionResult.reasoningText || "")
 		})
 	}
 }
