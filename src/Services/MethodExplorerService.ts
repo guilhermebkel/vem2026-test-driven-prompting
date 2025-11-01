@@ -1,5 +1,6 @@
 import glob from "fast-glob"
 import micromatch from "micromatch"
+import { Project } from "ts-morph"
 
 import { ExploredMethod, ExploreOptions, ExploreResult } from "@/Protocols/MethodExplorerProtocol"
 
@@ -7,7 +8,6 @@ import PathUtil from "@/Utils/PathUtil"
 import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
 import TracingUtil from "@/Utils/TracingUtil"
 import DataProcessUtil from "@/Utils/DataProcessUtil"
-import { Project } from "ts-morph"
 import { RepositoryName } from "@/Protocols/RepositoryProtocol"
 
 class MethodExplorerService {
