@@ -1,6 +1,7 @@
 import glob from "fast-glob"
 import Piscina from "piscina"
 import { fileURLToPath } from "url"
+import os from "os"
 
 import { ExploredMethod, ExploreOptions, ExploreResult, MethodExplorerWorkerOptions, MethodExplorerWorkerResult } from "@/Protocols/MethodExplorerProtocol"
 import { CoverageReport } from "@/Protocols/TestExecutorProtocol"
@@ -66,7 +67,7 @@ class MethodExplorerService {
 			const methodExplorerWorkerPool = new Piscina<MethodExplorerWorkerOptions, MethodExplorerWorkerResult>({
 				filename: fileURLToPath(import.meta.resolve("@/Workers/MethodExplorerWorker")),
 				minThreads: 1,
-				maxThreads: 30,
+				maxThreads: os.cpus().length,
 				execArgv: ["--import", "tsx"]
 			})
 
