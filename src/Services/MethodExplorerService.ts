@@ -106,8 +106,6 @@ class MethodExplorerService {
 								testCoveragePercentage: this.getMethodTestCoveragePercentage(node, testCoverageReport)
 							}
 
-							console.log(exploredMethod)
-
 							exploredMethods.push(exploredMethod)
 						})
 
