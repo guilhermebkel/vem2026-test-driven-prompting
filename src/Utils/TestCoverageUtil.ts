@@ -42,6 +42,10 @@ class TestCoverageUtil {
 			}
 		}
 
+		if (totalStatements === 0) {
+			return 0
+		}
+
 		const statementCoveragePercentage = Number(((coveredStatements / totalStatements) * 100).toFixed(2))
 
 		return statementCoveragePercentage
@@ -69,6 +73,10 @@ class TestCoverageUtil {
 			}
 		}
 
+		if (allLinesInMethod.size === 0) {
+			return 0
+		}
+
 		const lineCoveragePercentage = Number(((coveredLines.size / allLinesInMethod.size) * 100).toFixed(2))
 
 		return lineCoveragePercentage
@@ -87,6 +95,10 @@ class TestCoverageUtil {
 				totalBranches += executions.length
 				coveredBranches += executions.filter((count) => count > 0).length
 			}
+		}
+
+		if (totalBranches === 0) {
+			return 0
 		}
 
 		const branchCoveragePercentage = Number(((coveredBranches / totalBranches) * 100).toFixed(2))
