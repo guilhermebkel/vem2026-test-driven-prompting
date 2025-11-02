@@ -1,10 +1,8 @@
-import { exec } from "child_process"
-import { promisify } from "util"
-
 import PathUtil from "@/Utils/PathUtil"
 import TracingUtil from "@/Utils/TracingUtil"
 
 import { RepositoryTestSuiteOptions, RepositoryTestSuiteResult } from "@/Protocols/TestExecutorProtocol"
+import ShellUtil from "@/Utils/ShellUtil"
 
 class TestExecutorService {
 	async runRepositoryTestSuite(options: RepositoryTestSuiteOptions): Promise<RepositoryTestSuiteResult> {
@@ -12,15 +10,11 @@ class TestExecutorService {
 			try {
 				const repositoryRootPath = PathUtil.getRepositoryRootPath(options.repositoryName)
 
-				const execAsync = promisify(exec)
-
-				const { stdout } = await execAsync(options.repositoryTestSuiteCommand, {
-					cwd: repositoryRootPath
-				})
+				const result = await ShellUtil.executeCommand(options.repositoryTestSuiteCommand, repositoryRootPath)
 
 				return {
 					success: true,
-					debugMessage: stdout
+					debugMessage: result
 				}
 			} catch (error) {
 				const typedError = error as Error

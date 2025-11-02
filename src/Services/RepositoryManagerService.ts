@@ -3,19 +3,24 @@ import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
 import PathUtil from "@/Utils/PathUtil"
 import TracingUtil from "@/Utils/TracingUtil"
 
-import { MethodDefinition } from "@/Protocols/ExperimentationProtocol"
+import {
+	SourceFileChangesReversionOptions,
+	SourceFileWithOriginalMethodBodyOptions,
+	SourceFileWithReconstructedMethodBodyOptions
+} from "@/Protocols/RepositoryManagerProtocol"
 
 class RepositoryManagerService {
-	async revertSourceFileChanges(methodDefinition: MethodDefinition, sourceFileWithOriginalMethodBody: string): Promise<void> {
+	async revertSourceFileChanges(options: SourceFileChangesReversionOptions): Promise<void> {
 		return await TracingUtil.traceAction("Reverting source file changes...", async () => {
-			const methodFilePath = PathUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
-			await FileUtil.setFileContent(methodFilePath, sourceFileWithOriginalMethodBody)
+			const methodFilePath = PathUtil.resolveRelativeFilePath(options.repositoryName, options.methodRelativeFilePath)
+
+			await FileUtil.setFileContent(methodFilePath, options.sourceFileWithOriginalMethodBody)
 		})
 	}
 
-	async getSourceFileWithOriginalMethodBody(methodDefinition: MethodDefinition): Promise<string> {
+	async getSourceFileWithOriginalMethodBody(options: SourceFileWithOriginalMethodBodyOptions): Promise<string> {
 		return await TracingUtil.traceAction("Retrieving source file with original method body...", async () => {
-			const methodFilePath = PathUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
+			const methodFilePath = PathUtil.resolveRelativeFilePath(options.repositoryName, options.methodRelativeFilePath)
 
 			const sourceFileWithOriginalMethodBody = await FileUtil.getFileContent(methodFilePath)
 
@@ -23,14 +28,14 @@ class RepositoryManagerService {
 		})
 	}
 
-	async replaceSourceFileWithReconstructedMethodBody(methodDefinition: MethodDefinition, reconstructedMethodBody: string): Promise<string> {
+	async getSourceFileWithReconstructedMethodBody(options: SourceFileWithReconstructedMethodBodyOptions): Promise<string> {
 		return await TracingUtil.traceAction("Replacing source file with reconstructed method body...", async () => {
-			const methodFilePath = PathUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
+			const methodFilePath = PathUtil.resolveRelativeFilePath(options.repositoryName, options.methodRelativeFilePath)
 
 			const sourceFileWithReconstructedMethodBody = NodeJSCodeParserUtil.replaceSpecificMethodOrFunctionBodyInSourceFile(
 				methodFilePath,
-				{ type: methodDefinition.declarationType, name: methodDefinition.name },
-				reconstructedMethodBody
+				{ type: options.methodDeclarationType, name: options.methodName },
+				options.reconstructedMethodBody
 			)
 
 			await FileUtil.setFileContent(methodFilePath, sourceFileWithReconstructedMethodBody)

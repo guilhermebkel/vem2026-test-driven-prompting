@@ -14,7 +14,10 @@ import RepositoryManagerService from "@/Services/RepositoryManagerService"
 
 class ExperimentationModule {
 	async runMethodReconstructionExperiment(options: MethodReconstructionExperimentOptions): Promise<MethodReconstructionExperimentResult> {
-		const sourceFileWithOriginalMethodBody = await RepositoryManagerService.getSourceFileWithOriginalMethodBody(options.method)
+		const sourceFileWithOriginalMethodBody = await RepositoryManagerService.getSourceFileWithOriginalMethodBody({
+			methodRelativeFilePath: options.method.methodRelativeFilePath,
+			repositoryName: options.method.repositoryName
+		})
 
 		try {
 			const contextLoadResult = await ContextLoaderService.loadContext({
@@ -47,7 +50,13 @@ class ExperimentationModule {
 				userPrompt: buildPromptResult.userPrompt
 			})
 
-			const sourceFileWithReconstructedMethodBody = await RepositoryManagerService.replaceSourceFileWithReconstructedMethodBody(options.method, methodReconstructionResult.reconstructedMethodBody)
+			const sourceFileWithReconstructedMethodBody = await RepositoryManagerService.getSourceFileWithReconstructedMethodBody({
+				methodDeclarationType: options.method.declarationType,
+				methodName: options.method.name,
+				methodRelativeFilePath: options.method.methodRelativeFilePath,
+				repositoryName: options.method.repositoryName,
+				reconstructedMethodBody: methodReconstructionResult.reconstructedMethodBody
+			})
 
 			const repositoryTestSuiteResult = await TestExecutorService.runRepositoryTestSuite(options.method)
 
@@ -70,7 +79,11 @@ class ExperimentationModule {
 			ErrorHandlerUtil.handle(error)
 			throw error
 		} finally {
-			await RepositoryManagerService.revertSourceFileChanges(options.method, sourceFileWithOriginalMethodBody)
+			await RepositoryManagerService.revertSourceFileChanges({
+				methodRelativeFilePath: options.method.methodRelativeFilePath,
+				repositoryName: options.method.repositoryName,
+				sourceFileWithOriginalMethodBody
+			})
 		}
 	}
 }
