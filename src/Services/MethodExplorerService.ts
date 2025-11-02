@@ -81,10 +81,7 @@ class MethodExplorerService {
 					await TracingUtil.traceAction(`Processing ${current} of ${total} method files...`, async () => {
 						const methodSourceFile = project.addSourceFileAtPath(resolvedMethodFilePath)
 
-						const nodes = NodeJSCodeParserUtil.extractNodes(methodSourceFile, [
-							{ type: "method" },
-							{ type: "function" }
-						])
+						const nodes = NodeJSCodeParserUtil.extractNodes(methodSourceFile, [{ type: "method" }, { type: "function" }])
 
 						nodes.forEach(node => {
 							const referencedFilePaths = node.findReferencesAsNodes().map(node => node.getSourceFile().getFilePath())
