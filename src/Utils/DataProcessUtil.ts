@@ -10,16 +10,28 @@ class DataProcessUtil {
 
 		let processingCount = 0
 
-		for (let i = 0; i < items.length; i += batchSize) {
-			const batch = items.slice(i, i + batchSize)
+		const chunks = this.splitIntoChunks(items, batchSize)
 
+		for (const chunk of chunks) {
 			await Promise.all(
-				batch.map(async (item) => {
+				chunk.map(async (item) => {
 					processingCount++
 					await handlerFn(item, { current: processingCount, total: items.length })
 				})
 			)
 		}
+	}
+
+	splitIntoChunks<Item>(items: Item[], chunkSize: number): Item[][] {
+		const chunks: Item[][] = []
+
+		for (let i = 0; i < items.length; i += chunkSize) {
+			const chunk = items.slice(i, i + chunkSize)
+
+			chunks.push(chunk)
+		}
+
+		return chunks
 	}
 }
 

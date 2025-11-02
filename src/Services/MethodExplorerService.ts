@@ -1,28 +1,24 @@
 import glob from "fast-glob"
-import micromatch from "micromatch"
+import Piscina from "piscina"
+import { fileURLToPath } from "url"
 
-import { ExploredMethod, ExploreOptions, ExploreResult } from "@/Protocols/MethodExplorerProtocol"
+import { ExploredMethod, ExploreOptions, ExploreResult, MethodExplorerWorkerOptions, MethodExplorerWorkerResult } from "@/Protocols/MethodExplorerProtocol"
+import { CoverageReport } from "@/Protocols/TestExecutorProtocol"
 
 import PathUtil from "@/Utils/PathUtil"
-import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
 import TracingUtil from "@/Utils/TracingUtil"
 import DataProcessUtil from "@/Utils/DataProcessUtil"
 
 import TestExecutorService from "@/Services/TestExecutorService"
-import { CoverageReport } from "@/Protocols/TestExecutorProtocol"
-import { NodeType, ProjectType } from "@/Protocols/NodeJSCodeParserProtocol"
 
 class MethodExplorerService {
 	async explore(options: ExploreOptions): Promise<ExploreResult> {
 		const testCoverageReport = await this.getTestCoverageReport(options)
 
-		const project = NodeJSCodeParserUtil.createProject()
-
 		const testFilePaths = await this.searchTestFilePaths(options)
-		await this.loadTestFiles(project, testFilePaths, options)
-
 		const methodFilePaths = await this.searchMethodFilePaths(options)
-		const exploredMethods = await this.exploreMethodFiles(project, methodFilePaths, testCoverageReport, options)
+
+		const exploredMethods = await this.exploreMethodFiles(testFilePaths, methodFilePaths, testCoverageReport, options)
 
 		const filteredExploredMethods = await this.filterExploredMethods(exploredMethods)
 
@@ -52,21 +48,6 @@ class MethodExplorerService {
 		}) as string[]
 	}
 
-	private async loadTestFiles(project: ProjectType, testFilePaths: string[], options: ExploreOptions): Promise<void> {
-		await TracingUtil.traceTask("Load test files...", async () => {
-			await DataProcessUtil.process({
-				items: testFilePaths,
-				batchSize: 1,
-				handlerFn: async (testFilePath, { current, total }) => {
-					await TracingUtil.traceAction(`Loading ${current} of ${total} method files...`, async () => {
-						const resolvedTestFilePath = PathUtil.resolveRelativeFilePath(options.repositoryName, testFilePath)
-						project.addSourceFileAtPath(resolvedTestFilePath)
-					})
-				}
-			})
-		})
-	}
-
 	private async searchMethodFilePaths(options: ExploreOptions): Promise<string[]> {
 		return await TracingUtil.traceTask("Searching method file paths...", async (config) => {
 			const methodFilePaths = await glob(options.methodFilePatterns, {
@@ -80,77 +61,43 @@ class MethodExplorerService {
 		}) as string[]
 	}
 
-	private async exploreMethodFiles(project: ProjectType, methodFilePaths: string[], testCoverageReport: CoverageReport, options: ExploreOptions): Promise<ExploredMethod[]> {
-		const exploredMethods: ExploredMethod[] = []
-
-		await TracingUtil.traceTask("Process method files", async () => {
-			await DataProcessUtil.process({
-				items: methodFilePaths,
-				batchSize: 20,
-				handlerFn: async (methodFilePath, { current, total }) => {
-					await TracingUtil.traceAction(`Processing ${current} of ${total} method files...`, async () => {
-						const resolvedMethodFilePath = PathUtil.resolveRelativeFilePath(options.repositoryName, methodFilePath)
-						const methodSourceFile = project.addSourceFileAtPath(resolvedMethodFilePath)
-
-						const nodes = NodeJSCodeParserUtil.extractNodes(methodSourceFile, [
-							{ type: "class" },
-							{ type: "function" }
-						])
-
-						nodes.forEach(node => {
-							const referencedFilePaths = node.findReferencesAsNodes().map(node => node.getSourceFile().getFilePath())
-							const resolvedTestFilePath = referencedFilePaths.find(referencedFilePath => micromatch.isMatch(referencedFilePath, options.testFilePatterns))
-
-							const exploredMethod: ExploredMethod = {
-								name: node.getName(),
-								declarationType: NodeJSCodeParserUtil.turnSyntaxKindIntoDeclarationType(node.getKind()),
-								resolvedMethodFilePath,
-								resolvedTestFilePath,
-								testCoveragePercentage: this.getMethodTestCoveragePercentage(node, testCoverageReport)
-							}
-
-							exploredMethods.push(exploredMethod)
-						})
-
-						project.removeSourceFile(methodSourceFile)
-					})
-				}
+	private async exploreMethodFiles(testFilePaths: string[], methodFilePaths: string[], testCoverageReport: CoverageReport, options: ExploreOptions): Promise<ExploredMethod[]> {
+		return await TracingUtil.traceTask("Process method files", async (config) => {
+			const methodExplorerWorkerPool = new Piscina<MethodExplorerWorkerOptions, MethodExplorerWorkerResult>({
+				filename: fileURLToPath(import.meta.resolve("@/Workers/MethodExplorerWorker")),
+				minThreads: 1,
+				maxThreads: 30,
+				execArgv: ["--import", "tsx"]
 			})
-		})
 
-		return exploredMethods
-	}
+			const exploredMethods: ExploredMethod[] = []
 
-	private getMethodTestCoveragePercentage(methodNode: NodeType, coverageReport: CoverageReport): number {
-		const methodFilePath = methodNode.getSourceFile().getFilePath()
-		const methodTestCoverageReport = coverageReport[methodFilePath]
+			const chunks = DataProcessUtil.splitIntoChunks(methodFilePaths, methodExplorerWorkerPool.maxThreads)
 
-		if (!methodTestCoverageReport) {
-			return 0
-		}
+			let processedMethodFilePathsCount = 0
 
-		const start = methodNode.getStartLineNumber()
-		const end = methodNode.getEndLineNumber()
+			await Promise.all(
+				chunks.map(async chunk => {
+					const exploredMethodsByWorker = await methodExplorerWorkerPool.run({
+						methodFilePaths: chunk,
+						testFilePaths: testFilePaths,
+						testFilePatterns: options.testFilePatterns,
+						repositoryName: options.repositoryName,
+						testCoverageReport: testCoverageReport
+					})
 
-		let covered = 0
-		let total = 0
+					processedMethodFilePathsCount += chunk.length
 
-		for (const [stmtId, loc] of Object.entries(methodTestCoverageReport.statementMap)) {
-			const executed = methodTestCoverageReport.s[stmtId] ?? 0
+					exploredMethods.push(...exploredMethodsByWorker)
 
-			if (loc.start.line >= start && loc.end.line <= end) {
-				total++
-				if (executed > 0) covered++
-			}
-		}
+					config.setOutput(`Processed ${processedMethodFilePathsCount} of ${methodFilePaths.length} method file paths...`)
+				})
+			)
 
-		if (total === 0) {
-			return 0
-		}
+			config.setOutput(`Found ${exploredMethods.length} methods!`)
 
-		const testCoveragePercentage = (covered / total) * 100
-
-		return Number(testCoveragePercentage.toFixed(2))
+			return exploredMethods
+		}) as ExploredMethod[]
 	}
 
 	private async filterExploredMethods(exploredMethods: ExploredMethod[]): Promise<ExploredMethod[]> {
