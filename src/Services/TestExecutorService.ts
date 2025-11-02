@@ -1,4 +1,3 @@
-import glob from "fast-glob"
 import FileUtil from "@/Utils/FileUtil"
 
 import PathUtil from "@/Utils/PathUtil"
@@ -40,10 +39,7 @@ class TestExecutorService {
 		const repositoryRootPath = PathUtil.getRepositoryRootPath(options.repositoryName)
 		await ShellUtil.executeCommand(options.repositoryTestSuiteWithCoverageReportCommand, repositoryRootPath)
 
-		const coverageReportFilePaths = await glob(options.coverageReportFilePattern, {
-			cwd: repositoryRootPath,
-			ignore: ["**/node_modules/**", "**/dist/**"]
-		})
+		const coverageReportFilePaths = await PathUtil.findResolvedRepositoryFilePaths(options.repositoryName, [options.coverageReportFilePattern])
 
 		let coverageReport: CoverageReport = {}
 
