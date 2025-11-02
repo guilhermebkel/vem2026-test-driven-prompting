@@ -1,39 +1,69 @@
-import { generateText } from "ai"
 import path from "path"
 
 import {
 	ExperimentOptions,
 	ExperimentResult,
-	MethodDefinition,
-	MethodReconstructionOptions,
-	MethodReconstructionResult
+	MethodDefinition
 } from "@/Protocols/ExperimentationProtocol"
 
-import ModelUtil from "@/Utils/ModelUtil"
 import FileUtil from "@/Utils/FileUtil"
 import ExperimentUtil from "@/Utils/ExperimentUtil"
 import TracingUtil from "@/Utils/TracingUtil"
 import PathUtil from "@/Utils/PathUtil"
-import PromptUtil from "@/Utils/PromptUtil"
-import ContextUtil from "@/Utils/ContextUtil"
 import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
 import ErrorHandlerUtil from "@/Utils/ErrorHandlerUtil"
 
 import TestExecutorService from "@/Services/TestExecutorService"
+import ContextLoaderService from "@/Services/ContextLoaderService"
+import PromptBuilderService from "@/Services/PromptBuilderService"
+import MethodReconstructorService from "@/Services/MethodReconstructorService"
 
 class ExperimentationModule {
 	async runExperiment(options: ExperimentOptions): Promise<ExperimentResult> {
 		const sourceFileWithOriginalMethodBody = await this.getSourceFileWithOriginalMethodBody(options.method)
 
 		try {
-			const methodReconstructionResult = await this.reconstructMethod(options.method, options.reconstructionOptions)
+			const contextLoadResult = await ContextLoaderService.loadContext({
+				context: options.reconstructionOptions.context,
+				method: {
+					name: options.method.name,
+					declarationType: options.method.declarationType,
+					relativeFilePath: options.method.methodRelativeFilePath
+				},
+				repositoryName: options.method.repositoryName,
+				test: {
+					relativeFilePath: options.method.testRelativeFilePath
+				}
+			})
+
+			const buildPromptResult = PromptBuilderService.buildPrompt({
+				buildedContext: contextLoadResult.buildedContext,
+				methodFileContentWithoutMethodBody: contextLoadResult.methodFileContentWithoutMethodBody,
+				methodName: options.method.name,
+				methodTestContent: contextLoadResult.methodTestContent
+			})
+
+			const methodReconstructionResult = await MethodReconstructorService.reconstructMethod({
+				model: {
+					name: options.reconstructionOptions.model.name,
+					temperature: options.reconstructionOptions.model.temperature,
+					reasoningBudget: options.reconstructionOptions.model.reasoningBudget
+				},
+				systemPrompt: buildPromptResult.systemPrompt,
+				userPrompt: buildPromptResult.userPrompt
+			})
 
 			const sourceFileWithReconstructedMethodBody = await this.replaceSourceFileWithReconstructedMethodBody(options.method, methodReconstructionResult.reconstructedMethodBody)
 
 			const repositoryTestSuiteResult = await TestExecutorService.runRepositoryTestSuite(options.method)
 
 			const experimentResult: ExperimentResult = {
-				methodReconstructionResult,
+				methodReconstructionResult: {
+					reconstructedMethodBody: methodReconstructionResult.reconstructedMethodBody,
+					methodFileContentWithoutMethodBody: contextLoadResult.methodFileContentWithoutMethodBody,
+					systemPrompt: buildPromptResult.systemPrompt,
+					userPrompt: buildPromptResult.userPrompt
+				},
 				repositoryTestSuiteResult,
 				sourceFileWithReconstructedMethodBody,
 				sourceFileWithOriginalMethodBody
@@ -48,79 +78,6 @@ class ExperimentationModule {
 		} finally {
 			await this.revertSourceFileChanges(options.method, sourceFileWithOriginalMethodBody)
 		}
-	}
-
-	private async reconstructMethod(methodDefinition: MethodDefinition, options: MethodReconstructionOptions): Promise<MethodReconstructionResult> {
-		return await TracingUtil.traceAction("Reconstructing method body...", async () => {
-			const {
-				buildedContext,
-				methodFileContentWithoutMethodBody,
-				methodTestContent
-			} = await TracingUtil.traceAction("Retrieving context, test content and source file without method body...", async () => {
-				const contextDefinitionWithResolvedRelativePath = ExperimentUtil.resolveContextRelativeFilePath(options.context, methodDefinition.repositoryName)
-				const buildedContext = await ContextUtil.buildContext(contextDefinitionWithResolvedRelativePath)
-
-				const methodTestFilePath = PathUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.testRelativeFilePath)
-				const methodTestContent = await FileUtil.getFileContent(methodTestFilePath)
-
-				const methodFilePath = PathUtil.resolveRelativeFilePath(methodDefinition.repositoryName, methodDefinition.methodRelativeFilePath)
-				const methodFileContentWithoutMethodBody = NodeJSCodeParserUtil.removeSpecificMethodOrFunctionBodyInSourceFile(methodFilePath, { type: methodDefinition.declarationType, name: methodDefinition.name })
-
-				return {
-					buildedContext,
-					methodTestContent,
-					methodFileContentWithoutMethodBody
-				}
-			})
-
-			const {
-				reconstructedMethodBody,
-				systemPrompt,
-				userPrompt,
-				reasoningText
-			} = await TracingUtil.traceAction("Reconstructing method body with LLM...", async () => {
-				const languageModel = ModelUtil.getLanguageModel(options.model.name)
-				const buildedSystemPrompt = PromptUtil.buildSystemPrompt()
-				const buildedUserPrompt = PromptUtil.buildUserPrompt({ methodName: methodDefinition.name, methodTestContent, methodFileContentWithoutMethodBody, buildedContext })
-
-				const { text: reconstructedMethodBody, reasoningText } = await generateText({
-					model: languageModel,
-					messages: [
-						{
-							role: "system",
-							content: buildedSystemPrompt
-						},
-						{
-							role: "user",
-							content: buildedUserPrompt
-						}
-					],
-					temperature: options.model.temperature,
-					providerOptions: {
-						google: {
-							thinkingConfig: {
-								thinkingBudget: options.model.reasoningBudget
-							}
-						}
-					}
-				})
-
-				return {
-					userPrompt: buildedUserPrompt,
-					systemPrompt: buildedSystemPrompt,
-					reconstructedMethodBody,
-					reasoningText
-				}
-			})
-
-			return {
-				methodFileContentWithoutMethodBody,
-				reconstructedMethodBody,
-				systemPrompt,
-				userPrompt,
-				reasoningText
-			}
-		})
 	}
 
 	private async revertSourceFileChanges(methodDefinition: MethodDefinition, sourceFileWithOriginalMethodBody: string): Promise<void> {

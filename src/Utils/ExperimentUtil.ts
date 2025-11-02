@@ -22,15 +22,6 @@ class ExperimentUtil {
 
 		return experimentResultDirectoryPath
 	}
-
-	resolveContextRelativeFilePath(contextDefinition: ContextDefinition, repositoryName: RepositoryName): ContextDefinition {
-		return contextDefinition.map((item) => {
-			return {
-				...item,
-				...(item.path && { path: PathUtil.resolveRelativeFilePath(repositoryName, item.path) })
-			} as ContextDefinitionItem
-		})
-	}
 }
 
 export default new ExperimentUtil()
