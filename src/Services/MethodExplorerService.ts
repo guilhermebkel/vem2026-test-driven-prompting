@@ -1,9 +1,4 @@
-import glob from "fast-glob"
-import micromatch from "micromatch"
-
-
 import { ExploredMethod, ExploreOptions, ExploreResult } from "@/Protocols/MethodExplorerProtocol"
-
 
 import PathUtil from "@/Utils/PathUtil"
 import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
@@ -20,11 +15,11 @@ class MethodExplorerService {
 
 		const project = NodeJSCodeParserUtil.createProject()
 
-		const testFilePaths = await this.searchTestFilePaths(options)
-		await this.loadTestFiles(project, testFilePaths, options)
+		const resolvedTestFilePaths = await this.searchResolvedTestFilePaths(options)
+		await this.loadTestFiles(project, resolvedTestFilePaths)
 
-		const methodFilePaths = await this.searchMethodFilePaths(options)
-		const exploredMethods = await this.exploreMethodFiles(project, methodFilePaths, testCoverageReport, options)
+		const resolvedMethodFilePaths = await this.searchResolvedMethodFilePaths(options)
+		const exploredMethods = await this.exploreMethodFiles(project, resolvedMethodFilePaths, testCoverageReport, options)
 
 		const filteredExploredMethods = await this.filterExploredMethods(exploredMethods)
 
@@ -41,27 +36,23 @@ class MethodExplorerService {
 		)) as CoverageReport
 	}
 
-	private async searchTestFilePaths(options: ExploreOptions): Promise<string[]> {
+	private async searchResolvedTestFilePaths(options: ExploreOptions): Promise<string[]> {
 		return await TracingUtil.traceTask("Search test file paths...", async (config) => {
-			const testFilePaths = await glob(options.testFilePatterns, {
-				cwd: PathUtil.getRepositoryRootPath(options.repositoryName),
-				ignore: ["**/node_modules/**", "**/dist/**"]
-			})
+			const resolvedTestFilePaths = await PathUtil.findResolvedRepositoryFilePaths(options.repositoryName, options.testFilePatterns)
 
-			config.setOutput(`Found ${testFilePaths.length} test file paths!`)
+			config.setOutput(`Found ${resolvedTestFilePaths.length} test file paths!`)
 
-			return testFilePaths
+			return resolvedTestFilePaths
 		}) as string[]
 	}
 
-	private async loadTestFiles(project: ProjectType, testFilePaths: string[], options: ExploreOptions): Promise<void> {
+	private async loadTestFiles(project: ProjectType, resolvedTestFilePaths: string[]): Promise<void> {
 		await TracingUtil.traceTask("Load test files...", async () => {
 			await DataProcessUtil.process({
-				items: testFilePaths,
+				items: resolvedTestFilePaths,
 				batchSize: 1,
-				handlerFn: async (testFilePath, { current, total }) => {
+				handlerFn: async (resolvedTestFilePath, { current, total }) => {
 					await TracingUtil.traceAction(`Loading ${current} of ${total} method files...`, async () => {
-						const resolvedTestFilePath = PathUtil.resolveRelativeFilePath(options.repositoryName, testFilePath)
 						project.addSourceFileAtPath(resolvedTestFilePath)
 					})
 				}
@@ -69,29 +60,25 @@ class MethodExplorerService {
 		})
 	}
 
-	private async searchMethodFilePaths(options: ExploreOptions): Promise<string[]> {
+	private async searchResolvedMethodFilePaths(options: ExploreOptions): Promise<string[]> {
 		return await TracingUtil.traceTask("Searching method file paths...", async (config) => {
-			const methodFilePaths = await glob(options.methodFilePatterns, {
-				cwd: PathUtil.getRepositoryRootPath(options.repositoryName),
-				ignore: ["**/node_modules/**", "**/dist/**", ...options.testFilePatterns]
-			})
+			const resolvedMethodFilePaths = await PathUtil.findResolvedRepositoryFilePaths(options.repositoryName, options.methodFilePatterns, options.testFilePatterns)
 
-			config.setOutput(`Found ${methodFilePaths.length} method file paths!`)
+			config.setOutput(`Found ${resolvedMethodFilePaths.length} method file paths!`)
 
-			return methodFilePaths
+			return resolvedMethodFilePaths
 		}) as string[]
 	}
 
-	private async exploreMethodFiles(project: ProjectType, methodFilePaths: string[], testCoverageReport: CoverageReport, options: ExploreOptions): Promise<ExploredMethod[]> {
+	private async exploreMethodFiles(project: ProjectType, resolvedMethodFilePaths: string[], testCoverageReport: CoverageReport, options: ExploreOptions): Promise<ExploredMethod[]> {
 		const exploredMethods: ExploredMethod[] = []
 
 		await TracingUtil.traceTask("Process method files", async () => {
 			await DataProcessUtil.process({
-				items: methodFilePaths,
+				items: resolvedMethodFilePaths,
 				batchSize: 20,
-				handlerFn: async (methodFilePath, { current, total }) => {
+				handlerFn: async (resolvedMethodFilePath, { current, total }) => {
 					await TracingUtil.traceAction(`Processing ${current} of ${total} method files...`, async () => {
-						const resolvedMethodFilePath = PathUtil.resolveRelativeFilePath(options.repositoryName, methodFilePath)
 						const methodSourceFile = project.addSourceFileAtPath(resolvedMethodFilePath)
 
 						const nodes = NodeJSCodeParserUtil.extractNodes(methodSourceFile, [
@@ -101,7 +88,7 @@ class MethodExplorerService {
 
 						nodes.forEach(node => {
 							const referencedFilePaths = node.findReferencesAsNodes().map(node => node.getSourceFile().getFilePath())
-							const resolvedTestFilePath = referencedFilePaths.find(referencedFilePath => micromatch.isMatch(referencedFilePath, options.testFilePatterns))
+							const resolvedTestFilePath = referencedFilePaths.find(referencedFilePath => PathUtil.pathMatchesPatterns(referencedFilePath, options.testFilePatterns))
 
 							const exploredMethod: ExploredMethod = {
 								name: node.getName(),
@@ -136,13 +123,6 @@ class MethodExplorerService {
 
 		let covered = 0
 		let total = 0
-
-
-
-
-
-
-
 
 		for (const [stmtId, loc] of Object.entries(methodTestCoverageReport.statementMap)) {
 			const executed = methodTestCoverageReport.s[stmtId] ?? 0

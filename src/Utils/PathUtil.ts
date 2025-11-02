@@ -1,4 +1,6 @@
 import path from "path"
+import glob from "fast-glob"
+import micromatch from "micromatch"
 
 import { RepositoryName } from "@/Protocols/RepositoryProtocol"
 
@@ -17,6 +19,23 @@ class PathUtil {
 		const repositoryRootPath = path.join(rootDirectoryPath, "experiment-repos", repositoryName)
 
 		return repositoryRootPath
+	}
+
+	async findResolvedRepositoryFilePaths(repositoryName: RepositoryName, filePatterns: string[], ignoredPatterns: string[] = []): Promise<string[]> {
+		const repositoryRootPath = this.getRepositoryRootPath(repositoryName)
+
+		const repositoryFilePaths = await glob(filePatterns, {
+			cwd: repositoryRootPath,
+			ignore: ["**/node_modules/**", "**/dist/**", ...ignoredPatterns]
+		})
+
+		const resolvedRepositoryFilePaths = repositoryFilePaths.map(repositoryFilePath => this.resolveRelativeFilePath(repositoryName, repositoryFilePath))
+
+		return resolvedRepositoryFilePaths
+	}
+
+	pathMatchesPatterns(path: string, patterns: string[]): boolean {
+		return micromatch.isMatch(path, patterns)
 	}
 }
 
