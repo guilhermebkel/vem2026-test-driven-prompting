@@ -14,26 +14,29 @@ import { NodeType, ProjectType } from "@/Protocols/NodeJSCodeParserProtocol"
 
 class MethodExplorerService {
 	async explore(options: ExploreOptions): Promise<ExploreResult> {
-		const testCoverageReport = await TracingUtil.traceAction("Generating test coverage report...", async () => (
-			await TestExecutorService.collectCoverageReportFromRepositoryTestSuite({
-				repositoryName: options.repositoryName,
-				repositoryTestSuiteWithCoverageReportCommand: options.repositoryTestSuiteWithCoverageReportCommand,
-				coverageReportFilePattern: options.coverageReportFilePattern
-			})
-		))
+		const testCoverageReport = await this.getTestCoverageReport(options)
 
 		const project = NodeJSCodeParserUtil.createProject()
-		const testFilePaths = await this.searchTestFilePaths(options)
 
+		const testFilePaths = await this.searchTestFilePaths(options)
 		await this.loadTestFiles(project, testFilePaths, options)
 
 		const methodFilePaths = await this.searchMethodFilePaths(options)
-
 		const exploredMethods = await this.exploreMethodFiles(project, methodFilePaths, testCoverageReport, options)
 
 		const filteredExploredMethods = await this.filterExploredMethods(exploredMethods)
 
 		return filteredExploredMethods
+	}
+
+	private async getTestCoverageReport(options: ExploreOptions): Promise<CoverageReport> {
+		return await TracingUtil.traceTask("Generate test coverage report...", async () => (
+			await TestExecutorService.collectCoverageReportFromRepositoryTestSuite({
+				repositoryName: options.repositoryName,
+				repositoryTestSuiteWithCoverageReportCommand: options.repositoryTestSuiteWithCoverageReportCommand,
+				coverageReportFilePattern: options.coverageReportFilePattern
+			})
+		)) as CoverageReport
 	}
 
 	private async searchTestFilePaths(options: ExploreOptions): Promise<string[]> {
