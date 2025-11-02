@@ -8,7 +8,7 @@ import ErrorHandlerUtil from "@/Utils/ErrorHandlerUtil"
 import TestExecutorService from "@/Services/TestExecutorService"
 import ContextLoaderService from "@/Services/ContextLoaderService"
 import PromptBuilderService from "@/Services/PromptBuilderService"
-import MethodReconstructorService from "@/Services/MethodReconstructorService"
+import LLMService from "@/Services/LLMService"
 import LogService from "@/Services/LogService"
 import RepositoryManagerService from "@/Services/RepositoryManagerService"
 
@@ -40,7 +40,7 @@ class ExperimentationModule {
 				methodTestContent: contextLoadResult.methodTestContent
 			})
 
-			const methodReconstructionResult = await MethodReconstructorService.reconstructMethod({
+			const methodReconstructionResult = await LLMService.reconstructMethod({
 				model: {
 					name: options.reconstructionOptions.model.name,
 					temperature: options.reconstructionOptions.model.temperature,

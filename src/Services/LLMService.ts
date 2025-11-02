@@ -4,7 +4,7 @@ import { MethodReconstructionOptions, MethodReconstructionResult } from "@/Proto
 import ModelUtil from "@/Utils/ModelUtil"
 import { generateText } from "ai"
 
-class MethodReconstructorService {
+class LLMService {
 	async reconstructMethod(options: MethodReconstructionOptions): Promise<MethodReconstructionResult> {
 		return await TracingUtil.traceAction("Reconstructing method body with LLM...", async () => {
 			const languageModel = ModelUtil.getLanguageModel(options.model.name)
@@ -38,4 +38,4 @@ class MethodReconstructorService {
 	}
 }
 
-export default new MethodReconstructorService()
+export default new LLMService()
