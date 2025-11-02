@@ -16,7 +16,7 @@ export type RepositoryTestSuiteCoverageReportOptions = {
 	coverageReportFilePattern: string
 }
 
-export type CoverageReport = Record<string, {
+export type FileCoverageInfo = {
 	all?: boolean
 	statementMap: {
 		[key: string]: {
@@ -46,6 +46,8 @@ export type CoverageReport = Record<string, {
 		}
 	}
 	f: Record<string, number>
-}>
+}
+
+export type CoverageReport = Record<string, FileCoverageInfo>
 
 export type RepositoryTestSuiteCoverageReportResult = CoverageReport

@@ -1,14 +1,15 @@
 import { ExploredMethod, ExploreOptions, ExploreResult } from "@/Protocols/MethodExplorerProtocol"
+import { CoverageReport } from "@/Protocols/TestExecutorProtocol"
+import { ProjectType } from "@/Protocols/NodeJSCodeParserProtocol"
 
 import PathUtil from "@/Utils/PathUtil"
 import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
 import TracingUtil from "@/Utils/TracingUtil"
 import DataProcessUtil from "@/Utils/DataProcessUtil"
 import ArrayUtil from "@/Utils/ArrayUtil"
+import TestCoverageUtil from "@/Utils/TestCoverageUtil"
 
 import TestExecutorService from "@/Services/TestExecutorService"
-import { CoverageReport } from "@/Protocols/TestExecutorProtocol"
-import { NodeType, ProjectType } from "@/Protocols/NodeJSCodeParserProtocol"
 
 class MethodExplorerService {
 	async explore(options: ExploreOptions): Promise<ExploreResult> {
@@ -93,7 +94,7 @@ class MethodExplorerService {
 								declarationType: NodeJSCodeParserUtil.turnSyntaxKindIntoDeclarationType(node.getKind()),
 								resolvedMethodFilePath,
 								resolvedTestFilePaths: ArrayUtil.keepUniqueValues(resolvedTestFilePathsIncludingDuplicates),
-								testCoveragePercentage: this.getMethodTestCoveragePercentage(node, testCoverageReport)
+								testCoverageDetails: TestCoverageUtil.getMethodTestCoverageDetails(node, testCoverageReport)
 							}
 
 							exploredMethods.push(exploredMethod)
@@ -110,43 +111,16 @@ class MethodExplorerService {
 		return exploredMethods
 	}
 
-	private getMethodTestCoveragePercentage(methodNode: NodeType, coverageReport: CoverageReport): number {
-		const methodFilePath = methodNode.getSourceFile().getFilePath()
-		const methodTestCoverageReport = coverageReport[methodFilePath]
-
-		if (!methodTestCoverageReport) {
-			return 0
-		}
-
-		const start = methodNode.getStartLineNumber()
-		const end = methodNode.getEndLineNumber()
-
-		let covered = 0
-		let total = 0
-
-		for (const [stmtId, loc] of Object.entries(methodTestCoverageReport.statementMap)) {
-			const executed = methodTestCoverageReport.s[stmtId] ?? 0
-
-			if (loc.start.line >= start && loc.end.line <= end) {
-				total++
-				if (executed > 0) covered++
-			}
-		}
-
-		if (total === 0) {
-			return 0
-		}
-
-		const testCoveragePercentage = (covered / total) * 100
-
-		return Number(testCoveragePercentage.toFixed(2))
-
-	}
-
 	private async filterExploredMethods(exploredMethods: ExploredMethod[]): Promise<ExploredMethod[]> {
-		const exploredMethodsWithTests = exploredMethods.filter(({ resolvedTestFilePaths }) => resolvedTestFilePaths.length > 0)
+		const exploredMethodsWithTests = exploredMethods.filter(({ resolvedTestFilePaths }) => (
+			resolvedTestFilePaths.length > 0
+		))
 
-		const exploredMethodsWithTotalTestCoverage = exploredMethodsWithTests.filter(({ testCoveragePercentage }) => testCoveragePercentage >= 100)
+		const exploredMethodsWithTotalTestCoverage = exploredMethodsWithTests.filter(({ testCoverageDetails }) => (
+			testCoverageDetails.lineCoveragePercentage >= 100
+			&& testCoverageDetails.statementCoveragePercentage >= 100
+			&& testCoverageDetails.branchCoveragePercentage >= 100
+		))
 
 		return exploredMethodsWithTotalTestCoverage
 	}
