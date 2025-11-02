@@ -1,13 +1,9 @@
 import path from "path"
 
-import { RepositoryName } from "@/Protocols/RepositoryProtocol"
-import { ExperimentOptions } from "@/Protocols/ExperimentationProtocol"
-import { ContextDefinition, ContextDefinitionItem } from "@/Protocols/ContextProtocol"
-
-import PathUtil from "@/Utils/PathUtil"
+import { MethodReconstructionExperimentOptions } from "@/Protocols/ExperimentationProtocol"
 
 class ExperimentUtil {
-	getExperimentResultLogFilePath(experimentOptions: ExperimentOptions, logFileName: string, logFileExtension = ".txt"): string {
+	getExperimentResultLogFilePath(experimentOptions: MethodReconstructionExperimentOptions, logFileName: string, logFileExtension = ".txt"): string {
 		const experimentResultDirectoryPath = this.getExperimentResultDirectoryPath()
 
 		const experimentResultLogFilePath = path.join(experimentResultDirectoryPath, experimentOptions.method.repositoryName, experimentOptions.title, `${logFileName}${logFileExtension}`)

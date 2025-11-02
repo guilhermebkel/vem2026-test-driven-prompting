@@ -13,13 +13,13 @@ export type MethodDefinition = {
 	methodRelativeFilePath: string
 }
 
-export type ExperimentOptions = {
+export type MethodReconstructionExperimentOptions = {
 	title: string
 	method: MethodDefinition
 	reconstructionOptions: MethodReconstructionOptions
 }
 
-export type ExperimentResult = {
+export type MethodReconstructionExperimentResult = {
 	methodReconstructionResult: MethodReconstructionResult
 	repositoryTestSuiteResult: RepositoryTestSuiteResult
 	sourceFileWithReconstructedMethodBody: string

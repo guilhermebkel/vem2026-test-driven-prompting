@@ -5,7 +5,7 @@ import ExplorationModule from "@/Modules/ExplorationModule"
 
 import TracingUtil from "@/Utils/TracingUtil"
 
-import { ExperimentOptions } from "@/Protocols/ExperimentationProtocol"
+import { MethodReconstructionExperimentOptions } from "@/Protocols/ExperimentationProtocol"
 import { RepositoryName } from "@/Protocols/RepositoryProtocol"
 import { ExploreOptions } from "@/Protocols/MethodExplorerProtocol"
 
@@ -15,12 +15,12 @@ type RepositoryExperiment = {
 	repositoryName: RepositoryName
 	repositoryTestSuiteCommand: string
 	experiments: Array<{
-		title: ExperimentOptions["title"]
-		model: ExperimentOptions["reconstructionOptions"]["model"]
-		method: Omit<ExperimentOptions["method"], "repositoryName" | "repositoryTestSuiteCommand"> & {
+		title: MethodReconstructionExperimentOptions["title"]
+		model: MethodReconstructionExperimentOptions["reconstructionOptions"]["model"]
+		method: Omit<MethodReconstructionExperimentOptions["method"], "repositoryName" | "repositoryTestSuiteCommand"> & {
 			specificTestSuiteCommand?: string
 		}
-		context: ExperimentOptions["reconstructionOptions"]["context"]
+		context: MethodReconstructionExperimentOptions["reconstructionOptions"]["context"]
 	}>
 }
 
@@ -216,7 +216,7 @@ async function start(): Promise<void> {
 		await TracingUtil.traceTask(`Repository: ${repositoryExperiment.repositoryName}`, async () => {
 			for (const experiment of repositoryExperiment.experiments) {
 				await TracingUtil.traceTask(`Experiment: ${experiment.title}`, async (config) => {
-					const result = await ExperimentationModule.runExperiment({
+					const result = await ExperimentationModule.runMethodReconstructionExperiment({
 						title: experiment.title,
 						method: {
 							...experiment.method,
@@ -269,4 +269,4 @@ async function start2(): Promise<void> {
 	}
 }
 
-start()
+start2()
