@@ -95,7 +95,7 @@ class MethodExplorerService {
 						const methodSourceFile = project.addSourceFileAtPath(resolvedMethodFilePath)
 
 						const nodes = NodeJSCodeParserUtil.extractNodes(methodSourceFile, [
-							{ type: "class" },
+							{ type: "method" },
 							{ type: "function" }
 						])
 
