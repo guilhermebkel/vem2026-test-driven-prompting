@@ -39,14 +39,12 @@ class TestExecutorService {
 		const repositoryRootPath = PathUtil.getRepositoryRootPath(options.repositoryName)
 		await ShellUtil.executeCommand(options.repositoryTestSuiteWithCoverageReportCommand, repositoryRootPath)
 
-		const coverageReportFilePaths = await PathUtil.findResolvedRepositoryFilePaths(options.repositoryName, [options.coverageReportFilePattern])
+		const resolvedCoverageReportFilePaths = await PathUtil.findResolvedRepositoryFilePaths(options.repositoryName, [options.coverageReportFilePattern])
 
 		let coverageReport: CoverageReport = {}
 
 		await Promise.all(
-			coverageReportFilePaths.map(async coverageReportFilePath => {
-				const resolvedCoverageReportFilePath = PathUtil.resolveRelativeFilePath(options.repositoryName, coverageReportFilePath)
-
+			resolvedCoverageReportFilePaths.map(async resolvedCoverageReportFilePath => {
 				const coverageReportInString = await FileUtil.getFileContent(resolvedCoverageReportFilePath)
 
 				coverageReport = {
