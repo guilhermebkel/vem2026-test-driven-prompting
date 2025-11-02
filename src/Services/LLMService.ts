@@ -9,7 +9,7 @@ class LLMService {
 		return await TracingUtil.traceAction("Reconstructing method body with LLM...", async () => {
 			const languageModel = ModelUtil.getLanguageModel(options.model.name)
 
-			const { text: reconstructedMethodBody } = await generateText({
+			const { text: reconstructedMethodBody, reasoningText } = await generateText({
 				model: languageModel,
 				messages: [
 					{
@@ -25,14 +25,16 @@ class LLMService {
 				providerOptions: {
 					google: {
 						thinkingConfig: {
-							thinkingBudget: options.model.reasoningBudget
+							thinkingBudget: options.model.reasoningBudget,
+							includeThoughts: options.model.reasoningBudget > 0
 						}
 					}
 				}
 			})
 
 			return {
-				reconstructedMethodBody
+				reconstructedMethodBody,
+				reasoningText
 			}
 		})
 	}

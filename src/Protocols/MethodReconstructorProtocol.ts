@@ -12,4 +12,5 @@ export type MethodReconstructionOptions = {
 
 export type MethodReconstructionResult = {
 	reconstructedMethodBody: string
+	reasoningText?: string
 }

@@ -65,7 +65,8 @@ class ExperimentationModule {
 					reconstructedMethodBody: methodReconstructionResult.reconstructedMethodBody,
 					methodFileContentWithoutMethodBody: contextLoadResult.methodFileContentWithoutMethodBody,
 					systemPrompt: buildPromptResult.systemPrompt,
-					userPrompt: buildPromptResult.userPrompt
+					userPrompt: buildPromptResult.userPrompt,
+					reasoningText: methodReconstructionResult.reasoningText
 				},
 				repositoryTestSuiteResult,
 				sourceFileWithReconstructedMethodBody,
