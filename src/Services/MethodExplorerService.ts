@@ -4,6 +4,7 @@ import PathUtil from "@/Utils/PathUtil"
 import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
 import TracingUtil from "@/Utils/TracingUtil"
 import DataProcessUtil from "@/Utils/DataProcessUtil"
+import ArrayUtil from "@/Utils/ArrayUtil"
 
 import TestExecutorService from "@/Services/TestExecutorService"
 import { CoverageReport } from "@/Protocols/TestExecutorProtocol"
@@ -85,13 +86,13 @@ class MethodExplorerService {
 
 						nodes.forEach(node => {
 							const referencedFilePaths = node.findReferencesAsNodes().map(node => node.getSourceFile().getFilePath())
-							const resolvedTestFilePath = referencedFilePaths.find(referencedFilePath => PathUtil.pathMatchesPatterns(referencedFilePath, options.testFilePatterns))
+							const resolvedTestFilePathsIncludingDuplicates = referencedFilePaths.filter(referencedFilePath => PathUtil.pathMatchesPatterns(referencedFilePath, options.testFilePatterns))
 
 							const exploredMethod: ExploredMethod = {
 								name: node.getName(),
 								declarationType: NodeJSCodeParserUtil.turnSyntaxKindIntoDeclarationType(node.getKind()),
 								resolvedMethodFilePath,
-								resolvedTestFilePath,
+								resolvedTestFilePaths: ArrayUtil.keepUniqueValues(resolvedTestFilePathsIncludingDuplicates),
 								testCoveragePercentage: this.getMethodTestCoveragePercentage(node, testCoverageReport)
 							}
 
@@ -143,7 +144,7 @@ class MethodExplorerService {
 	}
 
 	private async filterExploredMethods(exploredMethods: ExploredMethod[]): Promise<ExploredMethod[]> {
-		const exploredMethodsWithTests = exploredMethods.filter(({ resolvedTestFilePath }) => Boolean(resolvedTestFilePath))
+		const exploredMethodsWithTests = exploredMethods.filter(({ resolvedTestFilePaths }) => resolvedTestFilePaths.length > 0)
 
 		const exploredMethodsWithTotalTestCoverage = exploredMethodsWithTests.filter(({ testCoveragePercentage }) => testCoveragePercentage >= 100)
 

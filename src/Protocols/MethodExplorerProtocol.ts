@@ -5,7 +5,7 @@ export type ExploredMethod = {
 	name?: string
 	declarationType?: DeclarationType
 	resolvedMethodFilePath: string
-	resolvedTestFilePath?: string
+	resolvedTestFilePaths: string[]
 	testCoveragePercentage: number
 }
 
