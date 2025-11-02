@@ -1,0 +1,1 @@
+export type SerializedSharedData = SharedArrayBuffer

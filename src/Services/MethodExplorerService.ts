@@ -9,6 +9,7 @@ import { CoverageReport } from "@/Protocols/TestExecutorProtocol"
 import PathUtil from "@/Utils/PathUtil"
 import TracingUtil from "@/Utils/TracingUtil"
 import DataProcessUtil from "@/Utils/DataProcessUtil"
+import WorkerUtil from "@/Utils/WorkerUtil"
 
 import TestExecutorService from "@/Services/TestExecutorService"
 
@@ -84,7 +85,7 @@ class MethodExplorerService {
 						testFilePaths: testFilePaths,
 						testFilePatterns: options.testFilePatterns,
 						repositoryName: options.repositoryName,
-						testCoverageReport: testCoverageReport
+						serializedSharedTestCoverageReport: WorkerUtil.serializeSharedData(testCoverageReport)
 					})
 
 					processedMethodFilePathsCount += chunk.length
@@ -102,6 +103,7 @@ class MethodExplorerService {
 	}
 
 	private async filterExploredMethods(exploredMethods: ExploredMethod[]): Promise<ExploredMethod[]> {
+		return exploredMethods
 		const exploredMethodsWithTests = exploredMethods.filter(({ resolvedTestFilePath }) => Boolean(resolvedTestFilePath))
 
 		const exploredMethodsWithTotalTestCoverage = exploredMethodsWithTests.filter(({ testCoveragePercentage }) => testCoveragePercentage >= 100)

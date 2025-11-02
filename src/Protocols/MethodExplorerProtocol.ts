@@ -1,6 +1,6 @@
 import { DeclarationType } from "@/Protocols/NodeJSCodeParserProtocol"
 import { RepositoryName } from "@/Protocols/RepositoryProtocol"
-import { CoverageReport } from "@/Protocols/TestExecutorProtocol"
+import { SerializedSharedData } from "@/Protocols/WorkerProtocol"
 
 export type ExploredMethod = {
 	name?: string
@@ -35,7 +35,7 @@ export type MethodExplorerWorkerOptions = {
 	testFilePaths: string[]
 	testFilePatterns: string[]
 	repositoryName: RepositoryName
-	testCoverageReport: CoverageReport
+	serializedSharedTestCoverageReport: SerializedSharedData
 }
 
 export type MethodExplorerWorkerResult = ExploredMethod[]

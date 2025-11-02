@@ -6,6 +6,7 @@ import { NodeType } from "@/Protocols/NodeJSCodeParserProtocol"
 
 import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
 import PathUtil from "@/Utils/PathUtil"
+import WorkerUtil from "@/Utils/WorkerUtil"
 
 export default function runExploration(options: MethodExplorerWorkerOptions): MethodExplorerWorkerResult {
 	const {
@@ -13,12 +14,14 @@ export default function runExploration(options: MethodExplorerWorkerOptions): Me
 		testFilePaths,
 		testFilePatterns,
 		repositoryName,
-		testCoverageReport
+		serializedSharedTestCoverageReport
 	} = options
 
 	const exploredMethods: ExploredMethod[] = []
 
 	const project = NodeJSCodeParserUtil.createProject()
+
+	const testCoverageReport = WorkerUtil.deserializeSharedData<CoverageReport>(serializedSharedTestCoverageReport)
 
 	testFilePaths.forEach(testFilePath => {
 		const resolvedTestFilePath = PathUtil.resolveRelativeFilePath(repositoryName, testFilePath)
