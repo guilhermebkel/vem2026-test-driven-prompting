@@ -5,11 +5,7 @@ import LogService from "@/Services/LogService"
 
 class ExplorationModule {
 	async exploreMethods(options: MethodExplorationOptions): Promise<MethodExplorationResult> {
-		const exploreResult = await MethodExplorerService.explore({
-			repositoryName: options.repositoryName,
-			methodFilePatterns: options.methodFilePatterns,
-			testFilePatterns: options.testFilePatterns
-		})
+		const exploreResult = await MethodExplorerService.explore(options.exploreOptions)
 
 		const methodExplorationResult: MethodExplorationResult = {
 			exploreResult

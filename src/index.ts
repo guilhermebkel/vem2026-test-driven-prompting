@@ -7,7 +7,7 @@ import TracingUtil from "@/Utils/TracingUtil"
 
 import { MethodReconstructionExperimentOptions } from "@/Protocols/ExperimentationProtocol"
 import { RepositoryName } from "@/Protocols/RepositoryProtocol"
-import { ExploreOptions } from "@/Protocols/MethodExplorerProtocol"
+import { MethodExplorationOptions } from "@/Protocols/ExplorationProtocol"
 
 import RepositoryTestSuiteFailedError from "@/Errors/RepositoryTestSuiteFailedError"
 
@@ -238,33 +238,31 @@ async function start(): Promise<void> {
 	}
 }
 
-type RepositoryMethodExploration = {
-	repositoryName: RepositoryName
-	methodFilePatterns: ExploreOptions["methodFilePatterns"]
-	testFilePatterns: ExploreOptions["methodFilePatterns"]
-}
-
-const REPOSITORY_METHOD_EXPLORATIONS: RepositoryMethodExploration[] = [
+const REPOSITORY_METHOD_EXPLORATIONS: MethodExplorationOptions[] = [
 	{
-		repositoryName: "date-fns",
-		methodFilePatterns: ["**/*.ts"],
-		testFilePatterns: ["**/test.ts"]
+		exploreOptions: {
+			repositoryName: "date-fns",
+			methodFilePatterns: ["**/*.ts"],
+			testFilePatterns: ["**/test.ts"],
+			repositoryTestSuiteWithCoverageReportCommand: "npx vitest run --coverage --coverage.provider=v8 --coverage.reporter=json",
+			coverageReportFilePattern: "**/coverage/coverage-final.json"
+		}
 	},
 	{
-		repositoryName: "directus",
-		methodFilePatterns: ["**/*.ts", "**/*.js"],
-		testFilePatterns: ["**/*.spec.*", "**/*.test.*"]
+		exploreOptions: {
+			repositoryName: "directus",
+			methodFilePatterns: ["**/*.ts", "**/*.js"],
+			testFilePatterns: ["**/*.spec.*", "**/*.test.*"],
+			repositoryTestSuiteWithCoverageReportCommand: "pnpm -r --filter '!tests-blackbox' exec sh -c 'npx vitest run --coverage --coverage.provider=v8 --coverage.reporter=json || true'",
+			coverageReportFilePattern: "**/coverage/coverage-final.json"
+		}
 	}
 ]
 
 async function start2(): Promise<void> {
 	for (const repositoryMethodExploration of REPOSITORY_METHOD_EXPLORATIONS) {
-		await TracingUtil.traceTask(`Explore Repository Methods: ${repositoryMethodExploration.repositoryName}`, async () => {
-			await ExplorationModule.exploreMethods({
-				repositoryName: repositoryMethodExploration.repositoryName,
-				methodFilePatterns: repositoryMethodExploration.methodFilePatterns,
-				testFilePatterns: repositoryMethodExploration.testFilePatterns
-			})
+		await TracingUtil.traceTask(`Explore Repository Methods: ${repositoryMethodExploration.exploreOptions.repositoryName}`, async () => {
+			await ExplorationModule.exploreMethods(repositoryMethodExploration)
 		})
 	}
 }

@@ -1,4 +1,4 @@
-import { ClassDeclaration, FunctionDeclaration, InterfaceDeclaration, MethodDeclaration, TypeAliasDeclaration } from "ts-morph"
+import { ClassDeclaration, FunctionDeclaration, InterfaceDeclaration, MethodDeclaration, Project, TypeAliasDeclaration } from "ts-morph"
 
 export type DeclarationType = "class" | "interface" | "type" | "function" | "method"
 
@@ -13,3 +13,5 @@ export type NodeType =
 	TypeAliasDeclaration |
 	FunctionDeclaration |
 	MethodDeclaration
+
+export type ProjectType = Project

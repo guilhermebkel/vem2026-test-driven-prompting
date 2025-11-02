@@ -6,6 +6,7 @@ export type ExploredMethod = {
 	declarationType?: DeclarationType
 	resolvedMethodFilePath: string
 	resolvedTestFilePath?: string
+	testCoveragePercentage: number
 }
 
 export type ExploreOptions = {
@@ -22,6 +23,8 @@ export type ExploreOptions = {
 	 * - \/**\/*.test.\*
 	 */
 	testFilePatterns: string[]
+	repositoryTestSuiteWithCoverageReportCommand: string
+	coverageReportFilePattern: string
 }
 
 export type ExploreResult = ExploredMethod[]

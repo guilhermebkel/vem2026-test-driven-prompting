@@ -49,14 +49,14 @@ class LogService {
 
 	async saveMethodExplorationLogs(methodExplorationOptions: MethodExplorationOptions, methodExplorationResult: MethodExplorationResult): Promise<void> {
 		const {
-			repositoryName
+			exploreOptions
 		} = methodExplorationOptions
 
 		const {
 			exploreResult
 		} = methodExplorationResult
 
-		const logPath: string[] = ["method-exploration", repositoryName]
+		const logPath: string[] = ["method-exploration", exploreOptions.repositoryName]
 
 		const exploreResultLogFilePath = this.getLogFilePath(logPath, "exploreResult", ".json")
 		await FileUtil.setFileContent(exploreResultLogFilePath, JSON.stringify(exploreResult, null, 2))

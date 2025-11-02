@@ -1,12 +1,11 @@
 import PromptUtil from "@/Utils/PromptUtil"
 
 import { PromptBuildOptions, PromptBuildResult } from "@/Protocols/PromptBuilderProtocol"
-import { BuildedContext } from "@/Protocols/ContextProtocol"
 
 class PromptBuilderService {
 	buildPrompt(options: PromptBuildOptions): PromptBuildResult {
 		const systemPrompt = this.buildSystemPrompt()
-		const userPrompt = this.buildUserPrompt(options.methodName, options.methodTestContent, options.methodFileContentWithoutMethodBody, options.buildedContext)
+		const userPrompt = this.buildUserPrompt(options)
 
 		return {
 			systemPrompt,
@@ -48,8 +47,8 @@ class PromptBuilderService {
 		`)
 	}
 
-	private buildUserPrompt(methodName: string, methodTestContent: string, methodFileContentWithoutMethodBody: string, buildedContext: BuildedContext): string {
-		const contextSections = buildedContext.map((item) => (
+	private buildUserPrompt(options: PromptBuildOptions): string {
+		const contextSections = options.buildedContext.map((item) => (
 			`## ${item.name}\n\n${PromptUtil.formatCodeBlock(item.content)}`
 		))
 		const mergedContextSections = contextSections.join("\n\n")
@@ -57,15 +56,15 @@ class PromptBuilderService {
 		return PromptUtil.sanitizePrompt(`
 			# Method Name
 
-			${methodName}
+			${options.methodName}
 
 			# Method File Content Without Method Body
 
-			${PromptUtil.formatCodeBlock(methodFileContentWithoutMethodBody)}
+			${PromptUtil.formatCodeBlock(options.methodFileContentWithoutMethodBody)}
 
 			# Method Test
 			
-			${PromptUtil.formatCodeBlock(methodTestContent)}
+			${PromptUtil.formatCodeBlock(options.methodTestContent)}
 
 			# Context
 
