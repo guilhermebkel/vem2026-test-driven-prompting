@@ -1,6 +1,6 @@
 class PromptUtil {
 	formatCodeBlock(blockContent: string): string {
-		return `\`\`\`\n${blockContent}\n\`\`\``
+		return `\`\`\`\n${this.sanitizePrompt(blockContent)}\n\`\`\``
 	}
 
 	sanitizePrompt(prompt: string): string {

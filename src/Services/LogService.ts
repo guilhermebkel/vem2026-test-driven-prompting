@@ -42,7 +42,7 @@ class LogService {
 			const systemPromptLogFilePath = this.getLogFilePath(logPath, "systemPrompt", ".md")
 			await FileUtil.setFileContent(systemPromptLogFilePath, methodReconstructionResult.systemPrompt)
 
-			const reasoningLogFilePath = this.getLogFilePath(logPath, "reasoning")
+			const reasoningLogFilePath = this.getLogFilePath(logPath, "reasoning", ".md")
 			await FileUtil.setFileContent(reasoningLogFilePath, methodReconstructionResult.reasoningText || "")
 		})
 	}
