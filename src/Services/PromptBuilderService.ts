@@ -49,7 +49,7 @@ class PromptBuilderService {
 			You must strictly obey the following rules:
 
 			- **No external knowledge:** You may not rely on training data or general programming knowledge to infer the behavior of: missing functions, missing utilities, missing domain rules, or external libraries.
-			- **Allowed dependencies:** You may use a function/class/type **only if it appears explicitly** in: Method File Content Without Method Body, or Context.
+			- **Allowed dependencies:** You may use a function/class/type **only if it appears explicitly** in: Method File Content Without Method Body.
 			- **Missing Information Handling:** If any behavior required by the tests cannot be implemented because necessary information is missing from the user input: Do **not** guess. Insert a clear inline comment inside the code explaining *exactly* what information is missing.
 			- **Signature Preservation:** You must preserve the original method signature (name, parameters, types, modifiers) shown in the Method File Content Without Method Body, unless the test suite or the context explicitly instructs otherwise.
 
