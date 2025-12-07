@@ -1,0 +1,3531 @@
+[
+  {
+    "name": "getDstTransitions",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/_lib/tzOffsetTransitions.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/add/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addDays/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addMonths/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInCalendarDays/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInDays/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "add",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/add/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/add/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "addBusinessDays",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addBusinessDays/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addBusinessDays/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 95
+    }
+  },
+  {
+    "name": "addDays",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addDays/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addDays/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 87.5
+    }
+  },
+  {
+    "name": "addHours",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addHours/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addHours/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "addISOWeekYears",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addISOWeekYears/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addISOWeekYears/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "addMilliseconds",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addMilliseconds/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addMilliseconds/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "addMinutes",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addMinutes/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addMinutes/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "addMonths",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addMonths/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addMonths/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/intervalToDuration/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 91.67
+    }
+  },
+  {
+    "name": "addQuarters",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addQuarters/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addQuarters/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "addSeconds",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addSeconds/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addSeconds/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "addWeeks",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addWeeks/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addWeeks/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "addYears",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addYears/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addYears/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "areIntervalsOverlapping",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/areIntervalsOverlapping/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/areIntervalsOverlapping/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "clamp",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/clamp/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/clamp/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "closestIndexTo",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/closestIndexTo/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/closestIndexTo/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "closestTo",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/closestTo/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/closestTo/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "compareAsc",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/compareAsc/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/compareAsc/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "compareDesc",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/compareDesc/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/compareDesc/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "constructFrom",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/constructFrom/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/constructFrom/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "constructNow",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/constructNow/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/constructNow/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "daysToWeeks",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/daysToWeeks/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/daysToWeeks/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "differenceInBusinessDays",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInBusinessDays/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInBusinessDays/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "differenceInCalendarDays",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInCalendarDays/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInCalendarDays/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "differenceInCalendarISOWeekYears",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInCalendarISOWeekYears/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInCalendarISOWeekYears/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "differenceInCalendarISOWeeks",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInCalendarISOWeeks/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInCalendarISOWeeks/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "differenceInCalendarMonths",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInCalendarMonths/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInCalendarMonths/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "differenceInCalendarQuarters",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInCalendarQuarters/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInCalendarQuarters/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "differenceInCalendarWeeks",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInCalendarWeeks/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInCalendarWeeks/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDefaultOptions/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "differenceInCalendarYears",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInCalendarYears/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInCalendarYears/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "differenceInDays",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInDays/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInDays/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "differenceInHours",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInHours/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInHours/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "differenceInISOWeekYears",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInISOWeekYears/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInISOWeekYears/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "differenceInMilliseconds",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInMilliseconds/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInMilliseconds/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "differenceInMinutes",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInMinutes/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInMinutes/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "differenceInMonths",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInMonths/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInMonths/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "differenceInQuarters",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInQuarters/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInQuarters/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "differenceInSeconds",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInSeconds/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInSeconds/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "differenceInWeeks",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInWeeks/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInWeeks/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "differenceInYears",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInYears/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInYears/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "eachDayOfInterval",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachDayOfInterval/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachDayOfInterval/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "eachHourOfInterval",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachHourOfInterval/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachHourOfInterval/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "eachMinuteOfInterval",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachMinuteOfInterval/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachMinuteOfInterval/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "eachMonthOfInterval",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachMonthOfInterval/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachMonthOfInterval/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "eachQuarterOfInterval",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachQuarterOfInterval/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachQuarterOfInterval/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "eachWeekOfInterval",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachWeekOfInterval/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachWeekOfInterval/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDefaultOptions/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "eachWeekendOfInterval",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachWeekendOfInterval/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachWeekendOfInterval/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "eachWeekendOfMonth",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachWeekendOfMonth/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachWeekendOfMonth/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "eachWeekendOfYear",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachWeekendOfYear/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachWeekendOfYear/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "eachYearOfInterval",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachYearOfInterval/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachYearOfInterval/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "endOfDay",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfDay/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfDay/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "endOfDecade",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfDecade/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfDecade/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "endOfHour",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfHour/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfHour/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "endOfISOWeek",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfISOWeek/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfISOWeek/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "endOfISOWeekYear",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfISOWeekYear/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfISOWeekYear/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "endOfMinute",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfMinute/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfMinute/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "endOfMonth",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfMonth/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfMonth/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "endOfQuarter",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfQuarter/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfQuarter/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "endOfSecond",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfSecond/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfSecond/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "endOfToday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfToday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfToday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "endOfTomorrow",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfTomorrow/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfTomorrow/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "endOfWeek",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfWeek/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfWeek/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDefaultOptions/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 92.31
+    }
+  },
+  {
+    "name": "endOfYear",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfYear/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfYear/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "endOfYesterday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfYesterday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfYesterday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "format",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/format/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/format/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/parseJSON/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDefaultOptions/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/locale/fr/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "formatDistance",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatDistance/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatDistance/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDefaultOptions/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "formatDistanceStrict",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatDistanceStrict/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatDistanceStrict/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDefaultOptions/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "formatDistanceToNow",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatDistanceToNow/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatDistanceToNow/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "formatDistanceToNowStrict",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatDistanceToNowStrict/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatDistanceToNowStrict/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "formatDuration",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatDuration/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatDuration/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDefaultOptions/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 92.31,
+      "lineCoveragePercentage": 92.31,
+      "branchCoveragePercentage": 94.12
+    }
+  },
+  {
+    "name": "formatISO",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatISO/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatISO/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "formatISO9075",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatISO9075/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatISO9075/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "formatISODuration",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatISODuration/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatISODuration/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "formatRFC3339",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatRFC3339/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatRFC3339/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "formatRFC7231",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatRFC7231/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatRFC7231/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "formatRelative",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatRelative/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatRelative/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDefaultOptions/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "fromUnixTime",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/fromUnixTime/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/fromUnixTime/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "getDate",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getDate/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getDate/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "getDay",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getDay/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getDay/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "getDayOfYear",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getDayOfYear/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getDayOfYear/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "getDaysInMonth",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getDaysInMonth/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getDaysInMonth/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "getDaysInYear",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getDaysInYear/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getDaysInYear/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "getDecade",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getDecade/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getDecade/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "getDefaultOptions",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getDefaultOptions/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getDefaultOptions/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "getHours",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getHours/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getHours/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "getISODay",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getISODay/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getISODay/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "getISOWeek",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getISOWeek/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getISOWeek/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "getISOWeekYear",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getISOWeekYear/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getISOWeekYear/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "getISOWeeksInYear",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getISOWeeksInYear/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getISOWeeksInYear/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "getMilliseconds",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getMilliseconds/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getMilliseconds/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "getMinutes",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getMinutes/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getMinutes/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "getMonth",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getMonth/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getMonth/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "getOverlappingDaysInIntervals",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getOverlappingDaysInIntervals/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getOverlappingDaysInIntervals/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "getQuarter",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getQuarter/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getQuarter/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "getSeconds",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getSeconds/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getSeconds/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "getTime",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getTime/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getTime/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "getUnixTime",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getUnixTime/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getUnixTime/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "getWeek",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getWeek/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getWeek/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDefaultOptions/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "getWeekOfMonth",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getWeekOfMonth/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getWeekOfMonth/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDefaultOptions/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 93.33
+    }
+  },
+  {
+    "name": "getWeekYear",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getWeekYear/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getWeekYear/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDefaultOptions/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 94.74
+    }
+  },
+  {
+    "name": "getWeeksInMonth",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getWeeksInMonth/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getWeeksInMonth/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDefaultOptions/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "getYear",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getYear/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getYear/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "hoursToMilliseconds",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/hoursToMilliseconds/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/hoursToMilliseconds/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "hoursToMinutes",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/hoursToMinutes/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/hoursToMinutes/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "hoursToSeconds",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/hoursToSeconds/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/hoursToSeconds/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "interval",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/interval/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/interval/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "intervalToDuration",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/intervalToDuration/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatISODuration/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/intervalToDuration/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "intlFormat",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/intlFormat/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/intlFormat/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "intlFormatDistance",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/intlFormatDistance/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/intlFormatDistance/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 96.05,
+      "lineCoveragePercentage": 96.05,
+      "branchCoveragePercentage": 94.74
+    }
+  },
+  {
+    "name": "isAfter",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isAfter/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isAfter/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isBefore",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isBefore/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isBefore/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isDate",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isDate/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isDate/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isEqual",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isEqual/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isEqual/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isExists",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isExists/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isExists/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isFirstDayOfMonth",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isFirstDayOfMonth/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isFirstDayOfMonth/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isFriday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isFriday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isFriday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isFuture",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isFuture/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isFuture/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isLastDayOfMonth",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isLastDayOfMonth/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isLastDayOfMonth/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isLeapYear",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isLeapYear/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isLeapYear/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isMatch",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isMatch/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isMatch/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDefaultOptions/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isMonday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isMonday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isMonday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isPast",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isPast/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isPast/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isSameDay",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isSameDay/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isSameDay/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isSameHour",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isSameHour/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isSameHour/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isSameISOWeek",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isSameISOWeek/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isSameISOWeek/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isSameISOWeekYear",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isSameISOWeekYear/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isSameISOWeekYear/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isSameMinute",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isSameMinute/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isSameMinute/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isSameMonth",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isSameMonth/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isSameMonth/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isSameQuarter",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isSameQuarter/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isSameQuarter/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isSameSecond",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isSameSecond/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isSameSecond/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isSameWeek",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isSameWeek/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isSameWeek/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDefaultOptions/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isSameYear",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isSameYear/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isSameYear/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isSaturday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isSaturday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isSaturday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isSunday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isSunday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isSunday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isThisHour",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isThisHour/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isThisHour/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isThisISOWeek",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isThisISOWeek/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isThisISOWeek/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isThisMinute",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isThisMinute/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isThisMinute/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isThisMonth",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isThisMonth/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isThisMonth/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isThisQuarter",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isThisQuarter/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isThisQuarter/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isThisSecond",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isThisSecond/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isThisSecond/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isThisWeek",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isThisWeek/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isThisWeek/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isThisYear",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isThisYear/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isThisYear/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isThursday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isThursday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isThursday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isToday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isToday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isToday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isTomorrow",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isTomorrow/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isTomorrow/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isTuesday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isTuesday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isTuesday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isValid",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isValid/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isValid/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isWednesday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isWednesday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isWednesday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isWeekend",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isWeekend/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachWeekendOfYear/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isWeekend/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isWithinInterval",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isWithinInterval/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isWithinInterval/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "isYesterday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isYesterday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isYesterday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "lastDayOfDecade",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/lastDayOfDecade/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/lastDayOfDecade/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "lastDayOfISOWeek",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/lastDayOfISOWeek/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/lastDayOfISOWeek/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "lastDayOfISOWeekYear",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/lastDayOfISOWeekYear/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/lastDayOfISOWeekYear/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "lastDayOfMonth",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/lastDayOfMonth/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/lastDayOfMonth/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "lastDayOfQuarter",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/lastDayOfQuarter/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/lastDayOfQuarter/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "lastDayOfWeek",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/lastDayOfWeek/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/lastDayOfWeek/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDefaultOptions/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 92.31
+    }
+  },
+  {
+    "name": "lastDayOfYear",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/lastDayOfYear/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/lastDayOfYear/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "lightFormat",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/lightFormat/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/lightFormat/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "max",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/max/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/max/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "milliseconds",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/milliseconds/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/milliseconds/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "millisecondsToHours",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/millisecondsToHours/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/millisecondsToHours/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "millisecondsToMinutes",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/millisecondsToMinutes/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/millisecondsToMinutes/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "millisecondsToSeconds",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/millisecondsToSeconds/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/millisecondsToSeconds/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "min",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/min/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/min/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "minutesToHours",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/minutesToHours/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/minutesToHours/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "minutesToMilliseconds",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/minutesToMilliseconds/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/minutesToMilliseconds/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "minutesToSeconds",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/minutesToSeconds/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/minutesToSeconds/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "monthsToQuarters",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/monthsToQuarters/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/monthsToQuarters/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "monthsToYears",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/monthsToYears/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/monthsToYears/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "nextDay",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/nextDay/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/nextDay/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "nextFriday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/nextFriday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/nextFriday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "nextMonday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/nextMonday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/nextMonday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "nextSaturday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/nextSaturday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/nextSaturday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "nextSunday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/nextSunday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/nextSunday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "nextThursday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/nextThursday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/nextThursday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "nextTuesday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/nextTuesday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/nextTuesday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "nextWednesday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/nextWednesday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/nextWednesday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "parse",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/parse/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/parse/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDefaultOptions/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 98.8
+    }
+  },
+  {
+    "name": "parseISO",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/parseISO/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/parseISO/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 94.44
+    }
+  },
+  {
+    "name": "parseJSON",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/parseJSON/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/parseJSON/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 91.67
+    }
+  },
+  {
+    "name": "previousDay",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/previousDay/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/previousDay/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "previousFriday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/previousFriday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/previousFriday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "previousMonday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/previousMonday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/previousMonday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "previousSaturday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/previousSaturday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/previousSaturday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "previousSunday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/previousSunday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/previousSunday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "previousThursday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/previousThursday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/previousThursday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "previousTuesday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/previousTuesday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/previousTuesday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "previousWednesday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/previousWednesday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/previousWednesday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "quartersToMonths",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/quartersToMonths/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/quartersToMonths/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "quartersToYears",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/quartersToYears/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/quartersToYears/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "roundToNearestHours",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/roundToNearestHours/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/roundToNearestHours/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 85.71
+    }
+  },
+  {
+    "name": "roundToNearestMinutes",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/roundToNearestMinutes/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/roundToNearestMinutes/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 85.71
+    }
+  },
+  {
+    "name": "secondsToHours",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/secondsToHours/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/secondsToHours/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "secondsToMilliseconds",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/secondsToMilliseconds/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/secondsToMilliseconds/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "secondsToMinutes",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/secondsToMinutes/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/secondsToMinutes/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "set",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/set/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/set/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 94.74
+    }
+  },
+  {
+    "name": "setDate",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDate/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDate/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "setDay",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDay/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDay/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDefaultOptions/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 92.86
+    }
+  },
+  {
+    "name": "setDayOfYear",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDayOfYear/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDayOfYear/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "setDefaultOptions",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDefaultOptions/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getDefaultOptions/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDefaultOptions/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "setHours",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setHours/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setHours/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "setISODay",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setISODay/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setISODay/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "setISOWeek",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setISOWeek/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setISOWeek/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "setISOWeekYear",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setISOWeekYear/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setISOWeekYear/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "setMilliseconds",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setMilliseconds/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setMilliseconds/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "setMinutes",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setMinutes/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setMinutes/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "setMonth",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setMonth/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setMonth/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "setQuarter",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setQuarter/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setQuarter/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "setSeconds",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setSeconds/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setSeconds/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "setWeek",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setWeek/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDefaultOptions/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setWeek/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "setWeekYear",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setWeekYear/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDefaultOptions/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setWeekYear/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 92.31
+    }
+  },
+  {
+    "name": "setYear",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setYear/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setYear/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 80
+    }
+  },
+  {
+    "name": "startOfDay",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfDay/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfDay/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "startOfDecade",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfDecade/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfDecade/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "startOfHour",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfHour/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfHour/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "startOfISOWeek",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfISOWeek/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfISOWeek/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "startOfISOWeekYear",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfISOWeekYear/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfISOWeekYear/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "startOfMinute",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfMinute/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfMinute/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "startOfMonth",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfMonth/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfMonth/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "startOfQuarter",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfQuarter/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfQuarter/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "startOfSecond",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfSecond/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfSecond/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "startOfToday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfToday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfToday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "startOfTomorrow",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfTomorrow/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfTomorrow/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "startOfWeek",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfWeek/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getDefaultOptions/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDefaultOptions/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfWeek/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 92.31
+    }
+  },
+  {
+    "name": "startOfWeekYear",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfWeekYear/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDefaultOptions/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfWeekYear/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 91.67
+    }
+  },
+  {
+    "name": "startOfYear",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfYear/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfYear/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "startOfYesterday",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfYesterday/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfYesterday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "sub",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/sub/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/sub/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "subBusinessDays",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subBusinessDays/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subBusinessDays/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "subDays",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subDays/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subDays/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "subHours",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subHours/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subHours/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "subISOWeekYears",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subISOWeekYears/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subISOWeekYears/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "subMilliseconds",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subMilliseconds/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subMilliseconds/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "subMinutes",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subMinutes/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subMinutes/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "subMonths",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subMonths/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subMonths/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "subQuarters",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subQuarters/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subQuarters/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "subSeconds",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subSeconds/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subSeconds/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "subWeeks",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subWeeks/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachWeekendOfInterval/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subWeeks/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "subYears",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subYears/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subYears/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "toDate",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/toDate/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/toDate/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "transpose",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/transpose/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/transpose/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 93.75,
+      "lineCoveragePercentage": 93.75,
+      "branchCoveragePercentage": 50
+    }
+  },
+  {
+    "name": "weeksToDays",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/weeksToDays/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/weeksToDays/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "yearsToDays",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/yearsToDays/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/yearsToDays/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "yearsToMonths",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/yearsToMonths/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/yearsToMonths/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "yearsToQuarters",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/yearsToQuarters/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/yearsToQuarters/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "addLeadingZeros",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/_lib/addLeadingZeros/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/_lib/addLeadingZeros/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "getDefaultOptions",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/_lib/defaultOptions/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getDefaultOptions/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDefaultOptions/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "setDefaultOptions",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/_lib/defaultOptions/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getDefaultOptions/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "getRoundingMethod",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/_lib/getRoundingMethod/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/_lib/getRoundingMethod/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "getTimezoneOffsetInMilliseconds",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/_lib/getTimezoneOffsetInMilliseconds/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/_lib/getTimezoneOffsetInMilliseconds/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "assertType",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/_lib/test/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/add/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addBusinessDays/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addDays/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addHours/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addISOWeekYears/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addMilliseconds/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addMinutes/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addMonths/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addQuarters/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addSeconds/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addWeeks/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addYears/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/clamp/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/closestTo/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/constructFrom/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/constructNow/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachDayOfInterval/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachHourOfInterval/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachMinuteOfInterval/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachMonthOfInterval/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachQuarterOfInterval/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachWeekOfInterval/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachWeekendOfInterval/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachWeekendOfMonth/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachWeekendOfYear/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/eachYearOfInterval/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfDay/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfDecade/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfHour/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfISOWeek/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfISOWeekYear/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfMinute/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfMonth/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfQuarter/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfSecond/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfToday/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfTomorrow/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfWeek/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfYear/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfYesterday/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/fromUnixTime/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/interval/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isDate/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/lastDayOfDecade/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/lastDayOfISOWeek/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/lastDayOfISOWeekYear/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/lastDayOfMonth/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/lastDayOfQuarter/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/lastDayOfWeek/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/lastDayOfYear/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/max/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/min/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/nextDay/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/nextFriday/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/nextMonday/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/nextSaturday/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/nextSunday/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/nextThursday/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/nextTuesday/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/nextWednesday/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/parse/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/parseISO/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/parseJSON/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/previousDay/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/previousFriday/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/previousMonday/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/previousSaturday/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/previousSunday/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/previousThursday/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/previousTuesday/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/previousWednesday/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/roundToNearestHours/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/roundToNearestMinutes/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/set/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDate/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDay/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDayOfYear/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setHours/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setISODay/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setISOWeek/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setISOWeekYear/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setMilliseconds/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setMinutes/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setMonth/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setQuarter/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setSeconds/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setWeek/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setWeekYear/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setYear/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfDay/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfDecade/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfHour/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfISOWeek/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfISOWeekYear/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfMinute/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfMonth/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfQuarter/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfSecond/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfToday/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfTomorrow/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfWeek/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfWeekYear/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfYear/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfYesterday/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/sub/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subBusinessDays/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subDays/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subHours/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subISOWeekYears/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subMilliseconds/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subMinutes/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subMonths/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subQuarters/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subSeconds/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subWeeks/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/subYears/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/toDate/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "resetDefaultOptions",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/_lib/test/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/getDefaultOptions/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/setDefaultOptions/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "generateOffset",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/_lib/test/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatISO/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatRFC3339/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 75
+    }
+  },
+  {
+    "name": "fakeDate",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/_lib/test/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfToday/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfTomorrow/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/endOfYesterday/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatDistanceToNow/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/formatDistanceToNowStrict/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isFuture/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isPast/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isThisHour/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isThisISOWeek/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isThisMinute/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isThisMonth/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isThisQuarter/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isThisSecond/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isThisWeek/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isThisYear/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isToday/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isTomorrow/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/isYesterday/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfToday/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfTomorrow/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/startOfYesterday/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "tzOffset",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/submodules/tz/src/tzOffset/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/submodules/tz/test/engines/src/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 71.43
+    }
+  },
+  {
+    "name": "getTimezoneOffset",
+    "declarationType": "method",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/submodules/utc/src/date/index.d.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/addDays/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInCalendarDays/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/differenceInDays/test.ts",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/format/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 0,
+      "lineCoveragePercentage": 0,
+      "branchCoveragePercentage": 0
+    }
+  },
+  {
+    "name": "convertToFP",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/fp/_lib/convertToFP/index.ts",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/date-fns/src/fp/_lib/convertToFP/test.ts"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  }
+]
