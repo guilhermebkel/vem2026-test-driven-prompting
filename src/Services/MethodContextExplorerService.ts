@@ -42,7 +42,7 @@ class MethodContextExplorerService {
 
 						const isSimilarMethod = dataflow_match_score >= 0.6 && (syntax_match_score >= 0.55 || codebleu >= 0.5)
 
-						if (isSimilarMethod) {
+						if (isSimilarMethod && (node.getName() !== exploredMethod.name)) {
 							console.log(`Similar file: ${resolvedMethodFilePath}\nOriginal file: ${exploredMethod.resolvedMethodFilePath}`)
 							console.log(`Dataflow Match Score: ${dataflow_match_score}`)
 							console.log(`Syntax Match Score: ${syntax_match_score}`)
