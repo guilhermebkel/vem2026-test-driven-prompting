@@ -10,6 +10,7 @@ import RepositoryTestSuiteFailedError from "@/Errors/RepositoryTestSuiteFailedEr
 
 import { methodReconstructionExperimentConfig } from "@/Config/MethodReconstructionExperimentConfig"
 import { methodExplorationConfig } from "@/Config/MethodExplorationConfig"
+import { methodContextExplorationConfig } from "@/Config/MethodContextExplorationConfig"
 
 import { PipelineType } from "@/Protocols/ProcessArgumentProtocol"
 
@@ -47,6 +48,13 @@ async function main(): Promise<void> {
 			for (const repositoryMethodExploration of methodExplorationConfig) {
 				await TracingUtil.traceTask(`Explore Repository Methods: ${repositoryMethodExploration.exploreOptions.repositoryName}`, async () => {
 					await ExplorationModule.exploreMethods(repositoryMethodExploration)
+				})
+			}
+		},
+		"method-context-exploration": async () => {
+			for (const repositoryMethodContextExploration of methodContextExplorationConfig) {
+				await TracingUtil.traceTask(`Explore Repository Method Contexts: ${repositoryMethodContextExploration.exploreOptions.repositoryName}`, async () => {
+					await ExplorationModule.exploreMethodContexts(repositoryMethodContextExploration)
 				})
 			}
 		}

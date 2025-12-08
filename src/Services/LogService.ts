@@ -5,6 +5,7 @@ import FileUtil from "@/Utils/FileUtil"
 
 import { MethodReconstructionExperimentOptions, MethodReconstructionExperimentResult } from "@/Protocols/ExperimentationProtocol"
 import { MethodExplorationOptions, MethodExplorationResult } from "@/Protocols/ExplorationProtocol"
+import { RepositoryName } from "@/Protocols/RepositoryProtocol"
 
 class LogService {
 	async saveMethodReconstructionExperimentLogs(methodReconstructionExperimentOptions: MethodReconstructionExperimentOptions, methodReconstructionExperimentResult: MethodReconstructionExperimentResult): Promise<void> {
@@ -56,10 +57,14 @@ class LogService {
 			exploreResult
 		} = methodExplorationResult
 
-		const logPath: string[] = ["method-exploration", exploreOptions.repositoryName]
+		const methodExplorationResultLogFilePath = this.getMethodExplorationResultLogFilePath(exploreOptions.repositoryName)
+		await FileUtil.setFileContent(methodExplorationResultLogFilePath, JSON.stringify(exploreResult, null, 2))
+	}
 
-		const exploreResultLogFilePath = this.getLogFilePath(logPath, "exploreResult", ".json")
-		await FileUtil.setFileContent(exploreResultLogFilePath, JSON.stringify(exploreResult, null, 2))
+	getMethodExplorationResultLogFilePath(repositoryName: RepositoryName): string {
+		const logPath: string[] = ["method-exploration", repositoryName]
+
+		return this.getLogFilePath(logPath, "exploreResult", ".json")
 	}
 
 	private getLogFilePath(logPath: string[], logFileName: string, logFileExtension = ".txt"): string {

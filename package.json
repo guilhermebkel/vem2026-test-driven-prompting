@@ -5,9 +5,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "pnpm run dev:method-exploration",
+    "dev": "pnpm run dev:method-context-exploration",
     "dev:method-exploration": "tsx src/index.ts --pipeline=method-exploration",
     "dev:method-reconstruction-experiment": "tsx src/index.ts --pipeline=method-reconstruction-experiment",
+    "dev:method-context-exploration": "tsx src/index.ts --pipeline=method-context-exploration",
     "experiment-repo:add": "bash ./scripts/add-experiment-repo.sh",
     "experiment-repo:fetch-all": "git submodule update --init --recursive",
     "experiment-repo:refresh": "git submodule update --remote",

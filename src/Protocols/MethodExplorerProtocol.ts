@@ -10,7 +10,7 @@ export type ExploredMethod = {
 	testCoverageDetails: MethodTestCoverageDetails
 }
 
-export type ExploreOptions = {
+export type ExploreMethodOptions = {
 	repositoryName: RepositoryName
 	/**
 	 * Examples:
@@ -28,5 +28,5 @@ export type ExploreOptions = {
 	coverageReportFilePattern: string
 }
 
-export type ExploreResult = ExploredMethod[]
+export type ExploreMethodResult = ExploredMethod[]
 

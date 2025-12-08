@@ -1,9 +1,14 @@
-import { ExploreOptions, ExploreResult } from "@/Protocols/MethodExplorerProtocol"
+import { ExploreMethodOptions, ExploreMethodResult } from "@/Protocols/MethodExplorerProtocol"
+import { ExploreContextOptions } from "@/Protocols/MethodContextExplorerProtocol"
 
 export type MethodExplorationOptions = {
-	exploreOptions: ExploreOptions
+	exploreOptions: ExploreMethodOptions
 }
 
 export type MethodExplorationResult = {
-	exploreResult: ExploreResult
+	exploreResult: ExploreMethodResult
+}
+
+export type MethodContextExplorationOptions = {
+	exploreOptions: ExploreContextOptions
 }

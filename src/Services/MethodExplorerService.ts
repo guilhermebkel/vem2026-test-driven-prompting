@@ -1,4 +1,4 @@
-import { ExploredMethod, ExploreOptions, ExploreResult } from "@/Protocols/MethodExplorerProtocol"
+import { ExploredMethod, ExploreMethodOptions, ExploreMethodResult } from "@/Protocols/MethodExplorerProtocol"
 import { CoverageReport } from "@/Protocols/TestExecutorProtocol"
 import { ProjectType } from "@/Protocols/NodeJSCodeParserProtocol"
 
@@ -12,7 +12,7 @@ import TestCoverageUtil from "@/Utils/TestCoverageUtil"
 import TestExecutorService from "@/Services/TestExecutorService"
 
 class MethodExplorerService {
-	async explore(options: ExploreOptions): Promise<ExploreResult> {
+	async explore(options: ExploreMethodOptions): Promise<ExploreMethodResult> {
 		const testCoverageReport = await this.getTestCoverageReport(options)
 
 		const project = NodeJSCodeParserUtil.createProject()
@@ -28,7 +28,7 @@ class MethodExplorerService {
 		return filteredExploredMethods
 	}
 
-	private async getTestCoverageReport(options: ExploreOptions): Promise<CoverageReport> {
+	private async getTestCoverageReport(options: ExploreMethodOptions): Promise<CoverageReport> {
 		return await TracingUtil.traceTask("Generate test coverage report...", async () => (
 			await TestExecutorService.collectCoverageReportFromRepositoryTestSuite({
 				repositoryName: options.repositoryName,
@@ -38,7 +38,7 @@ class MethodExplorerService {
 		)) as CoverageReport
 	}
 
-	private async searchResolvedTestFilePaths(options: ExploreOptions): Promise<string[]> {
+	private async searchResolvedTestFilePaths(options: ExploreMethodOptions): Promise<string[]> {
 		return await TracingUtil.traceTask("Search test file paths...", async (config) => {
 			const resolvedTestFilePaths = await PathUtil.findResolvedRepositoryFilePaths(options.repositoryName, options.testFilePatterns)
 
@@ -62,7 +62,7 @@ class MethodExplorerService {
 		})
 	}
 
-	private async searchResolvedMethodFilePaths(options: ExploreOptions): Promise<string[]> {
+	private async searchResolvedMethodFilePaths(options: ExploreMethodOptions): Promise<string[]> {
 		return await TracingUtil.traceTask("Searching method file paths...", async (config) => {
 			const resolvedMethodFilePaths = await PathUtil.findResolvedRepositoryFilePaths(options.repositoryName, options.methodFilePatterns, options.testFilePatterns)
 
@@ -72,7 +72,7 @@ class MethodExplorerService {
 		}) as string[]
 	}
 
-	private async exploreMethodFiles(project: ProjectType, resolvedMethodFilePaths: string[], testCoverageReport: CoverageReport, options: ExploreOptions): Promise<ExploredMethod[]> {
+	private async exploreMethodFiles(project: ProjectType, resolvedMethodFilePaths: string[], testCoverageReport: CoverageReport, options: ExploreMethodOptions): Promise<ExploredMethod[]> {
 		const exploredMethods: ExploredMethod[] = []
 
 		await TracingUtil.traceTask("Process method files", async (config) => {
