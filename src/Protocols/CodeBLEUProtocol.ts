@@ -1,11 +1,9 @@
 export type CodeBLEUOptions = {
-	slug: string
 	referenceCode: string
 	hypothesisCode: string
 }
 
 export type CodeBLEURawInput = {
-	slug: string
 	ref: string
 	hyp: string
 }
@@ -49,7 +47,6 @@ export type CodeBLEURawResultFailure = {
 }
 
 export type CodeBLEURawResult = {
-	slug: string
 	success?: CodeBLEURawResultSuccess
 	failure?: CodeBLEURawResultFailure
 }

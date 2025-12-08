@@ -13,17 +13,16 @@ class CodeBLEUUtil {
 		maxAccumulatedCount: 500,
 		maxWaitingTimeInMilliseconds: 500,
 		onItemBatchProcess: async (data) => {
-			const codeBLEURawInput: CodeBLEURawInput[] = data.map(pair => ({
-				slug: pair.item.slug,
+			const batchInput: CodeBLEURawInput[] = data.map(pair => ({
 				ref: pair.item.referenceCode,
 				hyp: pair.item.hypothesisCode
 			}))
 
-			const rawResults = await this.callCodeBLEUScript(codeBLEURawInput)
+			const batchResult = await this.callCodeBLEUScript(batchInput)
 
 			return data.map(({ id }, index) => ({
 				id: id,
-				result: rawResults.at(index) as CodeBLEURawResult
+				result: batchResult.at(index) as CodeBLEURawResult
 			}))
 		}
 	})
@@ -40,27 +39,27 @@ class CodeBLEUUtil {
 		}
 	}
 
-	async callCodeBLEUScript(pairs: CodeBLEURawInput[]): Promise<CodeBLEURawResult[]> {
+	async callCodeBLEUScript(batchInput: CodeBLEURawInput[]): Promise<CodeBLEURawResult[]> {
 		/**
 		 * WARNING:
-		 * - Always provide a file as input for the CodeBLEU script. Individual code pairs can be very large,
+		 * - Always provide a file as input for the CodeBLEU script. Individual input can be very large,
 		 * and passing them directly as command-line arguments may exceed system limits and cause the process to fail (e.g., spawn E2BIG error).
 		 */
 		const tempDirectoryPath = PathUtil.getTempDirectoryPath()
-		const pairsFilePath = path.join(tempDirectoryPath, `${IdentificationUtil.generateUUID()}.json`)
-		const pairsInJsonString = JSON.stringify(pairs)
-		await FileUtil.setFileContent(pairsFilePath, pairsInJsonString)
+		const batchInputFilePath = path.join(tempDirectoryPath, `${IdentificationUtil.generateUUID()}.json`)
+		const batchInputInJsonString = JSON.stringify(batchInput)
+		await FileUtil.setFileContent(batchInputFilePath, batchInputInJsonString)
 
 		const result = await ShellUtil.executeCommand(
-			`python3 compute-code-bleu-v2.py --pairs-file '${pairsFilePath}' --lang javascript --workers 20`,
+			`python3 compute-code-bleu-v2.py --pairs-file '${batchInputFilePath}' --lang javascript --workers 20`,
 			PathUtil.getScriptsDirectoryPath()
 		)
 
-		await FileUtil.deleteFile(pairsFilePath)
+		await FileUtil.deleteFile(batchInputFilePath)
 
-		const rawResults: CodeBLEURawResult[] = JSON.parse(result)
+		const batchResult: CodeBLEURawResult[] = JSON.parse(result)
 
-		return rawResults
+		return batchResult
 	}
 }
 

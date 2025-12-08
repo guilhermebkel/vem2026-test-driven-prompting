@@ -114,7 +114,6 @@ class MethodContextExplorerService {
 								await Promise.all(
 									otherFormattedNodes.map(async formattedNode => {
 										const result = await CodeBLEUUtil.compute({
-											slug: `${exploredMethod.resolvedMethodFilePath}::${loadedMethodFile.resolvedFilePath}`,
 											referenceCode: exploredMethodCode,
 											hypothesisCode: formattedNode.code
 										})
