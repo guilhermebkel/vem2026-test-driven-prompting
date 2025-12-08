@@ -51,6 +51,8 @@ class MethodContextExplorerService {
 						}
 					})
 				)
+
+				project.removeSourceFile(methodSourceFile)
 			}
 		}
 
