@@ -1,6 +1,6 @@
 import { RepositoryName } from "@/Protocols/RepositoryProtocol"
 import { ContextDefinitionItem } from "@/Protocols/ContextProtocol"
-import { DeclarationType } from "@/Protocols/NodeJSCodeParserProtocol"
+import { DeclarationType, ExtractionRule } from "@/Protocols/NodeJSCodeParserProtocol"
 import { CodeBLEUFormattedResult } from "@/Protocols/CodeBLEUProtocol"
 
 export type ExploreContextOptions = {
@@ -27,7 +27,8 @@ export type ExploredContext = {
 	}
 	context: Array<Pick<ContextDefinitionItem, "slug"> & {
 		resolvedFilePath: string
-		codeBLEUDetails: CodeBLEUFormattedResult
+		extractionRule: Partial<ExtractionRule>
+		codeBLEUDetails?: CodeBLEUFormattedResult
 	}>
 }
 
@@ -36,7 +37,8 @@ export type ExploreContextResult = ExploredContext[]
 export type LoadedMethodFile = {
 	resolvedFilePath: string
 	formattedNodes: Array<{
-		name: string
+		name?: string
 		code: string
+		type?: DeclarationType
 	}>
 }

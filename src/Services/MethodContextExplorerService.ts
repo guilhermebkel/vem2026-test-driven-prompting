@@ -60,11 +60,12 @@ class MethodContextExplorerService {
 						const methodSourceFile = project.addSourceFileAtPath(resolvedMethodFilePath)
 						const nodes = NodeJSCodeParserUtil.extractNodes(methodSourceFile, [{ type: "function" }, { type: "method" }])
 
-						const data = {
+						const data: LoadedMethodFile = {
 							resolvedFilePath: resolvedMethodFilePath,
 							formattedNodes: nodes.map(node => ({
-								name: node.getName() as string,
-								code: node.getText()
+								name: node.getName(),
+								code: node.getText(),
+								type: NodeJSCodeParserUtil.turnSyntaxKindIntoDeclarationType(node.getKind())
 							}))
 						}
 
@@ -97,8 +98,10 @@ class MethodContextExplorerService {
 							context: []
 						}
 
-						const similarMethodContext = await this.exploreSimilarMethodContext(exploredMethod, loadedMethodFiles)
-						exploredContext.context.push(...similarMethodContext)
+						exploredContext.context = await Promise.all([
+							...await this.exploreSimilarMethodContext(exploredMethod, loadedMethodFiles),
+							...await this.exploreSameClassMethodContext(exploredMethod)
+						])
 
 						exploreContextResult.push(exploredContext)
 					})
@@ -110,7 +113,7 @@ class MethodContextExplorerService {
 	}
 
 	private async exploreSimilarMethodContext(exploredMethod: ExploredMethod, loadedMethodFiles: LoadedMethodFile[]): Promise<ExploredContext["context"]> {
-		const similarMethodContext: ExploredContext["context"] = []
+		const context: ExploredContext["context"] = []
 
 		const exploredMethodCode = NodeJSCodeParserUtil.extractSpecificCodeFromSourceFile(exploredMethod.resolvedMethodFilePath, [{
 			type: exploredMethod.declarationType as DeclarationType,
@@ -121,9 +124,9 @@ class MethodContextExplorerService {
 			items: loadedMethodFiles || [],
 			batchSize: 100,
 			handlerFn: async (loadedMethodFile) => {
-				const isSelfComparison = loadedMethodFile.resolvedFilePath === exploredMethod.resolvedMethodFilePath
+				const isSelfFileComparison = loadedMethodFile.resolvedFilePath === exploredMethod.resolvedMethodFilePath
 
-				if (isSelfComparison) {
+				if (isSelfFileComparison) {
 					return
 				}
 
@@ -146,9 +149,13 @@ class MethodContextExplorerService {
 						}
 
 						if (slug) {
-							similarMethodContext.push({
+							context.push({
 								slug,
 								resolvedFilePath: loadedMethodFile.resolvedFilePath,
+								extractionRule: {
+									type: formattedNode.type,
+									name: formattedNode.name
+								},
 								codeBLEUDetails: result
 							})
 						}
@@ -157,7 +164,35 @@ class MethodContextExplorerService {
 			}
 		})
 
-		return similarMethodContext
+		return context
+	}
+
+	private async exploreSameClassMethodContext(exploredMethod: ExploredMethod): Promise<ExploredContext["context"]> {
+		const context: ExploredContext["context"] = []
+
+		const project = NodeJSCodeParserUtil.createProject()
+
+		const exploredMethodSourceFile = project.addSourceFileAtPath(exploredMethod.resolvedMethodFilePath)
+		const nodes = NodeJSCodeParserUtil.extractNodes(exploredMethodSourceFile, [{ type: "method" }])
+
+		nodes.forEach(node => {
+			const isSelfCodeComparison = node.getName() === exploredMethod.name
+
+			if (!isSelfCodeComparison) {
+				context.push({
+					slug: "same-class-method",
+					resolvedFilePath: exploredMethod.resolvedMethodFilePath,
+					extractionRule: {
+						type: NodeJSCodeParserUtil.turnSyntaxKindIntoDeclarationType(node.getKind()),
+						name: node.getName()
+					}
+				})
+			}
+		})
+
+		project.removeSourceFile(exploredMethodSourceFile)
+
+		return context
 	}
 }
 
