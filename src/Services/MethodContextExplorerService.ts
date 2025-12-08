@@ -1,3 +1,4 @@
+import { CodeBLEUOptions } from "@/Protocols/CodeBLEUProtocol"
 import { ExploreContextOptions, ExploreContextResult, ExploredContext } from "@/Protocols/MethodContextExplorerProtocol"
 import { ExploreMethodResult } from "@/Protocols/MethodExplorerProtocol"
 import { DeclarationType } from "@/Protocols/NodeJSCodeParserProtocol"
@@ -81,8 +82,12 @@ class MethodContextExplorerService {
 							items: methodFiles || [],
 							batchSize: 1000,
 							handlerFn: async (methodFile) => {
-								const formattedNodeCodes = methodFile.formattedNodes.map(node => node.code)
-								const results = await CodeBLEUUtil.compute(exploredMethodCode, formattedNodeCodes)
+								const nodeCodePairs: CodeBLEUOptions["pairs"] = methodFile.formattedNodes.map(formattedNode => ({
+									referenceCode: exploredMethodCode,
+									hypothesisCode: formattedNode.code
+								}))
+
+								const results = await CodeBLEUUtil.compute({ pairs: nodeCodePairs })
 
 								results.forEach((result, index) => {
 									const isSimilarMethod = result.dataflowMatchScore >= 0.6 && (result.syntaxMatchScore >= 0.55 || result.codebleuScore >= 0.5)

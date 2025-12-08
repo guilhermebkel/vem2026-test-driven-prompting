@@ -1,30 +1,36 @@
-import { CodeBLEURawResult, CodeBLEUFormattedResult } from "@/Protocols/CodeBLEUProtocol"
+import { CodeBLEURawResult, CodeBLEUFormattedResult, CodeBLEUOptions } from "@/Protocols/CodeBLEUProtocol"
 
 import PathUtil from "@/Utils/PathUtil"
 import ShellUtil from "@/Utils/ShellUtil"
 
-function encodeBase64(str: string): string {
-	return Buffer.from(str, "utf8").toString("base64")
-}
-
 class CodeBLEUUtil {
-	async compute(referenceCode: string, candidateCode: string[]): Promise<CodeBLEUFormattedResult[]> {
-		const referenceB64 = encodeBase64(referenceCode)
-		const hypothesesB64 = JSON.stringify(candidateCode.map(encodeBase64))
+	async compute(options: CodeBLEUOptions): Promise<CodeBLEUFormattedResult[]> {
+		if (!options.pairs.length) {
+			return []
+		}
+
+		const pairsInJsonString = JSON.stringify(
+			options.pairs.map(pair => ({
+				ref: pair.referenceCode,
+				hyp: pair.hypothesisCode
+			}))
+		)
+
+		const pairsInBase64 = Buffer.from(pairsInJsonString).toString("base64")
 
 		const result = await ShellUtil.executeCommand(
-			`python3 compute-code-bleu-v2.py --refs-base64 ${referenceB64} --hyps-base64 ${hypothesesB64} --lang "javascript" --workers 16`,
+			`python3 compute-code-bleu-v2.py --pairs-base64 '${pairsInBase64}' --lang javascript --workers 16`,
 			PathUtil.getScriptsDirectoryPath()
 		)
 
 		const rawResults: CodeBLEURawResult[] = JSON.parse(result)
 
 		return rawResults.map(rawResult => ({
-			codebleuScore: rawResult.codebleu,
-			dataflowMatchScore: rawResult.dataflow_match_score,
-			ngramMatchScore: rawResult.ngram_match_score,
-			syntaxMatchScore: rawResult.syntax_match_score,
-			weightedNgramScore: rawResult.weighted_ngram_match_score
+			codebleuScore: rawResult.success?.codebleu,
+			dataflowMatchScore: rawResult.success?.dataflow_match_score,
+			ngramMatchScore: rawResult.success?.ngram_match_score,
+			syntaxMatchScore: rawResult.success?.syntax_match_score,
+			weightedNgramScore: rawResult.success?.weighted_ngram_match_score
 		}))
 	}
 }
