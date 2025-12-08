@@ -22,7 +22,9 @@ class MethodContextExplorerService {
 
 		const exploredMethodContexts = await this.exploreMethodContexts(exploreMethodResult, loadedMethodFiles)
 
-		return exploredMethodContexts
+		const sortedExploredMethodContexts = await this.sortExploredMethodContexts(exploredMethodContexts)
+
+		return sortedExploredMethodContexts
 	}
 
 	private async getExploredMethodResult(options: ExploreContextOptions): Promise<ExploreMethodResult> {
@@ -81,14 +83,14 @@ class MethodContextExplorerService {
 	}
 
 	private async exploreMethodContexts(exploreMethodResult: ExploreMethodResult, loadedMethodFiles: LoadedMethodFile[]): Promise<ExploredContext[]> {
-		return await TracingUtil.traceTask("Explore method file contexts...", async () => {
+		return await TracingUtil.traceTask("Explore method contexts...", async () => {
 			const exploreContextResult: ExploreContextResult = []
 
 			await DataProcessUtil.process({
 				items: exploreMethodResult,
 				batchSize: 5,
 				handlerFn: async (exploredMethod, { current, total }) => {
-					await TracingUtil.traceAction(`Processing ${current} of ${total} method files...`, async () => {
+					await TracingUtil.traceAction(`Processing ${current} of ${total} methods...`, async () => {
 						const exploredContext: ExploredContext = {
 							method: {
 								name: exploredMethod.name as string,
@@ -193,6 +195,27 @@ class MethodContextExplorerService {
 		project.removeSourceFile(exploredMethodSourceFile)
 
 		return context
+	}
+
+	private async sortExploredMethodContexts(exploredMethodContexts: ExploredContext[]): Promise<ExploredContext[]> {
+		return await TracingUtil.traceTask("Sort method contexts...", async (config) => {
+			const sortedExploredMethodContexts = exploredMethodContexts
+				.sort((a, b) => a.method.resolvedFilePath.localeCompare(b.method.resolvedFilePath))
+				.map((exploredMethodContext) => {
+					const sortedContext = exploredMethodContext.context.sort((a, b) => (
+						a.resolvedFilePath.localeCompare(b.resolvedFilePath) || a.extractionRule.name!.localeCompare(b.extractionRule.name!)
+					))
+
+					return {
+						...exploredMethodContext,
+						context: sortedContext
+					}
+				})
+
+			config.setOutput(`Sorted ${sortedExploredMethodContexts.length} method contexts!`)
+
+			return sortedExploredMethodContexts
+		}) as ExploredContext[]
 	}
 }
 

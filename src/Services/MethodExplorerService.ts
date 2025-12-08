@@ -25,7 +25,9 @@ class MethodExplorerService {
 
 		const filteredExploredMethods = await this.filterExploredMethods(exploredMethods)
 
-		return filteredExploredMethods
+		const sortedExploredMethods = await this.sortExploredMethods(filteredExploredMethods)
+
+		return sortedExploredMethods
 	}
 
 	private async getTestCoverageReport(options: ExploreMethodOptions): Promise<CoverageReport> {
@@ -126,6 +128,25 @@ class MethodExplorerService {
 			config.setOutput(`Selected ${exploredMethodsWithTotalTestCoverage.length} methods!`)
 
 			return exploredMethodsWithTotalTestCoverage
+		}) as ExploredMethod[]
+	}
+
+	private async sortExploredMethods(exploredMethods: ExploredMethod[]): Promise<ExploredMethod[]> {
+		return await TracingUtil.traceTask("Sort method files...", async (config) => {
+			const sortedExploredMethods = exploredMethods
+				.sort((a, b) => a.resolvedMethodFilePath.localeCompare(b.resolvedMethodFilePath))
+				.map((exploredMethod) => {
+					const sortedResolvedTestFilePaths = exploredMethod.resolvedTestFilePaths.sort((a, b) => a.localeCompare(b))
+
+					return {
+						...exploredMethod,
+						resolvedTestFilePaths: sortedResolvedTestFilePaths
+					}
+				})
+
+			config.setOutput(`Sorted ${sortedExploredMethods.length} methods!`)
+
+			return sortedExploredMethods
 		}) as ExploredMethod[]
 	}
 }
