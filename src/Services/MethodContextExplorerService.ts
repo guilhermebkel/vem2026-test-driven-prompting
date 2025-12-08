@@ -62,8 +62,9 @@ class MethodContextExplorerService {
 										} = await CodeBLEUUtil.compute(exploredMethodCode, nodeCode)
 
 										const isSimilarMethod = dataflowMatchScore >= 0.6 && (syntaxMatchScore >= 0.55 || codebleuScore >= 0.5)
+										const isSameMethod = node.getName() === exploredMethod.name
 
-										if (isSimilarMethod && (node.getName() !== exploredMethod.name)) {
+										if (isSimilarMethod && !isSameMethod) {
 											exploredContext.context.push({
 												slug: "similar-method",
 												type: "semantic",
