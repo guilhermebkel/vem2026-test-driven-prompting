@@ -1,4 +1,3 @@
-import { CodeBLEUOptions } from "@/Protocols/CodeBLEUProtocol"
 import { ExploreContextOptions, ExploreContextResult, ExploredContext } from "@/Protocols/MethodContextExplorerProtocol"
 import { ExploreMethodResult } from "@/Protocols/MethodExplorerProtocol"
 import { DeclarationType } from "@/Protocols/NodeJSCodeParserProtocol"
@@ -82,27 +81,27 @@ class MethodContextExplorerService {
 							items: methodFiles || [],
 							batchSize: 100,
 							handlerFn: async (methodFile) => {
-								const nodeCodePairs: CodeBLEUOptions["pairs"] = methodFile.formattedNodes.map(formattedNode => ({
-									slug: `${exploredMethod.resolvedMethodFilePath}::${methodFile.resolvedFilePath}`,
-									referenceCode: exploredMethodCode,
-									hypothesisCode: formattedNode.code
-								}))
-
-								const results = await CodeBLEUUtil.compute({ pairs: nodeCodePairs })
-
-								results.forEach((result, index) => {
-									const isSimilarMethod = result.dataflowMatchScore >= 0.6 && (result.syntaxMatchScore >= 0.55 || result.codebleuScore >= 0.5)
-									const isSameMethod = methodFile.formattedNodes[index]?.name === exploredMethod.name
-
-									if (isSimilarMethod && !isSameMethod) {
-										exploredContext.context.push({
-											slug: "similar-method",
-											type: "semantic",
-											resolvedFilePath: methodFile.resolvedFilePath,
-											codeBLEUDetails: result
+								await Promise.all(
+									methodFile.formattedNodes.map(async formattedNode => {
+										const result = await CodeBLEUUtil.compute({
+											slug: `${exploredMethod.resolvedMethodFilePath}::${methodFile.resolvedFilePath}`,
+											referenceCode: exploredMethodCode,
+											hypothesisCode: formattedNode.code
 										})
-									}
-								})
+
+										const isSimilarMethod = result.dataflowMatchScore >= 0.6 && (result.syntaxMatchScore >= 0.55 || result.codebleuScore >= 0.5)
+										const isSameMethod = formattedNode.name === exploredMethod.name
+
+										if (isSimilarMethod && !isSameMethod) {
+											exploredContext.context.push({
+												slug: "similar-method",
+												type: "semantic",
+												resolvedFilePath: methodFile.resolvedFilePath,
+												codeBLEUDetails: result
+											})
+										}
+									})
+								)
 							}
 						})
 

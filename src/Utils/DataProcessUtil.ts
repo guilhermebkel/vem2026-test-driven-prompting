@@ -63,7 +63,7 @@ class DataProcessUtil {
 					const results = await input.onItemBatchProcess(data)
 
 					batchData.forEach(data => {
-						const result = results.find(res => res.id === data.id)
+						const result = results.find(result => result.id === data.id)
 
 						data.resolve(result?.result as Result)
 					})

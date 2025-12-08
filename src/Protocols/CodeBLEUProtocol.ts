@@ -1,9 +1,7 @@
 export type CodeBLEUOptions = {
-	pairs: Array<{
-		slug: string
-		referenceCode: string
-		hypothesisCode: string
-	}>
+	slug: string
+	referenceCode: string
+	hypothesisCode: string
 }
 
 export type CodeBLEURawInput = {
