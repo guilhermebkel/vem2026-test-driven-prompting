@@ -5,10 +5,8 @@ import ShellUtil from "@/Utils/ShellUtil"
 
 class CodeBLEUUtil {
 	async compute(referenceCode: string, candidateCode: string): Promise<CodeBLEUFormattedResult> {
-		const encode = (str: string): string => Buffer.from(str, "utf8").toString("base64")
-
-		const refsB64 = encode(referenceCode)
-		const hypB64 = encode(candidateCode)
+		const refsB64 = Buffer.from(referenceCode, "utf8").toString("base64")
+		const hypB64 = Buffer.from(candidateCode, "utf8").toString("base64")
 
 		const result = await ShellUtil.executeCommand(
 			`python3 compute-code-bleu-v2.py --refs ${refsB64} --hyp ${hypB64} --lang "javascript"`,
