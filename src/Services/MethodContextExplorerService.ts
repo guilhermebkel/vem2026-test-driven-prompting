@@ -2,7 +2,9 @@ import { ExploreContextOptions } from "@/Protocols/MethodContextExplorerProtocol
 import { ExploreMethodResult } from "@/Protocols/MethodExplorerProtocol"
 
 import LogService from "@/Services/LogService"
+
 import FileUtil from "@/Utils/FileUtil"
+import PathUtil from "@/Utils/PathUtil"
 
 class MethodContextExplorerService {
 	async explore(options: ExploreContextOptions): Promise<void> {
@@ -10,7 +12,9 @@ class MethodContextExplorerService {
 		const methodExplorationResultLogFileContent = await FileUtil.getFileContent(methodExplorationResultLogFilePath)
 
 		const exploreMethodResult: ExploreMethodResult = JSON.parse(methodExplorationResultLogFileContent)
-		console.log(exploreMethodResult)
+
+		const resolvedMethodFilePaths = await PathUtil.findResolvedRepositoryFilePaths(options.repositoryName, options.methodFilePatterns, options.testFilePatterns)
+		console.log(resolvedMethodFilePaths)
 	}
 }
 
