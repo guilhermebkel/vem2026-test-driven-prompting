@@ -51,7 +51,7 @@ class CodeBLEUUtil {
 		await FileUtil.setFileContent(batchInputFilePath, batchInputInJsonString)
 
 		const result = await ShellUtil.executeCommand(
-			`python3 compute-code-bleu-v2.py --pairs-file '${batchInputFilePath}' --lang javascript --workers 20`,
+			`python3 compute-code-bleu-v2.py --pairs-file '${batchInputFilePath}' --lang javascript --workers 14`,
 			PathUtil.getScriptsDirectoryPath()
 		)
 
