@@ -7,9 +7,11 @@ import LogService from "@/Services/LogService"
 import CodeBLEUUtil from "@/Utils/CodeBLEUUtil"
 import DataProcessUtil from "@/Utils/DataProcessUtil"
 import FileUtil from "@/Utils/FileUtil"
+import InMemoryCacheUtil from "@/Utils/InMemoryCacheUtil"
 import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
 import PathUtil from "@/Utils/PathUtil"
 import TracingUtil from "@/Utils/TracingUtil"
+import { SourceFile } from "ts-morph"
 
 class MethodContextExplorerService {
 	async explore(options: ExploreContextOptions): Promise<ExploreContextResult> {
@@ -21,6 +23,8 @@ class MethodContextExplorerService {
 		const resolvedMethodFilePaths = await PathUtil.findResolvedRepositoryFilePaths(options.repositoryName, options.methodFilePatterns, options.testFilePatterns)
 
 		const result: ExploreContextResult = []
+
+		const inMemoryCache = new InMemoryCacheUtil<Array<{ name: string, code: string }>>({ defaultExpirationInSeconds: 60 })
 
 		console.time("ProcessMethodFiles")
 
@@ -50,15 +54,23 @@ class MethodContextExplorerService {
 							items: resolvedMethodFilePaths,
 							batchSize: 20,
 							handlerFn: async (resolvedMethodFilePath) => {
-								const methodSourceFile = project.addSourceFileAtPath(resolvedMethodFilePath)
-								const nodes = NodeJSCodeParserUtil.extractNodes(methodSourceFile, [{ type: "function" }, { type: "method" }])
+								const formattedNodes = inMemoryCache.cachefy(resolvedMethodFilePath, () => {
+									const methodSourceFile = project.addSourceFileAtPath(resolvedMethodFilePath)
+									const nodes = NodeJSCodeParserUtil.extractNodes(methodSourceFile, [{ type: "function" }, { type: "method" }])
+									project.removeSourceFile(methodSourceFile)
 
-								const nodeCodes = nodes.map(node => node.getText())
-								const results = await CodeBLEUUtil.compute(exploredMethodCode, nodeCodes)
+									return nodes.map(node => ({
+										name: node.getName() as string,
+										code: node.getText()
+									}))
+								})
+
+								const formattedNodeCodes = formattedNodes.map(node => node.code)
+								const results = await CodeBLEUUtil.compute(exploredMethodCode, formattedNodeCodes)
 
 								results.forEach((result, index) => {
 									const isSimilarMethod = result.dataflowMatchScore >= 0.6 && (result.syntaxMatchScore >= 0.55 || result.codebleuScore >= 0.5)
-									const isSameMethod = nodes[index]?.getName() === exploredMethod.name
+									const isSameMethod = formattedNodes[index]?.name === exploredMethod.name
 
 									if (isSimilarMethod && !isSameMethod) {
 										exploredContext.context.push({
@@ -68,8 +80,6 @@ class MethodContextExplorerService {
 										})
 									}
 								})
-
-								project.removeSourceFile(methodSourceFile)
 							}
 						})
 
