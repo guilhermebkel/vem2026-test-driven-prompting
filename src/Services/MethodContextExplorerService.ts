@@ -1,6 +1,7 @@
 import { CodeBLEUFormattedResult } from "@/Protocols/CodeBLEUProtocol"
+import { SemanticContextSlug } from "@/Protocols/ContextProtocol"
 import { ExploreContextOptions, ExploreContextResult, ExploredContext, LoadedMethodFile } from "@/Protocols/MethodContextExplorerProtocol"
-import { ExploreMethodResult } from "@/Protocols/MethodExplorerProtocol"
+import { ExploredMethod, ExploreMethodResult } from "@/Protocols/MethodExplorerProtocol"
 import { DeclarationType } from "@/Protocols/NodeJSCodeParserProtocol"
 
 import LogService from "@/Services/LogService"
@@ -88,11 +89,6 @@ class MethodContextExplorerService {
 				batchSize: 5,
 				handlerFn: async (exploredMethod, { current, total }) => {
 					await TracingUtil.traceAction(`Processing ${current} of ${total} method files...`, async () => {
-						const exploredMethodCode = NodeJSCodeParserUtil.extractSpecificCodeFromSourceFile(exploredMethod.resolvedMethodFilePath, [{
-							type: exploredMethod.declarationType as DeclarationType,
-							name: exploredMethod.name
-						}])
-
 						const exploredContext: ExploredContext = {
 							method: {
 								name: exploredMethod.name as string,
@@ -102,35 +98,8 @@ class MethodContextExplorerService {
 							context: []
 						}
 
-						await DataProcessUtil.process({
-							items: loadedMethodFiles || [],
-							batchSize: 100,
-							handlerFn: async (loadedMethodFile) => {
-								const otherFormattedNodes = loadedMethodFile.formattedNodes.filter(formattedNode => (
-									formattedNode.name !== exploredMethod.name
-									&& loadedMethodFile.resolvedFilePath !== exploredMethod.resolvedMethodFilePath
-								))
-
-								await Promise.all(
-									otherFormattedNodes.map(async formattedNode => {
-										const result = await CodeBLEUUtil.compute({
-											referenceCode: exploredMethodCode,
-											hypothesisCode: formattedNode.code
-										})
-
-
-										if (this.isSimilarMethod(result)) {
-											exploredContext.context.push({
-												slug: "similar-method",
-												type: "semantic",
-												resolvedFilePath: loadedMethodFile.resolvedFilePath,
-												codeBLEUDetails: result
-											})
-										}
-									})
-								)
-							}
-						})
+						const similarMethodContext = await this.exploreSimilarMethodContext(exploredMethod, loadedMethodFiles)
+						exploredContext.context.push(...similarMethodContext)
 
 						exploreContextResult.push(exploredContext)
 					})
@@ -139,6 +108,56 @@ class MethodContextExplorerService {
 
 			return exploreContextResult
 		}) as ExploredContext[]
+	}
+
+	private async exploreSimilarMethodContext(exploredMethod: ExploredMethod, loadedMethodFiles: LoadedMethodFile[]): Promise<ExploredContext["context"]> {
+		const similarMethodContext: ExploredContext["context"] = []
+
+		const exploredMethodCode = NodeJSCodeParserUtil.extractSpecificCodeFromSourceFile(exploredMethod.resolvedMethodFilePath, [{
+			type: exploredMethod.declarationType as DeclarationType,
+			name: exploredMethod.name
+		}])
+
+		await DataProcessUtil.process({
+			items: loadedMethodFiles || [],
+			batchSize: 100,
+			handlerFn: async (loadedMethodFile) => {
+				const otherFormattedNodes = loadedMethodFile.formattedNodes.filter(formattedNode => (
+					formattedNode.name !== exploredMethod.name
+					&& loadedMethodFile.resolvedFilePath !== exploredMethod.resolvedMethodFilePath
+				))
+
+				await Promise.all(
+					otherFormattedNodes.map(async formattedNode => {
+						const result = await CodeBLEUUtil.compute({
+							referenceCode: exploredMethodCode,
+							hypothesisCode: formattedNode.code
+						})
+
+						const isSemanticallySimilarMethod = result.dataflowMatchScore >= 0.65 && result.syntaxMatchScore >= 0.30
+						const isStructurallySimilarMethod = result.syntaxMatchScore >= 0.60 || result.weightedNgramScore >= 0.55
+
+						let slug: SemanticContextSlug | null = null
+
+						if (isSemanticallySimilarMethod) {
+							slug = "semantically-similar-method"
+						} else if (isStructurallySimilarMethod) {
+							slug = "structurally-similar-method"
+						}
+
+						if (slug) {
+							similarMethodContext.push({
+								slug,
+								resolvedFilePath: loadedMethodFile.resolvedFilePath,
+								codeBLEUDetails: result
+							})
+						}
+					})
+				)
+			}
+		})
+
+		return similarMethodContext
 	}
 
 	private isSimilarMethod(codeBLEUResult: CodeBLEUFormattedResult): boolean {
