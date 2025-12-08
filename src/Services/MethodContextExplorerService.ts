@@ -1,4 +1,3 @@
-import { CodeBLEUFormattedResult } from "@/Protocols/CodeBLEUProtocol"
 import { SemanticContextSlug } from "@/Protocols/ContextProtocol"
 import { ExploreContextOptions, ExploreContextResult, ExploredContext, LoadedMethodFile } from "@/Protocols/MethodContextExplorerProtocol"
 import { ExploredMethod, ExploreMethodResult } from "@/Protocols/MethodExplorerProtocol"
@@ -122,13 +121,14 @@ class MethodContextExplorerService {
 			items: loadedMethodFiles || [],
 			batchSize: 100,
 			handlerFn: async (loadedMethodFile) => {
-				const otherFormattedNodes = loadedMethodFile.formattedNodes.filter(formattedNode => (
-					formattedNode.name !== exploredMethod.name
-					&& loadedMethodFile.resolvedFilePath !== exploredMethod.resolvedMethodFilePath
-				))
+				const isSelfComparison = loadedMethodFile.resolvedFilePath === exploredMethod.resolvedMethodFilePath
+
+				if (isSelfComparison) {
+					return
+				}
 
 				await Promise.all(
-					otherFormattedNodes.map(async formattedNode => {
+					loadedMethodFile.formattedNodes.map(async formattedNode => {
 						const result = await CodeBLEUUtil.compute({
 							referenceCode: exploredMethodCode,
 							hypothesisCode: formattedNode.code
