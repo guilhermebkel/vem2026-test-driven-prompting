@@ -159,13 +159,6 @@ class MethodContextExplorerService {
 
 		return similarMethodContext
 	}
-
-	private isSimilarMethod(codeBLEUResult: CodeBLEUFormattedResult): boolean {
-		return (
-			codeBLEUResult.dataflowMatchScore >= 0.6
-			&& (codeBLEUResult.syntaxMatchScore >= 0.55 || codeBLEUResult.codebleuScore >= 0.5)
-		)
-	}
 }
 
 export default new MethodContextExplorerService()
