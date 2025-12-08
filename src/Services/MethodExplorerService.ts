@@ -112,17 +112,21 @@ class MethodExplorerService {
 	}
 
 	private async filterExploredMethods(exploredMethods: ExploredMethod[]): Promise<ExploredMethod[]> {
-		const exploredMethodsWithTests = exploredMethods.filter(({ resolvedTestFilePaths }) => (
-			resolvedTestFilePaths.length > 0
-		))
+		return await TracingUtil.traceTask("Filter method files", async (config) => {
+			const exploredMethodsWithTests = exploredMethods.filter(({ resolvedTestFilePaths }) => (
+				resolvedTestFilePaths.length > 0
+			))
 
-		const exploredMethodsWithTotalTestCoverage = exploredMethodsWithTests.filter(({ testCoverageDetails }) => (
-			testCoverageDetails.lineCoveragePercentage >= 100
-			&& testCoverageDetails.statementCoveragePercentage >= 100
-			&& testCoverageDetails.branchCoveragePercentage >= 100
-		))
+			const exploredMethodsWithTotalTestCoverage = exploredMethodsWithTests.filter(({ testCoverageDetails }) => (
+				testCoverageDetails.lineCoveragePercentage >= 100
+				&& testCoverageDetails.statementCoveragePercentage >= 100
+				&& testCoverageDetails.branchCoveragePercentage >= 100
+			))
 
-		return exploredMethodsWithTotalTestCoverage
+			config.setOutput(`Selected ${exploredMethodsWithTotalTestCoverage.length} methods!`)
+
+			return exploredMethodsWithTotalTestCoverage
+		}) as ExploredMethod[]
 	}
 }
 
