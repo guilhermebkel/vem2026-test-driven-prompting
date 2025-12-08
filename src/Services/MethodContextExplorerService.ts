@@ -77,6 +77,8 @@ class MethodContextExplorerService {
 								project.removeSourceFile(methodSourceFile)
 							}
 						})
+
+						result.push(exploredContext)
 					})
 				}
 			})
