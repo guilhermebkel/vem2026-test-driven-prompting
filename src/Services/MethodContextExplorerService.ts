@@ -22,6 +22,8 @@ class MethodContextExplorerService {
 
 		const result: ExploreContextResult = []
 
+		console.time("ProcessMethodFiles")
+
 		await TracingUtil.traceTask("Process method files", async () => {
 			await DataProcessUtil.process({
 				items: exploreMethodResult,
@@ -76,6 +78,8 @@ class MethodContextExplorerService {
 				}
 			})
 		})
+
+		console.timeEnd("ProcessMethodFiles")
 
 		return result
 	}
