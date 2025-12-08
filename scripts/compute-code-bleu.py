@@ -5,7 +5,6 @@ import sys
 import os
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
-# Tenta carregar CodeBLEU
 try:
     from codebleu import calc_codebleu
 except ImportError:
@@ -13,34 +12,29 @@ except ImportError:
     os.system(f"{sys.executable} -m pip install codebleu")
     from codebleu import calc_codebleu
 
-
 def compute_single_pair(reference, hyp, lang):
-    """Calcula CodeBLEU para um par ref/hyp."""
     return calc_codebleu([reference], [hyp], lang)
-
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--pairs-file",
         required=True,
-        help="Caminho para arquivo JSON contendo pares [{\"ref\":\"...\", \"hyp\":\"...\", \"slug\":\"...\"}, ...]"
+        help="Path for the JSON file containing [{\"ref\":\"...\", \"hyp\":\"...\", \"slug\":\"...\"}, ...]"
     )
-    parser.add_argument("--lang", required=True, help="Linguagem")
-    parser.add_argument("--workers", type=int, default=4, help="Número de processos paralelos")
+    parser.add_argument("--lang", required=True, help="Coding Language")
+    parser.add_argument("--workers", type=int, default=4, help="Parallel Processes")
     args = parser.parse_args()
 
-    # Carrega os pares do arquivo
     try:
         with open(args.pairs_file, "r", encoding="utf-8") as f:
             pairs = json.load(f)
     except Exception as e:
-        print("Erro ao ler ou parsear o arquivo JSON:", e)
+        print("Failed to parse JSON:", e)
         sys.exit(1)
 
     results = [None] * len(pairs)
 
-    # Paralelismo
     with ProcessPoolExecutor(max_workers=args.workers) as executor:
         future_to_index = {
             executor.submit(
@@ -62,7 +56,6 @@ def main():
                 results[i] = {"slug": pair.get("slug"), "error": str(e)}
 
     print(json.dumps(results, indent=2))
-
 
 if __name__ == "__main__":
     main()
