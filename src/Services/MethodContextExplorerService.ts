@@ -1,4 +1,4 @@
-import { ExploreContextOptions, ExploreContextResult, ExploredContext } from "@/Protocols/MethodContextExplorerProtocol"
+import { ExploreContextOptions, ExploreContextResult, ExploredContext, LoadedMethodFile } from "@/Protocols/MethodContextExplorerProtocol"
 import { ExploreMethodResult } from "@/Protocols/MethodExplorerProtocol"
 import { DeclarationType } from "@/Protocols/NodeJSCodeParserProtocol"
 
@@ -13,6 +13,18 @@ import TracingUtil from "@/Utils/TracingUtil"
 
 class MethodContextExplorerService {
 	async explore(options: ExploreContextOptions): Promise<ExploreContextResult> {
+		const exploreMethodResult = await this.getExploredMethodResult(options)
+
+		const resolvedMethodFilePaths = await this.searchResolvedMethodFilePaths(options)
+
+		const loadedMethodFiles = await this.loadMethodFiles(resolvedMethodFilePaths)
+
+		const exploredMethodContexts = await this.exploreMethodContexts(exploreMethodResult, loadedMethodFiles)
+
+		return exploredMethodContexts
+	}
+
+	private async getExploredMethodResult(options: ExploreContextOptions): Promise<ExploreMethodResult> {
 		const exploreMethodResult: ExploreMethodResult = await TracingUtil.traceTask("Load method exploration results...", async () => {
 			const methodExplorationResultLogFilePath = LogService.getMethodExplorationResultLogFilePath(options.repositoryName)
 			const methodExplorationResultLogFileContent = await FileUtil.getFileContent(methodExplorationResultLogFilePath)
@@ -20,14 +32,24 @@ class MethodContextExplorerService {
 			return JSON.parse(methodExplorationResultLogFileContent)
 		})
 
-		const resolvedMethodFilePaths = await TracingUtil.traceTask("Search method file paths...", async () => (
-			await PathUtil.findResolvedRepositoryFilePaths(options.repositoryName, options.methodFilePatterns, options.testFilePatterns)
-		))
+		return exploreMethodResult
+	}
 
-		const methodFiles = await TracingUtil.traceTask("Preload method files...", async () => {
+	private async searchResolvedMethodFilePaths(options: ExploreContextOptions): Promise<string[]> {
+		return await TracingUtil.traceTask("Searching method file paths...", async (config) => {
+			const resolvedMethodFilePaths = await PathUtil.findResolvedRepositoryFilePaths(options.repositoryName, options.methodFilePatterns, options.testFilePatterns)
+
+			config.setOutput(`Found ${resolvedMethodFilePaths.length} method file paths!`)
+
+			return resolvedMethodFilePaths
+		}) as string[]
+	}
+
+	private async loadMethodFiles(resolvedMethodFilePaths: string[]): Promise<LoadedMethodFile[]> {
+		return await TracingUtil.traceTask("Load method files...", async () => {
 			const project = NodeJSCodeParserUtil.createProject()
 
-			const methodFiles: Array<{ resolvedFilePath: string; formattedNodes: Array<{ name: string; code: string }> }> = []
+			const methodFiles: LoadedMethodFile[] = []
 
 			await DataProcessUtil.process({
 				batchSize: 50,
@@ -53,9 +75,11 @@ class MethodContextExplorerService {
 			})
 
 			return methodFiles
-		})
+		}) as LoadedMethodFile[]
+	}
 
-		const result = await TracingUtil.traceTask("Explore method file contexts...", async () => {
+	private async exploreMethodContexts(exploreMethodResult: ExploreMethodResult, loadedMethodFiles: LoadedMethodFile[]): Promise<ExploredContext[]> {
+		return await TracingUtil.traceTask("Explore method file contexts...", async () => {
 			const exploreContextResult: ExploreContextResult = []
 
 			await DataProcessUtil.process({
@@ -78,25 +102,25 @@ class MethodContextExplorerService {
 						}
 
 						await DataProcessUtil.process({
-							items: methodFiles || [],
+							items: loadedMethodFiles || [],
 							batchSize: 100,
-							handlerFn: async (methodFile) => {
+							handlerFn: async (loadedMethodFile) => {
 								await Promise.all(
-									methodFile.formattedNodes.map(async formattedNode => {
+									loadedMethodFile.formattedNodes.map(async formattedNode => {
 										const result = await CodeBLEUUtil.compute({
-											slug: `${exploredMethod.resolvedMethodFilePath}::${methodFile.resolvedFilePath}`,
+											slug: `${exploredMethod.resolvedMethodFilePath}::${loadedMethodFile.resolvedFilePath}`,
 											referenceCode: exploredMethodCode,
 											hypothesisCode: formattedNode.code
 										})
 
 										const isSimilarMethod = result.dataflowMatchScore >= 0.6 && (result.syntaxMatchScore >= 0.55 || result.codebleuScore >= 0.5)
-										const isSameMethod = formattedNode.name === exploredMethod.name
+										const isSameMethod = formattedNode.name === exploredMethod.name && exploredMethod.resolvedMethodFilePath === loadedMethodFile.resolvedFilePath
 
 										if (isSimilarMethod && !isSameMethod) {
 											exploredContext.context.push({
 												slug: "similar-method",
 												type: "semantic",
-												resolvedFilePath: methodFile.resolvedFilePath,
+												resolvedFilePath: loadedMethodFile.resolvedFilePath,
 												codeBLEUDetails: result
 											})
 										}
@@ -111,9 +135,7 @@ class MethodContextExplorerService {
 			})
 
 			return exploreContextResult
-		})
-
-		return result as ExploreContextResult
+		}) as ExploredContext[]
 	}
 }
 

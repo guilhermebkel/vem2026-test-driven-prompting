@@ -32,3 +32,11 @@ export type ExploredContext = {
 }
 
 export type ExploreContextResult = ExploredContext[]
+
+export type LoadedMethodFile = {
+	resolvedFilePath: string
+	formattedNodes: Array<{
+		name: string
+		code: string
+	}>
+}
