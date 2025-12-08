@@ -61,7 +61,7 @@ class MethodContextExplorerService {
 
 			await DataProcessUtil.process({
 				items: exploreMethodResult,
-				batchSize: 1,
+				batchSize: 5,
 				handlerFn: async (exploredMethod, { current, total }) => {
 					await TracingUtil.traceAction(`Processing ${current} of ${total} method files...`, async () => {
 						const exploredMethodCode = NodeJSCodeParserUtil.extractSpecificCodeFromSourceFile(exploredMethod.resolvedMethodFilePath, [{
@@ -80,9 +80,10 @@ class MethodContextExplorerService {
 
 						await DataProcessUtil.process({
 							items: methodFiles || [],
-							batchSize: 1000,
+							batchSize: 100,
 							handlerFn: async (methodFile) => {
 								const nodeCodePairs: CodeBLEUOptions["pairs"] = methodFile.formattedNodes.map(formattedNode => ({
+									slug: `${exploredMethod.resolvedMethodFilePath}::${methodFile.resolvedFilePath}`,
 									referenceCode: exploredMethodCode,
 									hypothesisCode: formattedNode.code
 								}))

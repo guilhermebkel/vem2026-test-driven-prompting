@@ -9,3 +9,6 @@ logs/*
 !logs/method-exploration
 !logs/
 !logs/.gitkeep
+
+# Temporary
+temp

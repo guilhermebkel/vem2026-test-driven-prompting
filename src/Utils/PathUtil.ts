@@ -37,6 +37,14 @@ class PathUtil {
 		return scriptsDirectoryPath
 	}
 
+	getTempDirectoryPath(): string {
+		const rootDirectoryPath = process.cwd()
+
+		const tempDirectoryPath = path.join(rootDirectoryPath, "temp")
+
+		return tempDirectoryPath
+	}
+
 	async findResolvedRepositoryFilePaths(repositoryName: RepositoryName, filePatterns: string[], ignoredPatterns: string[] = []): Promise<string[]> {
 		const repositoryRootPath = this.getRepositoryRootPath(repositoryName)
 

@@ -1,4 +1,14 @@
-import { ProcessOptions } from "@/Protocols/DataProcessProtocol"
+import { Subject } from "rxjs"
+import { bufferTime, groupBy, mergeAll } from "rxjs/operators"
+
+import {
+	BatchAccumulatorProcessor,
+	BatchAccumulatorProcessorEnrichedItem,
+	GetBatchAccumulatorProcessor,
+	ProcessOptions
+} from "@/Protocols/DataProcessProtocol"
+
+import IdentificationUtil from "@/Utils/IdentificationUtil"
 
 class DataProcessUtil {
 	async process<Item>(options: ProcessOptions<Item>): Promise<void> {
@@ -32,6 +42,44 @@ class DataProcessUtil {
 		}
 
 		return chunks
+	}
+
+	getBatchAccumulatorProcessor<Item, Result>(input: GetBatchAccumulatorProcessor<Item, Result>): BatchAccumulatorProcessor<Item, Result> {
+		const batchProcessor = new Subject<BatchAccumulatorProcessorEnrichedItem<Item, Result>>()
+
+		batchProcessor.pipe(
+			groupBy ? (
+				groupBy((enrichedItem: BatchAccumulatorProcessorEnrichedItem<Item, Result>) => enrichedItem.item[input.groupBy as keyof Item]),
+				mergeAll(),
+				bufferTime(Number(input.maxWaitingTimeInMilliseconds), undefined, Number(input.maxAccumulatedCount))
+			) : (
+				bufferTime(Number(input.maxWaitingTimeInMilliseconds), undefined, Number(input.maxAccumulatedCount))
+			)
+		).subscribe(async batchData => {
+			if (batchData.length) {
+				try {
+					const data = batchData.map(data => ({ id: data.id, item: data.item }))
+
+					const results = await input.onItemBatchProcess(data)
+
+					batchData.forEach(data => {
+						const result = results.find(res => res.id === data.id)
+
+						data.resolve(result?.result as Result)
+					})
+				} catch (error) {
+					const typedError = error as Error
+					batchData.forEach(data => data.reject(typedError.message))
+				}
+			}
+		})
+
+		return async (item) => await new Promise<Result>((resolve, reject) => batchProcessor.next({
+			id: IdentificationUtil.generateUUID(),
+			item,
+			resolve,
+			reject
+		}))
 	}
 }
 

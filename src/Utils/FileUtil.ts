@@ -15,6 +15,10 @@ class FileUtil {
 		await fs.writeFile(filePath, content, "utf-8")
 	}
 
+	async deleteFile(filePath: string): Promise<void> {
+		await fs.rm(filePath)
+	}
+
 	async getFolderPathList(directoryPath: string): Promise<string[]> {
 		let folderPathList: string[] = []
 

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import argparse
-import base64
 import json
 import sys
 import os
@@ -15,14 +14,6 @@ except ImportError:
     from codebleu import calc_codebleu
 
 
-def decode_base64_if_needed(value):
-    """Detecta base64 automaticamente e decodifica; caso contrário, retorna a string original."""
-    try:
-        return base64.b64decode(value).decode("utf-8")
-    except Exception:
-        return value
-
-
 def compute_single_pair(reference, hyp, lang):
     """Calcula CodeBLEU para um par ref/hyp."""
     return calc_codebleu([reference], [hyp], lang)
@@ -31,45 +22,44 @@ def compute_single_pair(reference, hyp, lang):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--pairs-base64",
-        help="JSON array em Base64 de pares [{\"ref\":\"...\", \"hyp\":\"...\"}, ...]"
+        "--pairs-file",
+        required=True,
+        help="Caminho para arquivo JSON contendo pares [{\"ref\":\"...\", \"hyp\":\"...\", \"slug\":\"...\"}, ...]"
     )
     parser.add_argument("--lang", required=True, help="Linguagem")
     parser.add_argument("--workers", type=int, default=4, help="Número de processos paralelos")
     args = parser.parse_args()
 
-    if not args.pairs_base64:
-        print("É necessário fornecer --pairs-base64")
-        sys.exit(1)
-
+    # Carrega os pares do arquivo
     try:
-        decoded_json = base64.b64decode(args.pairs_base64).decode("utf-8")
-        pairs = json.loads(decoded_json)
+        with open(args.pairs_file, "r", encoding="utf-8") as f:
+            pairs = json.load(f)
     except Exception as e:
-        print("Erro ao decodificar ou parsear o JSON Base64:", e)
+        print("Erro ao ler ou parsear o arquivo JSON:", e)
         sys.exit(1)
 
-    results = []
+    results = [None] * len(pairs)
 
     # Paralelismo
     with ProcessPoolExecutor(max_workers=args.workers) as executor:
-        future_to_pair = {
+        future_to_index = {
             executor.submit(
                 compute_single_pair,
-                decode_base64_if_needed(pair["ref"]),
-                decode_base64_if_needed(pair["hyp"]),
+                pair["ref"],
+                pair["hyp"],
                 args.lang
-            ): pair
-            for pair in pairs
+            ): i
+            for i, pair in enumerate(pairs)
         }
 
-        for future in as_completed(future_to_pair):
-            pair = future_to_pair[future]
+        for future in as_completed(future_to_index):
+            i = future_to_index[future]
+            pair = pairs[i]
             try:
                 res = future.result()
-                results.append({"success": res})
+                results[i] = {"slug": pair.get("slug"), "success": res}
             except Exception as e:
-                results.append({"error": str(e)})
+                results[i] = {"slug": pair.get("slug"), "error": str(e)}
 
     print(json.dumps(results, indent=2))
 
