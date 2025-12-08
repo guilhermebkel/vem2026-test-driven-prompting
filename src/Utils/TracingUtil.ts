@@ -1,5 +1,6 @@
 import task, { Task } from "tasuku"
 import { AsyncLocalStorage } from "node:async_hooks"
+import prettyMilliseconds from "pretty-ms"
 
 import { InnerActionCallback, TaskCallback, TaskConfig } from "@/Protocols/TracingProtocol"
 
@@ -16,12 +17,16 @@ class TracingUtil {
 			const runner = await taskFn(title, async (taskConfig) => (
 				this.taskContextStorage.run({ currentTask: taskConfig.task, taskConfig }, async () => {
 					try {
+						const startTime = Date.now()
 						const result = await callbackFn(taskConfig)
-						taskConfig.setStatus("")
+						const endTime = Date.now()
+
+						const taskDurationInMilliseconds = endTime - startTime
+
+						taskConfig.setStatus(`completed in ${prettyMilliseconds(taskDurationInMilliseconds)}`)
 						return result
 					} catch (error) {
 						const typedError = error as Error
-
 						ErrorHandlerUtil.handle(typedError)
 						taskConfig.setError(typedError)
 					}
