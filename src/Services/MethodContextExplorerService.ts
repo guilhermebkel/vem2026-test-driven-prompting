@@ -51,28 +51,21 @@ class MethodContextExplorerService {
 								const methodSourceFile = project.addSourceFileAtPath(resolvedMethodFilePath)
 								const nodes = NodeJSCodeParserUtil.extractNodes(methodSourceFile, [{ type: "function" }, { type: "method" }])
 
-								await Promise.all(
-									nodes.map(async node => {
-										const nodeCode = node.getText()
+								const nodeCodes = nodes.map(node => node.getText())
+								const results = await CodeBLEUUtil.compute(exploredMethodCode, nodeCodes)
 
-										const {
-											dataflowMatchScore,
-											syntaxMatchScore,
-											codebleuScore
-										} = await CodeBLEUUtil.compute(exploredMethodCode, nodeCode)
+								results.forEach((result, index) => {
+									const isSimilarMethod = result.dataflowMatchScore >= 0.6 && (result.syntaxMatchScore >= 0.55 || result.codebleuScore >= 0.5)
+									const isSameMethod = nodes[index]?.getName() === exploredMethod.name
 
-										const isSimilarMethod = dataflowMatchScore >= 0.6 && (syntaxMatchScore >= 0.55 || codebleuScore >= 0.5)
-										const isSameMethod = node.getName() === exploredMethod.name
-
-										if (isSimilarMethod && !isSameMethod) {
-											exploredContext.context.push({
-												slug: "similar-method",
-												type: "semantic",
-												path: resolvedMethodFilePath
-											})
-										}
-									})
-								)
+									if (isSimilarMethod && !isSameMethod) {
+										exploredContext.context.push({
+											slug: "similar-method",
+											type: "semantic",
+											path: resolvedMethodFilePath
+										})
+									}
+								})
 
 								project.removeSourceFile(methodSourceFile)
 							}
