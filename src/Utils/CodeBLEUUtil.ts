@@ -41,15 +41,14 @@ class CodeBLEUUtil {
 	}
 
 	async callCodeBLEUScript(pairs: CodeBLEURawInput[]): Promise<CodeBLEURawResult[]> {
-		const pairsInJsonString = JSON.stringify(pairs)
-		const tempDirectoryPath = PathUtil.getTempDirectoryPath()
-
 		/**
 		 * WARNING:
 		 * - Always provide a file as input for the CodeBLEU script. Individual code pairs can be very large,
 		 * and passing them directly as command-line arguments may exceed system limits and cause the process to fail (e.g., spawn E2BIG error).
 		 */
+		const tempDirectoryPath = PathUtil.getTempDirectoryPath()
 		const pairsFilePath = path.join(tempDirectoryPath, `${IdentificationUtil.generateUUID()}.json`)
+		const pairsInJsonString = JSON.stringify(pairs)
 		await FileUtil.setFileContent(pairsFilePath, pairsInJsonString)
 
 		const result = await ShellUtil.executeCommand(
