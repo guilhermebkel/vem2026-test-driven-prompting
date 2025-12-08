@@ -14,6 +14,11 @@ class MethodContextExplorerService {
 		const exploreMethodResult: ExploreMethodResult = JSON.parse(methodExplorationResultLogFileContent)
 
 		const resolvedMethodFilePaths = await PathUtil.findResolvedRepositoryFilePaths(options.repositoryName, options.methodFilePatterns, options.testFilePatterns)
+
+		for (const exploredMethod of exploreMethodResult) {
+			console.log(exploredMethod)
+		}
+
 		console.log(resolvedMethodFilePaths)
 	}
 }
