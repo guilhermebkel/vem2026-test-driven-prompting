@@ -10,7 +10,7 @@ import FileUtil from "@/Utils/FileUtil"
 
 class CodeBLEUUtil {
 	private readonly computeInBatch = DataProcessUtil.getBatchAccumulatorProcessor<CodeBLEUOptions, CodeBLEURawResult>({
-		maxAccumulatedCount: 500,
+		maxAccumulatedCount: 800,
 		maxWaitingTimeInMilliseconds: 500,
 		onItemBatchProcess: async (data) => {
 			const codeBLEURawInput: CodeBLEURawInput[] = data.map(pair => ({
@@ -53,7 +53,7 @@ class CodeBLEUUtil {
 		await FileUtil.setFileContent(pairsFilePath, pairsInJsonString)
 
 		const result = await ShellUtil.executeCommand(
-			`python3 compute-code-bleu-v2.py --pairs-file '${pairsFilePath}' --lang javascript --workers 16`,
+			`python3 compute-code-bleu-v2.py --pairs-file '${pairsFilePath}' --lang javascript --workers 20`,
 			PathUtil.getScriptsDirectoryPath()
 		)
 

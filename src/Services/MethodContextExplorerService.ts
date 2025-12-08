@@ -1,3 +1,4 @@
+import { CodeBLEUFormattedResult } from "@/Protocols/CodeBLEUProtocol"
 import { ExploreContextOptions, ExploreContextResult, ExploredContext, LoadedMethodFile } from "@/Protocols/MethodContextExplorerProtocol"
 import { ExploreMethodResult } from "@/Protocols/MethodExplorerProtocol"
 import { DeclarationType } from "@/Protocols/NodeJSCodeParserProtocol"
@@ -105,18 +106,21 @@ class MethodContextExplorerService {
 							items: loadedMethodFiles || [],
 							batchSize: 100,
 							handlerFn: async (loadedMethodFile) => {
+								const otherFormattedNodes = loadedMethodFile.formattedNodes.filter(formattedNode => (
+									formattedNode.name !== exploredMethod.name
+									&& loadedMethodFile.resolvedFilePath !== exploredMethod.resolvedMethodFilePath
+								))
+
 								await Promise.all(
-									loadedMethodFile.formattedNodes.map(async formattedNode => {
+									otherFormattedNodes.map(async formattedNode => {
 										const result = await CodeBLEUUtil.compute({
 											slug: `${exploredMethod.resolvedMethodFilePath}::${loadedMethodFile.resolvedFilePath}`,
 											referenceCode: exploredMethodCode,
 											hypothesisCode: formattedNode.code
 										})
 
-										const isSimilarMethod = result.dataflowMatchScore >= 0.6 && (result.syntaxMatchScore >= 0.55 || result.codebleuScore >= 0.5)
-										const isSameMethod = formattedNode.name === exploredMethod.name && exploredMethod.resolvedMethodFilePath === loadedMethodFile.resolvedFilePath
 
-										if (isSimilarMethod && !isSameMethod) {
+										if (this.isSimilarMethod(result)) {
 											exploredContext.context.push({
 												slug: "similar-method",
 												type: "semantic",
@@ -136,6 +140,13 @@ class MethodContextExplorerService {
 
 			return exploreContextResult
 		}) as ExploredContext[]
+	}
+
+	private isSimilarMethod(codeBLEUResult: CodeBLEUFormattedResult): boolean {
+		return (
+			codeBLEUResult.dataflowMatchScore >= 0.6
+			&& (codeBLEUResult.syntaxMatchScore >= 0.55 || codeBLEUResult.codebleuScore >= 0.5)
+		)
 	}
 }
 
