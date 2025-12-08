@@ -1,16 +1,18 @@
-import { ExploreContextOptions } from "@/Protocols/MethodContextExplorerProtocol"
+import { ExploreContextOptions, ExploreContextResult, ExploredContext } from "@/Protocols/MethodContextExplorerProtocol"
 import { ExploreMethodResult } from "@/Protocols/MethodExplorerProtocol"
 import { DeclarationType } from "@/Protocols/NodeJSCodeParserProtocol"
 
 import LogService from "@/Services/LogService"
 
 import CodeBLEUUtil from "@/Utils/CodeBLEUUtil"
+import DataProcessUtil from "@/Utils/DataProcessUtil"
 import FileUtil from "@/Utils/FileUtil"
 import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
 import PathUtil from "@/Utils/PathUtil"
+import TracingUtil from "@/Utils/TracingUtil"
 
 class MethodContextExplorerService {
-	async explore(options: ExploreContextOptions): Promise<void> {
+	async explore(options: ExploreContextOptions): Promise<ExploreContextResult> {
 		const methodExplorationResultLogFilePath = LogService.getMethodExplorationResultLogFilePath(options.repositoryName)
 		const methodExplorationResultLogFileContent = await FileUtil.getFileContent(methodExplorationResultLogFilePath)
 
@@ -18,45 +20,68 @@ class MethodContextExplorerService {
 
 		const resolvedMethodFilePaths = await PathUtil.findResolvedRepositoryFilePaths(options.repositoryName, options.methodFilePatterns, options.testFilePatterns)
 
-		for (const exploredMethod of exploreMethodResult) {
-			const exploredMethodCode = NodeJSCodeParserUtil.extractSpecificCodeFromSourceFile(exploredMethod.resolvedMethodFilePath, [{
-				type: exploredMethod.declarationType as DeclarationType,
-				name: exploredMethod.name
-			}])
+		const result: ExploreContextResult = []
 
-			const project = NodeJSCodeParserUtil.createProject()
+		await TracingUtil.traceTask("Process method files", async () => {
+			await DataProcessUtil.process({
+				items: exploreMethodResult,
+				batchSize: 20,
+				handlerFn: async (exploredMethod, { current, total }) => {
+					await TracingUtil.traceAction(`Processing ${current} of ${total} method files...`, async () => {
+						const exploredMethodCode = NodeJSCodeParserUtil.extractSpecificCodeFromSourceFile(exploredMethod.resolvedMethodFilePath, [{
+							type: exploredMethod.declarationType as DeclarationType,
+							name: exploredMethod.name
+						}])
 
-			for (const resolvedMethodFilePath of resolvedMethodFilePaths) {
-				const methodSourceFile = project.addSourceFileAtPath(resolvedMethodFilePath)
-				const nodes = NodeJSCodeParserUtil.extractNodes(methodSourceFile, [{ type: "function" }, { type: "method" }])
-
-				await Promise.all(
-					nodes.map(async node => {
-						const nodeCode = node.getText()
-
-						const {
-							dataflow_match_score,
-							syntax_match_score,
-							codebleu
-						} = await CodeBLEUUtil.compute(exploredMethodCode, nodeCode)
-
-						const isSimilarMethod = dataflow_match_score >= 0.6 && (syntax_match_score >= 0.55 || codebleu >= 0.5)
-
-						if (isSimilarMethod && (node.getName() !== exploredMethod.name)) {
-							console.log(`Similar file: ${resolvedMethodFilePath}\nOriginal file: ${exploredMethod.resolvedMethodFilePath}`)
-							console.log(`Dataflow Match Score: ${dataflow_match_score}`)
-							console.log(`Syntax Match Score: ${syntax_match_score}`)
-							console.log(`CodeBLEU: ${codebleu}`)
-							console.log("-----")
+						const exploredContext: ExploredContext = {
+							method: {
+								name: exploredMethod.name as string,
+								declarationType: exploredMethod.declarationType as DeclarationType,
+								resolvedFilePath: exploredMethod.resolvedMethodFilePath
+							},
+							context: []
 						}
+
+						const project = NodeJSCodeParserUtil.createProject()
+
+						await DataProcessUtil.process({
+							items: resolvedMethodFilePaths,
+							batchSize: 20,
+							handlerFn: async (resolvedMethodFilePath) => {
+								const methodSourceFile = project.addSourceFileAtPath(resolvedMethodFilePath)
+								const nodes = NodeJSCodeParserUtil.extractNodes(methodSourceFile, [{ type: "function" }, { type: "method" }])
+
+								await Promise.all(
+									nodes.map(async node => {
+										const nodeCode = node.getText()
+
+										const {
+											dataflowMatchScore,
+											syntaxMatchScore,
+											codebleuScore
+										} = await CodeBLEUUtil.compute(exploredMethodCode, nodeCode)
+
+										const isSimilarMethod = dataflowMatchScore >= 0.6 && (syntaxMatchScore >= 0.55 || codebleuScore >= 0.5)
+
+										if (isSimilarMethod && (node.getName() !== exploredMethod.name)) {
+											exploredContext.context.push({
+												slug: "similar-method",
+												type: "semantic",
+												path: resolvedMethodFilePath
+											})
+										}
+									})
+								)
+
+								project.removeSourceFile(methodSourceFile)
+							}
+						})
 					})
-				)
+				}
+			})
+		})
 
-				project.removeSourceFile(methodSourceFile)
-			}
-		}
-
-		console.log(resolvedMethodFilePaths)
+		return result
 	}
 }
 

@@ -1,4 +1,4 @@
-export type CodeBLEUResult = {
+export type CodeBLEURawResult = {
 	/**
 	 * The final aggregated CodeBLEU score (0–1).
 	 * This is a weighted combination of n-gram, syntax, and dataflow similarity.
@@ -30,4 +30,12 @@ export type CodeBLEUResult = {
 	 * Measures deeper semantic correctness beyond syntax.
 	 */
 	dataflow_match_score: number
+}
+
+export type CodeBLEUFormattedResult = {
+	codebleuScore: CodeBLEURawResult["codebleu"]
+	ngramMatchScore: CodeBLEURawResult["ngram_match_score"]
+	weightedNgramScore: CodeBLEURawResult["weighted_ngram_match_score"]
+	syntaxMatchScore: CodeBLEURawResult["syntax_match_score"]
+	dataflowMatchScore: CodeBLEURawResult["dataflow_match_score"]
 }

@@ -6,6 +6,8 @@
     "source.fixAll.eslint": "always"
   },
   "cSpell.words": [
-    "BLEU"
+    "BLEU",
+    "codebleu",
+    "ngram"
   ]
 }

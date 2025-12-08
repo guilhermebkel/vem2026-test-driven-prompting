@@ -1,4 +1,4 @@
-import { MethodContextExplorationOptions, MethodExplorationOptions, MethodExplorationResult } from "@/Protocols/ExplorationProtocol"
+import { MethodContextExplorationOptions, MethodContextExplorationResult, MethodExplorationOptions, MethodExplorationResult } from "@/Protocols/ExplorationProtocol"
 
 import LogService from "@/Services/LogService"
 import MethodExplorerService from "@/Services/MethodExplorerService"
@@ -17,8 +17,16 @@ class ExplorationModule {
 		return methodExplorationResult
 	}
 
-	async exploreMethodContexts(options: MethodContextExplorationOptions): Promise<void> {
-		await MethodContextExplorerService.explore(options.exploreOptions)
+	async exploreMethodContexts(options: MethodContextExplorationOptions): Promise<MethodContextExplorationResult> {
+		const exploreResult = await MethodContextExplorerService.explore(options.exploreOptions)
+
+		const methodExplorationResult: MethodContextExplorationResult = {
+			exploreResult
+		}
+
+		await LogService.saveMethodContextExplorationLogs(options, methodExplorationResult)
+
+		return methodExplorationResult
 	}
 }
 
