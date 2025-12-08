@@ -21,6 +21,22 @@ class PathUtil {
 		return repositoryRootPath
 	}
 
+	getLogsDirectoryPath(): string {
+		const rootDirectoryPath = process.cwd()
+
+		const logsDirectoryPath = path.join(rootDirectoryPath, "logs")
+
+		return logsDirectoryPath
+	}
+
+	getScriptsDirectoryPath(): string {
+		const rootDirectoryPath = process.cwd()
+
+		const scriptsDirectoryPath = path.join(rootDirectoryPath, "scripts")
+
+		return scriptsDirectoryPath
+	}
+
 	async findResolvedRepositoryFilePaths(repositoryName: RepositoryName, filePatterns: string[], ignoredPatterns: string[] = []): Promise<string[]> {
 		const repositoryRootPath = this.getRepositoryRootPath(repositoryName)
 

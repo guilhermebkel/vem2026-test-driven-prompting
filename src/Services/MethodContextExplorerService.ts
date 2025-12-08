@@ -2,6 +2,7 @@ import { ExploreContextOptions } from "@/Protocols/MethodContextExplorerProtocol
 import { ExploreMethodResult } from "@/Protocols/MethodExplorerProtocol"
 
 import LogService from "@/Services/LogService"
+import CodeBLEUUtil from "@/Utils/CodeBLEUUtil"
 
 import FileUtil from "@/Utils/FileUtil"
 import PathUtil from "@/Utils/PathUtil"
@@ -16,7 +17,9 @@ class MethodContextExplorerService {
 		const resolvedMethodFilePaths = await PathUtil.findResolvedRepositoryFilePaths(options.repositoryName, options.methodFilePatterns, options.testFilePatterns)
 
 		for (const exploredMethod of exploreMethodResult) {
-			console.log(exploredMethod)
+			for (const resolvedMethodFilePath of resolvedMethodFilePaths) {
+				await CodeBLEUUtil.compute(exploredMethod.resolvedMethodFilePath, resolvedMethodFilePath, "js")
+			}
 		}
 
 		console.log(resolvedMethodFilePaths)

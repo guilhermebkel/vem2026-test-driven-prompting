@@ -2,6 +2,7 @@ import path from "path"
 
 import TracingUtil from "@/Utils/TracingUtil"
 import FileUtil from "@/Utils/FileUtil"
+import PathUtil from "@/Utils/PathUtil"
 
 import { MethodReconstructionExperimentOptions, MethodReconstructionExperimentResult } from "@/Protocols/ExperimentationProtocol"
 import { MethodExplorationOptions, MethodExplorationResult } from "@/Protocols/ExplorationProtocol"
@@ -68,19 +69,11 @@ class LogService {
 	}
 
 	private getLogFilePath(logPath: string[], logFileName: string, logFileExtension = ".txt"): string {
-		const logDirectoryPath = this.getLogDirectoryPath()
+		const logDirectoryPath = PathUtil.getLogsDirectoryPath()
 
 		const logFilePath = path.join(logDirectoryPath, ...logPath, `${logFileName}${logFileExtension}`)
 
 		return logFilePath
-	}
-
-	private getLogDirectoryPath(): string {
-		const rootDirectoryPath = process.cwd()
-
-		const logDirectoryPath = path.join(rootDirectoryPath, "logs")
-
-		return logDirectoryPath
 	}
 }
 

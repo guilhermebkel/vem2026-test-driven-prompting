@@ -10,3 +10,6 @@
 [submodule "experiment-repos/directus"]
 	path = experiment-repos/directus
 	url = git@github.com:directus/directus.git
+[submodule "vendor/CodeXGLUE"]
+	path = vendor/CodeXGLUE
+	url = https://github.com/microsoft/CodeXGLUE.git

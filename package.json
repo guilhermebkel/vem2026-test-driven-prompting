@@ -16,7 +16,10 @@
     "experiment-repo:setup:date-fns": "bash ./scripts/setup-experiment-repo.sh date-fns",
     "experiment-repo:setup:directus": "bash ./scripts/setup-experiment-repo.sh directus",
     "experiment-repo:setup:fastify": "bash ./scripts/setup-experiment-repo.sh fastify",
-    "experiment-repo:setup:tabnews.com.br": "bash ./scripts/setup-experiment-repo.sh tabnews.com.br"
+    "experiment-repo:setup:tabnews.com.br": "bash ./scripts/setup-experiment-repo.sh tabnews.com.br",
+    "vendor:setup:code-bleu": "git submodule add https://github.com/microsoft/CodeXGLUE.git vendor/CodeXGLUE",
+    "vendor:fetch-all": "git submodule update --init --recursive",
+    "vendor:refresh": "git submodule update --remote"
   },
   "author": "",
   "license": "ISC",
