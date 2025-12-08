@@ -11,7 +11,6 @@ import InMemoryCacheUtil from "@/Utils/InMemoryCacheUtil"
 import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
 import PathUtil from "@/Utils/PathUtil"
 import TracingUtil from "@/Utils/TracingUtil"
-import { SourceFile } from "ts-morph"
 
 class MethodContextExplorerService {
 	async explore(options: ExploreContextOptions): Promise<ExploreContextResult> {
@@ -57,12 +56,15 @@ class MethodContextExplorerService {
 								const formattedNodes = inMemoryCache.cachefy(resolvedMethodFilePath, () => {
 									const methodSourceFile = project.addSourceFileAtPath(resolvedMethodFilePath)
 									const nodes = NodeJSCodeParserUtil.extractNodes(methodSourceFile, [{ type: "function" }, { type: "method" }])
-									project.removeSourceFile(methodSourceFile)
 
-									return nodes.map(node => ({
+									const data = nodes.map(node => ({
 										name: node.getName() as string,
 										code: node.getText()
 									}))
+
+									project.removeSourceFile(methodSourceFile)
+
+									return data
 								})
 
 								const formattedNodeCodes = formattedNodes.map(node => node.code)
