@@ -7,30 +7,60 @@ import LogService from "@/Services/LogService"
 import CodeBLEUUtil from "@/Utils/CodeBLEUUtil"
 import DataProcessUtil from "@/Utils/DataProcessUtil"
 import FileUtil from "@/Utils/FileUtil"
-import InMemoryCacheUtil from "@/Utils/InMemoryCacheUtil"
 import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
 import PathUtil from "@/Utils/PathUtil"
 import TracingUtil from "@/Utils/TracingUtil"
 
 class MethodContextExplorerService {
 	async explore(options: ExploreContextOptions): Promise<ExploreContextResult> {
-		const methodExplorationResultLogFilePath = LogService.getMethodExplorationResultLogFilePath(options.repositoryName)
-		const methodExplorationResultLogFileContent = await FileUtil.getFileContent(methodExplorationResultLogFilePath)
+		const exploreMethodResult: ExploreMethodResult = await TracingUtil.traceTask("Load method exploration results...", async () => {
+			const methodExplorationResultLogFilePath = LogService.getMethodExplorationResultLogFilePath(options.repositoryName)
+			const methodExplorationResultLogFileContent = await FileUtil.getFileContent(methodExplorationResultLogFilePath)
 
-		const exploreMethodResult: ExploreMethodResult = JSON.parse(methodExplorationResultLogFileContent)
+			return JSON.parse(methodExplorationResultLogFileContent)
+		})
 
-		const resolvedMethodFilePaths = await PathUtil.findResolvedRepositoryFilePaths(options.repositoryName, options.methodFilePatterns, options.testFilePatterns)
+		const resolvedMethodFilePaths = await TracingUtil.traceTask("Search method file paths...", async () => (
+			await PathUtil.findResolvedRepositoryFilePaths(options.repositoryName, options.methodFilePatterns, options.testFilePatterns)
+		))
 
-		const result: ExploreContextResult = []
+		const methodFiles = await TracingUtil.traceTask("Preload method files...", async () => {
+			const project = NodeJSCodeParserUtil.createProject()
 
-		const inMemoryCache = new InMemoryCacheUtil<Array<{ name: string, code: string }>>({ defaultExpirationInSeconds: 60 })
+			const methodFiles: Array<{ resolvedFilePath: string; formattedNodes: Array<{ name: string; code: string }> }> = []
 
-		console.time("ProcessMethodFiles")
+			await DataProcessUtil.process({
+				batchSize: 50,
+				items: resolvedMethodFilePaths || [],
+				handlerFn: async (resolvedMethodFilePath, { current, total }) => {
+					await TracingUtil.traceAction(`Processing ${current} of ${total} method files...`, async () => {
+						const methodSourceFile = project.addSourceFileAtPath(resolvedMethodFilePath)
+						const nodes = NodeJSCodeParserUtil.extractNodes(methodSourceFile, [{ type: "function" }, { type: "method" }])
 
-		await TracingUtil.traceTask("Process method files", async () => {
+						const data = {
+							resolvedFilePath: resolvedMethodFilePath,
+							formattedNodes: nodes.map(node => ({
+								name: node.getName() as string,
+								code: node.getText()
+							}))
+						}
+
+						project.removeSourceFile(methodSourceFile)
+
+						methodFiles.push(data)
+					})
+				}
+			})
+
+			return methodFiles
+		})
+
+		const result = await TracingUtil.traceTask("Explore method file contexts...", async () => {
+			const exploreContextResult: ExploreContextResult = []
+
 			await DataProcessUtil.process({
 				items: exploreMethodResult,
-				batchSize: 20,
+				batchSize: 1,
 				handlerFn: async (exploredMethod, { current, total }) => {
 					await TracingUtil.traceAction(`Processing ${current} of ${total} method files...`, async () => {
 						const exploredMethodCode = NodeJSCodeParserUtil.extractSpecificCodeFromSourceFile(exploredMethod.resolvedMethodFilePath, [{
@@ -47,53 +77,38 @@ class MethodContextExplorerService {
 							context: []
 						}
 
-						const project = NodeJSCodeParserUtil.createProject()
-
 						await DataProcessUtil.process({
-							items: resolvedMethodFilePaths,
-							batchSize: 20,
-							handlerFn: async (resolvedMethodFilePath) => {
-								const formattedNodes = inMemoryCache.cachefy(resolvedMethodFilePath, () => {
-									const methodSourceFile = project.addSourceFileAtPath(resolvedMethodFilePath)
-									const nodes = NodeJSCodeParserUtil.extractNodes(methodSourceFile, [{ type: "function" }, { type: "method" }])
-
-									const data = nodes.map(node => ({
-										name: node.getName() as string,
-										code: node.getText()
-									}))
-
-									project.removeSourceFile(methodSourceFile)
-
-									return data
-								})
-
-								const formattedNodeCodes = formattedNodes.map(node => node.code)
+							items: methodFiles || [],
+							batchSize: 1000,
+							handlerFn: async (methodFile) => {
+								const formattedNodeCodes = methodFile.formattedNodes.map(node => node.code)
 								const results = await CodeBLEUUtil.compute(exploredMethodCode, formattedNodeCodes)
 
 								results.forEach((result, index) => {
 									const isSimilarMethod = result.dataflowMatchScore >= 0.6 && (result.syntaxMatchScore >= 0.55 || result.codebleuScore >= 0.5)
-									const isSameMethod = formattedNodes[index]?.name === exploredMethod.name
+									const isSameMethod = methodFile.formattedNodes[index]?.name === exploredMethod.name
 
 									if (isSimilarMethod && !isSameMethod) {
 										exploredContext.context.push({
 											slug: "similar-method",
 											type: "semantic",
-											path: resolvedMethodFilePath
+											resolvedFilePath: methodFile.resolvedFilePath,
+											codeBLEUDetails: result
 										})
 									}
 								})
 							}
 						})
 
-						result.push(exploredContext)
+						exploreContextResult.push(exploredContext)
 					})
 				}
 			})
+
+			return exploreContextResult
 		})
 
-		console.timeEnd("ProcessMethodFiles")
-
-		return result
+		return result as ExploreContextResult
 	}
 }
 

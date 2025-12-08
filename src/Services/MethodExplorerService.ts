@@ -75,7 +75,7 @@ class MethodExplorerService {
 	private async exploreMethodFiles(project: ProjectType, resolvedMethodFilePaths: string[], testCoverageReport: CoverageReport, options: ExploreMethodOptions): Promise<ExploredMethod[]> {
 		const exploredMethods: ExploredMethod[] = []
 
-		await TracingUtil.traceTask("Process method files", async (config) => {
+		await TracingUtil.traceTask("Process method files...", async (config) => {
 			await DataProcessUtil.process({
 				items: resolvedMethodFilePaths,
 				batchSize: 20,
@@ -112,7 +112,7 @@ class MethodExplorerService {
 	}
 
 	private async filterExploredMethods(exploredMethods: ExploredMethod[]): Promise<ExploredMethod[]> {
-		return await TracingUtil.traceTask("Filter method files", async (config) => {
+		return await TracingUtil.traceTask("Filter method files...", async (config) => {
 			const exploredMethodsWithTests = exploredMethods.filter(({ resolvedTestFilePaths }) => (
 				resolvedTestFilePaths.length > 0
 			))

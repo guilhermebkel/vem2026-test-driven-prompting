@@ -1,6 +1,7 @@
 import { RepositoryName } from "@/Protocols/RepositoryProtocol"
-import { ContextDefinition } from "@/Protocols/ContextProtocol"
-import { DeclarationType } from "./NodeJSCodeParserProtocol"
+import { ContextDefinitionItem } from "@/Protocols/ContextProtocol"
+import { DeclarationType } from "@/Protocols/NodeJSCodeParserProtocol"
+import { CodeBLEUFormattedResult } from "@/Protocols/CodeBLEUProtocol"
 
 export type ExploreContextOptions = {
 	repositoryName: RepositoryName
@@ -24,7 +25,10 @@ export type ExploredContext = {
 		declarationType: DeclarationType
 		resolvedFilePath: string
 	}
-	context: ContextDefinition
+	context: Array<Pick<ContextDefinitionItem, "type" | "slug"> & {
+		resolvedFilePath: string
+		codeBLEUDetails: CodeBLEUFormattedResult
+	}>
 }
 
 export type ExploreContextResult = ExploredContext[]

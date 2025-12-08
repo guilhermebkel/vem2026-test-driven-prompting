@@ -13,7 +13,7 @@ class CodeBLEUUtil {
 		const hypothesesB64 = JSON.stringify(candidateCode.map(encodeBase64))
 
 		const result = await ShellUtil.executeCommand(
-			`python3 compute-code-bleu-v2.py --refs-base64 ${referenceB64} --hyps-base64 ${hypothesesB64} --lang "javascript" --workers 8`,
+			`python3 compute-code-bleu-v2.py --refs-base64 ${referenceB64} --hyps-base64 ${hypothesesB64} --lang "javascript" --workers 16`,
 			PathUtil.getScriptsDirectoryPath()
 		)
 
