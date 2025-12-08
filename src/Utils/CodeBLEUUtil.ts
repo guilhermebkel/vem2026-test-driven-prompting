@@ -10,7 +10,7 @@ import FileUtil from "@/Utils/FileUtil"
 
 class CodeBLEUUtil {
 	private readonly computeInBatch = DataProcessUtil.getBatchAccumulatorProcessor<CodeBLEUOptions, CodeBLEURawResult>({
-		maxAccumulatedCount: 800,
+		maxAccumulatedCount: 500,
 		maxWaitingTimeInMilliseconds: 500,
 		onItemBatchProcess: async (data) => {
 			const codeBLEURawInput: CodeBLEURawInput[] = data.map(pair => ({
