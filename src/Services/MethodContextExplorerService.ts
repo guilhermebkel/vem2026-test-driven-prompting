@@ -3,6 +3,8 @@ import { ExploreContextOptions, ExploreContextResult, ExploredContext, LoadedMet
 import { ExploredMethod, ExploreMethodResult } from "@/Protocols/MethodExplorerProtocol"
 import { DeclarationType } from "@/Protocols/NodeJSCodeParserProtocol"
 
+import { methodContextExplorationValidation } from "@/Config/MethodContextExplorationConfig"
+
 import LogService from "@/Services/LogService"
 
 import CodeBLEUUtil from "@/Utils/CodeBLEUUtil"
@@ -139,10 +141,10 @@ class MethodContextExplorerService {
 							hypothesisCode: formattedNode.code
 						})
 
-						const isSemanticallySimilarMethod = result.dataflowMatchScore >= 0.65 && result.syntaxMatchScore >= 0.30
-						const isStructurallySimilarMethod = result.syntaxMatchScore >= 0.60 || result.weightedNgramScore >= 0.55
-
 						let slug: SemanticContextSlug | null = null
+
+						const isSemanticallySimilarMethod = methodContextExplorationValidation.isSemanticallySimilarMethod(result)
+						const isStructurallySimilarMethod = methodContextExplorationValidation.isStructurallySimilarMethod(result)
 
 						if (isSemanticallySimilarMethod) {
 							slug = "semantically-similar-method"
@@ -178,9 +180,9 @@ class MethodContextExplorerService {
 		const nodes = NodeJSCodeParserUtil.extractNodes(exploredMethodSourceFile, [{ type: "method" }])
 
 		nodes.forEach(node => {
-			const isSelfCodeComparison = node.getName() === exploredMethod.name
+			const isSameClassMethod = methodContextExplorationValidation.isSameClassMethod(exploredMethod.name, node.getName())
 
-			if (!isSelfCodeComparison) {
+			if (isSameClassMethod) {
 				context.push({
 					slug: "same-class-method",
 					resolvedFilePath: exploredMethod.resolvedMethodFilePath,

@@ -1,4 +1,16 @@
 import { MethodExplorationOptions } from "@/Protocols/ExplorationProtocol"
+import { MethodTestCoverageDetails } from "@/Protocols/TestCoverageProtocol"
+
+export const methodExplorationValidation = {
+	hasMinimumTestFileCount: (exploredMethodResolvedTestFilePaths: string[]): boolean => (
+		exploredMethodResolvedTestFilePaths.length >= 1
+	),
+	hasMinimumTestCoveragePercentage: (exploredMethodTestCoverageDetails: MethodTestCoverageDetails): boolean => (
+		exploredMethodTestCoverageDetails.lineCoveragePercentage >= 100
+		&& exploredMethodTestCoverageDetails.statementCoveragePercentage >= 100
+		&& exploredMethodTestCoverageDetails.branchCoveragePercentage >= 100
+	)
+}
 
 export const methodExplorationConfig: MethodExplorationOptions[] = [
 	{

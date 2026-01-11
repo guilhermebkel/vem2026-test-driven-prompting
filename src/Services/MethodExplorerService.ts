@@ -2,6 +2,8 @@ import { ExploredMethod, ExploreMethodOptions, ExploreMethodResult } from "@/Pro
 import { CoverageReport } from "@/Protocols/TestExecutorProtocol"
 import { ProjectType } from "@/Protocols/NodeJSCodeParserProtocol"
 
+import { methodExplorationValidation } from "@/Config/MethodExplorationConfig"
+
 import PathUtil from "@/Utils/PathUtil"
 import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
 import TracingUtil from "@/Utils/TracingUtil"
@@ -115,19 +117,17 @@ class MethodExplorerService {
 
 	private async filterExploredMethods(exploredMethods: ExploredMethod[]): Promise<ExploredMethod[]> {
 		return await TracingUtil.traceTask("Filter method files...", async (config) => {
-			const exploredMethodsWithTests = exploredMethods.filter(({ resolvedTestFilePaths }) => (
-				resolvedTestFilePaths.length > 0
+			const exploredMethodsWithMinimumTestFileCount = exploredMethods.filter(({ resolvedTestFilePaths }) => (
+				methodExplorationValidation.hasMinimumTestFileCount(resolvedTestFilePaths)
 			))
 
-			const exploredMethodsWithTotalTestCoverage = exploredMethodsWithTests.filter(({ testCoverageDetails }) => (
-				testCoverageDetails.lineCoveragePercentage >= 100
-				&& testCoverageDetails.statementCoveragePercentage >= 100
-				&& testCoverageDetails.branchCoveragePercentage >= 100
+			const exploredMethodsWithMinimumTestCoveragePercentage = exploredMethodsWithMinimumTestFileCount.filter(({ testCoverageDetails }) => (
+				methodExplorationValidation.hasMinimumTestCoveragePercentage(testCoverageDetails)
 			))
 
-			config.setOutput(`Selected ${exploredMethodsWithTotalTestCoverage.length} methods!`)
+			config.setOutput(`Selected ${exploredMethodsWithMinimumTestCoveragePercentage.length} methods!`)
 
-			return exploredMethodsWithTotalTestCoverage
+			return exploredMethodsWithMinimumTestCoveragePercentage
 		}) as ExploredMethod[]
 	}
 
