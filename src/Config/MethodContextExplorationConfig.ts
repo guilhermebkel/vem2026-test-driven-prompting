@@ -16,6 +16,20 @@ export const methodContextExplorationValidation = {
 export const methodContextExplorationConfig: MethodContextExplorationOptions[] = [
 	{
 		exploreOptions: {
+			repositoryName: "fastify",
+			methodFilePatterns: ["**/*.js"],
+			testFilePatterns: ["**/*.test.js"]
+		}
+	},
+	{
+		exploreOptions: {
+			repositoryName: "tabnews.com.br",
+			methodFilePatterns: ["**/*.js"],
+			testFilePatterns: ["**/*.test.js"]
+		}
+	},
+	{
+		exploreOptions: {
 			repositoryName: "date-fns",
 			methodFilePatterns: ["**/*.ts"],
 			testFilePatterns: ["**/test.ts"]
