@@ -3,6 +3,24 @@ import { MethodExplorationOptions } from "@/Protocols/ExplorationProtocol"
 export const methodExplorationConfig: MethodExplorationOptions[] = [
 	{
 		exploreOptions: {
+			repositoryName: "fastify",
+			methodFilePatterns: ["**/*.js"],
+			testFilePatterns: ["**/*.test.js"],
+			repositoryTestSuiteWithCoverageReportCommand: "pnpm dlx c8 --reporter=json node --test $(find test -name '*.test.js' ! -path 'test/bundler/*')",
+			coverageReportFilePattern: "**/coverage/coverage-final.json"
+		}
+	},
+	{
+		exploreOptions: {
+			repositoryName: "tabnews.com.br",
+			methodFilePatterns: ["**/*.js"],
+			testFilePatterns: ["**/*.test.js"],
+			repositoryTestSuiteWithCoverageReportCommand: "npm run test -- --coverage --coverage.provider=v8 --coverage.reporter=json",
+			coverageReportFilePattern: "**/coverage/coverage-final.json"
+		}
+	},
+	{
+		exploreOptions: {
 			repositoryName: "date-fns",
 			methodFilePatterns: ["**/*.ts"],
 			testFilePatterns: ["**/test.ts"],

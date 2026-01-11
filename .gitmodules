@@ -7,6 +7,7 @@
 [submodule "experiment-repos/fastify"]
 	path = experiment-repos/fastify
 	url = git@github.com:fastify/fastify.git
+	branch = main
 [submodule "experiment-repos/directus"]
 	path = experiment-repos/directus
 	url = git@github.com:directus/directus.git

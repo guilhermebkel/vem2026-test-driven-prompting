@@ -1,0 +1,91 @@
+[
+  {
+    "name": "Context",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/lib/context.js",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/internals/context.test.js",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/internals/request.test.js"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "handleRequest",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/lib/handle-request.js",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/internals/handle-request.test.js"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "Reply",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/lib/reply.js",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/diagnostics-channel/404.test.js",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/diagnostics-channel/async-delay-request.test.js",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/diagnostics-channel/async-request.test.js",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/diagnostics-channel/error-before-handler.test.js",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/diagnostics-channel/error-request.test.js",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/diagnostics-channel/sync-delay-request.test.js",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/diagnostics-channel/sync-request-reply.test.js",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/diagnostics-channel/sync-request.test.js",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/internals/content-type-parser.test.js",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/internals/handle-request.test.js",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/internals/reply.test.js",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/stream-serializers.test.js",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/wrap-thenable.test.js"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "Request",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/lib/request.js",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/diagnostics-channel/404.test.js",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/diagnostics-channel/async-delay-request.test.js",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/diagnostics-channel/async-request.test.js",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/diagnostics-channel/error-before-handler.test.js",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/diagnostics-channel/error-request.test.js",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/diagnostics-channel/sync-delay-request.test.js",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/diagnostics-channel/sync-request-reply.test.js",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/diagnostics-channel/sync-request.test.js",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/internals/content-type-parser.test.js",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/internals/handle-request.test.js",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/internals/reply.test.js",
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/internals/request.test.js"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  },
+  {
+    "name": "wrapThenable",
+    "declarationType": "function",
+    "resolvedMethodFilePath": "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/lib/wrap-thenable.js",
+    "resolvedTestFilePaths": [
+      "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/experiment-repos/fastify/test/wrap-thenable.test.js"
+    ],
+    "testCoverageDetails": {
+      "statementCoveragePercentage": 100,
+      "lineCoveragePercentage": 100,
+      "branchCoveragePercentage": 100
+    }
+  }
+]

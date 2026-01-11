@@ -13,3 +13,6 @@ logs/*
 
 # Temporary
 temp
+
+# Built Files
+dist/
