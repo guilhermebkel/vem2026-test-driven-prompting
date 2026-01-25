@@ -1,4 +1,4 @@
-import { SemanticContextSlug } from "@/Protocols/ContextProtocol"
+import { LocalContextSlug, SemanticContextSlug } from "@/Protocols/ContextProtocol"
 import { ExploreContextOptions, ExploreContextResult, ExploredContext, LoadedMethodFile } from "@/Protocols/MethodContextExplorerProtocol"
 import { ExploredMethod, ExploreMethodResult } from "@/Protocols/MethodExplorerProtocol"
 import { DeclarationType } from "@/Protocols/NodeJSCodeParserProtocol"
@@ -103,8 +103,8 @@ class MethodContextExplorerService {
 						}
 
 						exploredContext.context = await Promise.all([
-							...await this.exploreSimilarMethodContext(exploredMethod, loadedMethodFiles),
-							...await this.exploreSameClassMethodContext(exploredMethod)
+							...await this.exploreSemanticContext(exploredMethod, loadedMethodFiles),
+							...await this.exploreLocalContext(exploredMethod)
 						])
 
 						exploreContextResult.push(exploredContext)
@@ -116,7 +116,7 @@ class MethodContextExplorerService {
 		}) as ExploredContext[]
 	}
 
-	private async exploreSimilarMethodContext(exploredMethod: ExploredMethod, loadedMethodFiles: LoadedMethodFile[]): Promise<ExploredContext["context"]> {
+	private async exploreSemanticContext(exploredMethod: ExploredMethod, loadedMethodFiles: LoadedMethodFile[]): Promise<ExploredContext["context"]> {
 		const context: ExploredContext["context"] = []
 
 		const exploredMethodCode = NodeJSCodeParserUtil.extractSpecificCodeFromSourceFile(exploredMethod.resolvedMethodFilePath, [{
@@ -171,20 +171,29 @@ class MethodContextExplorerService {
 		return context
 	}
 
-	private async exploreSameClassMethodContext(exploredMethod: ExploredMethod): Promise<ExploredContext["context"]> {
+	private async exploreLocalContext(exploredMethod: ExploredMethod): Promise<ExploredContext["context"]> {
 		const context: ExploredContext["context"] = []
 
 		const project = NodeJSCodeParserUtil.createProject()
 
 		const exploredMethodSourceFile = project.addSourceFileAtPath(exploredMethod.resolvedMethodFilePath)
-		const nodes = NodeJSCodeParserUtil.extractNodes(exploredMethodSourceFile, [{ type: "method" }])
+		const nodes = NodeJSCodeParserUtil.extractNodes(exploredMethodSourceFile, [{ type: "function" }, { type: "method" }])
 
 		nodes.forEach(node => {
-			const isSameClassMethod = methodContextExplorationValidation.isSameClassMethod(exploredMethod.name, node.getName())
+			let slug: LocalContextSlug | null = null
+
+			const isSameClassMethod = methodContextExplorationValidation.isSameClassMethod(exploredMethod, node)
+			const isSameFileFunction = methodContextExplorationValidation.isSameFileFunction(exploredMethod, node)
 
 			if (isSameClassMethod) {
+				slug = "same-class-method"
+			} else if (isSameFileFunction) {
+				slug = "same-file-function"
+			}
+
+			if (slug) {
 				context.push({
-					slug: "same-class-method",
+					slug,
 					resolvedFilePath: exploredMethod.resolvedMethodFilePath,
 					extractionRule: {
 						type: NodeJSCodeParserUtil.turnSyntaxKindIntoDeclarationType(node.getKind()),
