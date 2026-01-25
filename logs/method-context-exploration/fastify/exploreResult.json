@@ -23,10 +23,10 @@
         },
         "codeBLEUDetails": {
           "codebleuScore": 0.32303197388077354,
-          "dataflowMatchScore": 0.9230769230769231,
           "ngramMatchScore": 0.0014275421011690258,
+          "weightedNgramScore": 0.015623430345001948,
           "syntaxMatchScore": 0.352,
-          "weightedNgramScore": 0.015623430345001948
+          "dataflowMatchScore": 0.9230769230769231
         }
       }
     ]
@@ -87,10 +87,10 @@
         },
         "codeBLEUDetails": {
           "codebleuScore": 0.26226692850194205,
-          "dataflowMatchScore": 0.6851851851851852,
           "ngramMatchScore": 0.002073657392895832,
+          "weightedNgramScore": 0.031911964213192236,
           "syntaxMatchScore": 0.32989690721649484,
-          "weightedNgramScore": 0.031911964213192236
+          "dataflowMatchScore": 0.6851851851851852
         }
       }
     ]
@@ -111,10 +111,10 @@
         },
         "codeBLEUDetails": {
           "codebleuScore": 0.2698112543808338,
-          "dataflowMatchScore": 0.75,
           "ngramMatchScore": 0.005923625523450718,
+          "weightedNgramScore": 0.007531918315674009,
           "syntaxMatchScore": 0.3157894736842105,
-          "weightedNgramScore": 0.007531918315674009
+          "dataflowMatchScore": 0.75
         }
       },
       {
@@ -278,10 +278,10 @@
         },
         "codeBLEUDetails": {
           "codebleuScore": 0.3150339716118186,
-          "dataflowMatchScore": 0.75,
           "ngramMatchScore": 0.02357243929886187,
+          "weightedNgramScore": 0.03919502609578105,
           "syntaxMatchScore": 0.4473684210526316,
-          "weightedNgramScore": 0.03919502609578105
+          "dataflowMatchScore": 0.75
         }
       },
       {
@@ -293,10 +293,10 @@
         },
         "codeBLEUDetails": {
           "codebleuScore": 0.3496701037662614,
-          "dataflowMatchScore": 0.875,
           "ngramMatchScore": 0.039034782834173234,
+          "weightedNgramScore": 0.037277211178240725,
           "syntaxMatchScore": 0.4473684210526316,
-          "weightedNgramScore": 0.037277211178240725
+          "dataflowMatchScore": 0.875
         }
       }
     ]
@@ -317,10 +317,10 @@
         },
         "codeBLEUDetails": {
           "codebleuScore": 0.3367987273266958,
-          "dataflowMatchScore": 0.6875,
           "ngramMatchScore": 0.0090372498486012,
+          "weightedNgramScore": 0.010657659458182008,
           "syntaxMatchScore": 0.64,
-          "weightedNgramScore": 0.010657659458182008
+          "dataflowMatchScore": 0.6875
         }
       },
       {
@@ -332,10 +332,10 @@
         },
         "codeBLEUDetails": {
           "codebleuScore": 0.2715097977438182,
-          "dataflowMatchScore": 0.3125,
           "ngramMatchScore": 0.0022192105244763193,
+          "weightedNgramScore": 0.011319980450796503,
           "syntaxMatchScore": 0.76,
-          "weightedNgramScore": 0.011319980450796503
+          "dataflowMatchScore": 0.3125
         }
       },
       {
@@ -347,10 +347,10 @@
         },
         "codeBLEUDetails": {
           "codebleuScore": 0.4071264094276226,
-          "dataflowMatchScore": 0.875,
           "ngramMatchScore": 0.01959843555633312,
+          "weightedNgramScore": 0.05390720215415736,
           "syntaxMatchScore": 0.68,
-          "weightedNgramScore": 0.05390720215415736
+          "dataflowMatchScore": 0.875
         }
       },
       {
@@ -362,10 +362,10 @@
         },
         "codeBLEUDetails": {
           "codebleuScore": 0.3028451145861334,
-          "dataflowMatchScore": 0.4375,
           "ngramMatchScore": 0.03997325619037605,
+          "weightedNgramScore": 0.05390720215415736,
           "syntaxMatchScore": 0.68,
-          "weightedNgramScore": 0.05390720215415736
+          "dataflowMatchScore": 0.4375
         }
       },
       {
@@ -425,10 +425,10 @@
         },
         "codeBLEUDetails": {
           "codebleuScore": 0.20960991531987008,
-          "dataflowMatchScore": 0.1875,
           "ngramMatchScore": 0.002188691803237787,
+          "weightedNgramScore": 0.008750969476242517,
           "syntaxMatchScore": 0.64,
-          "weightedNgramScore": 0.008750969476242517
+          "dataflowMatchScore": 0.1875
         }
       },
       {
@@ -440,10 +440,10 @@
         },
         "codeBLEUDetails": {
           "codebleuScore": 0.20960991531987008,
-          "dataflowMatchScore": 0.1875,
           "ngramMatchScore": 0.002188691803237787,
+          "weightedNgramScore": 0.008750969476242517,
           "syntaxMatchScore": 0.64,
-          "weightedNgramScore": 0.008750969476242517
+          "dataflowMatchScore": 0.1875
         }
       }
     ]
@@ -464,10 +464,10 @@
         },
         "codeBLEUDetails": {
           "codebleuScore": 0.2858921379233252,
-          "dataflowMatchScore": 0.66,
           "ngramMatchScore": 0.027653147736012604,
+          "weightedNgramScore": 0.047464699731936,
           "syntaxMatchScore": 0.4084507042253521,
-          "weightedNgramScore": 0.047464699731936
+          "dataflowMatchScore": 0.66
         }
       },
       {
@@ -479,10 +479,10 @@
         },
         "codeBLEUDetails": {
           "codebleuScore": 0.2585038011398726,
-          "dataflowMatchScore": 0.68,
           "ngramMatchScore": 0.0030259215183146226,
+          "weightedNgramScore": 0.020003367548217927,
           "syntaxMatchScore": 0.33098591549295775,
-          "weightedNgramScore": 0.020003367548217927
+          "dataflowMatchScore": 0.68
         }
       },
       {
@@ -494,10 +494,10 @@
         },
         "codeBLEUDetails": {
           "codebleuScore": 0.302810007464956,
-          "dataflowMatchScore": 0.66,
           "ngramMatchScore": 0.04540462690477304,
+          "weightedNgramScore": 0.0480889240818114,
           "syntaxMatchScore": 0.45774647887323944,
-          "weightedNgramScore": 0.0480889240818114
+          "dataflowMatchScore": 0.66
         }
       }
     ]

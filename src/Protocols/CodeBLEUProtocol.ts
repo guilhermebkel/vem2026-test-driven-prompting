@@ -1,14 +1,4 @@
-export type CodeBLEUOptions = {
-	referenceCode: string
-	hypothesisCode: string
-}
-
-export type CodeBLEURawInput = {
-	ref: string
-	hyp: string
-}
-
-export type CodeBLEURawResultSuccess = {
+export type CodeBLEURawMetrics = {
 	/**
 	 * The final aggregated CodeBLEU score (0–1).
 	 * This is a weighted combination of n-gram, syntax, and dataflow similarity.
@@ -42,19 +32,10 @@ export type CodeBLEURawResultSuccess = {
 	dataflow_match_score: number
 }
 
-export type CodeBLEURawResultFailure = {
-	error: string
-}
-
-export type CodeBLEURawResult = {
-	success?: CodeBLEURawResultSuccess
-	failure?: CodeBLEURawResultFailure
-}
-
-export type CodeBLEUFormattedResult = {
-	codebleuScore: CodeBLEURawResultSuccess["codebleu"]
-	ngramMatchScore: CodeBLEURawResultSuccess["ngram_match_score"]
-	weightedNgramScore: CodeBLEURawResultSuccess["weighted_ngram_match_score"]
-	syntaxMatchScore: CodeBLEURawResultSuccess["syntax_match_score"]
-	dataflowMatchScore: CodeBLEURawResultSuccess["dataflow_match_score"]
+export type CodeBLEUFormattedMetrics = {
+	codebleuScore: CodeBLEURawMetrics["codebleu"]
+	ngramMatchScore: CodeBLEURawMetrics["ngram_match_score"]
+	weightedNgramScore: CodeBLEURawMetrics["weighted_ngram_match_score"]
+	syntaxMatchScore: CodeBLEURawMetrics["syntax_match_score"]
+	dataflowMatchScore: CodeBLEURawMetrics["dataflow_match_score"]
 }
