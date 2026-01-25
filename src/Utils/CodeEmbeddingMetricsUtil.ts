@@ -7,8 +7,8 @@ class CodeEmbeddingMetricsUtil extends BaseCodeMetricsUtil<CodeEmbeddingFormatte
 	protected getConfig(): Config {
 		return {
 			batch: {
-				maxAccumulatedCount: 3000,
-				maxWaitingTimeInMilliseconds: 2000
+				maxAccumulatedCount: 1000,
+				maxWaitingTimeInMilliseconds: 500
 			},
 			shell: {
 				scriptFileName: "compute-code-embedding.py",
