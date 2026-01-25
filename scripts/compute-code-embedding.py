@@ -15,7 +15,7 @@ from filelock import FileLock
 # =============================
 
 MODEL_NAME = "microsoft/graphcodebert-base"
-CACHE_DIR = Path("../temp/.embedding_cache")
+CACHE_DIR = Path("../temp/embedding_cache")
 LOCK_DIR = CACHE_DIR / "locks"
 EMBED_DIR = CACHE_DIR / "embeddings"
 
