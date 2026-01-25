@@ -164,7 +164,8 @@ class MethodContextExplorerService {
 									type: formattedNode.type,
 									name: formattedNode.name
 								},
-								codeBLEUDetails: codeBLEUMetrics
+								codeBLEUMetrics,
+								codeEmbeddingMetrics
 							})
 						}
 					})

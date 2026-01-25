@@ -8,10 +8,12 @@ import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
 
 export const methodContextExplorationValidation = {
 	isSemanticallySimilarMethod: (codeBLEUMetrics: CodeBLEUFormattedMetrics, codeEmbeddingMetrics: CodeEmbeddingFormattedMetrics): boolean => (
-		codeEmbeddingMetrics.embeddingSimilarity >= 0.78 && codeBLEUMetrics.dataflowMatchScore >= 0.40
+		codeEmbeddingMetrics.embeddingSimilarity >= 0.78
+		&& codeBLEUMetrics.dataflowMatchScore >= 0.40
 	),
 	isStructurallySimilarMethod: (codeBLEUMetrics: CodeBLEUFormattedMetrics): boolean => (
-		codeBLEUMetrics.syntaxMatchScore >= 0.60 || codeBLEUMetrics.weightedNgramScore >= 0.55
+		codeBLEUMetrics.syntaxMatchScore >= 0.60
+		|| codeBLEUMetrics.weightedNgramScore >= 0.55
 	),
 	isSameClassMethod: (exploredMethod: ExploredMethod, node: NodeType): boolean => (
 		exploredMethod.name !== node.getName()

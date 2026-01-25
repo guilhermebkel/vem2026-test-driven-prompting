@@ -1,7 +1,8 @@
 import { RepositoryName } from "@/Protocols/RepositoryProtocol"
 import { ContextDefinitionItem } from "@/Protocols/ContextProtocol"
 import { DeclarationType, ExtractionRule } from "@/Protocols/NodeJSCodeParserProtocol"
-import { CodeBLEUFormattedResult } from "@/Protocols/CodeBLEUProtocol"
+import { CodeBLEUFormattedMetrics } from "@/Protocols/CodeBLEUMetricsProtocol"
+import { CodeEmbeddingFormattedMetrics } from "./CodeEmbeddingMetricsProtocol"
 
 export type ExploreContextOptions = {
 	repositoryName: RepositoryName
@@ -28,7 +29,8 @@ export type ExploredContext = {
 	context: Array<Pick<ContextDefinitionItem, "slug"> & {
 		resolvedFilePath: string
 		extractionRule: Partial<ExtractionRule>
-		codeBLEUDetails?: CodeBLEUFormattedResult
+		codeBLEUMetrics?: CodeBLEUFormattedMetrics
+		codeEmbeddingMetrics?: CodeEmbeddingFormattedMetrics
 	}>
 }
 
