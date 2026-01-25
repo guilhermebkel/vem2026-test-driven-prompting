@@ -13,6 +13,7 @@ import FileUtil from "@/Utils/FileUtil"
 import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
 import PathUtil from "@/Utils/PathUtil"
 import TracingUtil from "@/Utils/TracingUtil"
+import CodeEmbeddingMetricsUtil from "@/Utils/CodeEmbeddingMetricsUtil"
 
 class MethodContextExplorerService {
 	async explore(options: ExploreContextOptions): Promise<ExploreContextResult> {
@@ -136,15 +137,18 @@ class MethodContextExplorerService {
 
 				await Promise.all(
 					loadedMethodFile.formattedNodes.map(async formattedNode => {
-						const result = await CodeBLEUMetricsUtil.compute({
-							referenceCode: exploredMethodCode,
-							hypothesisCode: formattedNode.code
-						})
+						const [
+							codeBLEUMetrics,
+							codeEmbeddingMetrics
+						] = await Promise.all([
+							await CodeBLEUMetricsUtil.compute({ referenceCode: exploredMethodCode, hypothesisCode: formattedNode.code }),
+							await CodeEmbeddingMetricsUtil.compute({ referenceCode: exploredMethodCode, hypothesisCode: formattedNode.code })
+						])
 
 						let slug: SemanticContextSlug | null = null
 
-						const isSemanticallySimilarMethod = methodContextExplorationValidation.isSemanticallySimilarMethod(result)
-						const isStructurallySimilarMethod = methodContextExplorationValidation.isStructurallySimilarMethod(result)
+						const isSemanticallySimilarMethod = methodContextExplorationValidation.isSemanticallySimilarMethod(codeBLEUMetrics, codeEmbeddingMetrics)
+						const isStructurallySimilarMethod = methodContextExplorationValidation.isStructurallySimilarMethod(codeBLEUMetrics)
 
 						if (isSemanticallySimilarMethod) {
 							slug = "semantically-similar-method"
@@ -160,7 +164,7 @@ class MethodContextExplorerService {
 									type: formattedNode.type,
 									name: formattedNode.name
 								},
-								codeBLEUDetails: result
+								codeBLEUDetails: codeBLEUMetrics
 							})
 						}
 					})
