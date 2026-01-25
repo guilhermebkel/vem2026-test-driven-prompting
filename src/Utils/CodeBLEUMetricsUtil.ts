@@ -3,7 +3,7 @@ import { Config } from "@/Protocols/CodeMetricsProtocol"
 
 import BaseCodeMetricsUtil from "@/Utils/BaseCodeMetricsUtil"
 
-class CodeBLEUUtil extends BaseCodeMetricsUtil<CodeBLEUFormattedMetrics, CodeBLEURawMetrics> {
+class CodeBLEUMetricsUtil extends BaseCodeMetricsUtil<CodeBLEUFormattedMetrics, CodeBLEURawMetrics> {
 	protected getConfig(): Config {
 		return {
 			batch: {
@@ -35,4 +35,4 @@ class CodeBLEUUtil extends BaseCodeMetricsUtil<CodeBLEUFormattedMetrics, CodeBLE
 	}
 }
 
-export default new CodeBLEUUtil()
+export default new CodeBLEUMetricsUtil()

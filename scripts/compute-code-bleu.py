@@ -2,7 +2,6 @@
 import argparse
 import json
 import sys
-import os
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from codebleu import calc_codebleu
 

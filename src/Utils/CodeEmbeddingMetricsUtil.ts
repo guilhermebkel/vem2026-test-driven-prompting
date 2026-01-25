@@ -3,12 +3,12 @@ import { Config } from "@/Protocols/CodeMetricsProtocol"
 
 import BaseCodeMetricsUtil from "@/Utils/BaseCodeMetricsUtil"
 
-class CodeBLEUUtil extends BaseCodeMetricsUtil<CodeEmbeddingFormattedMetrics, CodeEmbeddingRawMetrics> {
+class CodeEmbeddingMetricsUtil extends BaseCodeMetricsUtil<CodeEmbeddingFormattedMetrics, CodeEmbeddingRawMetrics> {
 	protected getConfig(): Config {
 		return {
 			batch: {
-				maxAccumulatedCount: 5,
-				maxWaitingTimeInMilliseconds: 500
+				maxAccumulatedCount: 1000,
+				maxWaitingTimeInMilliseconds: 1000
 			},
 			shell: {
 				scriptFileName: "compute-code-embedding.py",
@@ -25,4 +25,4 @@ class CodeBLEUUtil extends BaseCodeMetricsUtil<CodeEmbeddingFormattedMetrics, Co
 	}
 }
 
-export default new CodeBLEUUtil()
+export default new CodeEmbeddingMetricsUtil()
