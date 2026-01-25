@@ -47,7 +47,7 @@ def build_embedding_cache_path(code_hash: str) -> Path:
 def build_lock_path(code_hash: str) -> Path:
 	return LOCK_DIR / f"{code_hash}.lock"
 
-def embed(code: str):
+def compute_embedding(code: str):
 	inputs = tokenizer(
 		code,
 		return_tensors="pt",
@@ -69,15 +69,15 @@ def get_or_compute_embedding(code: str):
 	lock = FileLock(lock_path, timeout=60)
 
 	with lock:
-		cache_file = build_embedding_cache_path(code_hash)
+		cache_path = build_embedding_cache_path(code_hash)
 
-		if cache_file.exists():
-			with open(cache_file, "rb") as f:
+		if cache_path.exists():
+			with open(cache_path, "rb") as f:
 				return pickle.load(f)
 
-		embedding = embed(code)
+		embedding = compute_embedding(code)
 
-		with open(cache_file, "wb") as f:
+		with open(cache_path, "wb") as f:
 			pickle.dump(embedding, f)
 
 		return embedding
