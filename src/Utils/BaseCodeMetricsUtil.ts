@@ -8,7 +8,7 @@ import DataProcessUtil from "@/Utils/DataProcessUtil"
 import IdentificationUtil from "@/Utils/IdentificationUtil"
 import FileUtil from "@/Utils/FileUtil"
 
-abstract class BaseCodeMetricsUtil<FormattedMetrics, RawMetrics> {
+abstract class CodeBLEUMetricsUtil<FormattedMetrics, RawMetrics> {
 	private readonly computeInBatch = DataProcessUtil.getBatchAccumulatorProcessor<ComputeCodeMetricsOptions, CodeMetricsResult<RawMetrics>>({
 		maxAccumulatedCount: this.getConfig().batch.maxAccumulatedCount,
 		maxWaitingTimeInMilliseconds: this.getConfig().batch.maxWaitingTimeInMilliseconds,
@@ -67,4 +67,4 @@ abstract class BaseCodeMetricsUtil<FormattedMetrics, RawMetrics> {
 	protected abstract getConfig(): Config
 }
 
-export default BaseCodeMetricsUtil
+export default CodeBLEUMetricsUtil

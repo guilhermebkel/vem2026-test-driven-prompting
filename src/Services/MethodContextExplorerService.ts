@@ -7,7 +7,7 @@ import { methodContextExplorationValidation } from "@/Config/MethodContextExplor
 
 import LogService from "@/Services/LogService"
 
-import CodeBLEUUtil from "@/Utils/CodeBLEUUtil"
+import CodeBLEUMetricsUtil from "@/Utils/CodeBLEUMetricsUtil"
 import DataProcessUtil from "@/Utils/DataProcessUtil"
 import FileUtil from "@/Utils/FileUtil"
 import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
@@ -136,7 +136,7 @@ class MethodContextExplorerService {
 
 				await Promise.all(
 					loadedMethodFile.formattedNodes.map(async formattedNode => {
-						const result = await CodeBLEUUtil.compute({
+						const result = await CodeBLEUMetricsUtil.compute({
 							referenceCode: exploredMethodCode,
 							hypothesisCode: formattedNode.code
 						})
