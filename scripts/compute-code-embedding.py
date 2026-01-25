@@ -38,13 +38,13 @@ model.eval()
 # Utils
 # =============================
 
-def sha256(text: str) -> str:
+def generate_hash(text: str) -> str:
 	return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
-def embedding_cache_path(code_hash: str) -> Path:
+def build_embedding_cache_path(code_hash: str) -> Path:
 	return EMBED_DIR / f"{code_hash}.pkl"
 
-def lock_path(code_hash: str) -> Path:
+def build_lock_path(code_hash: str) -> Path:
 	return LOCK_DIR / f"{code_hash}.lock"
 
 def embed(code: str):
@@ -64,23 +64,23 @@ def embed(code: str):
 	return outputs.last_hidden_state[:, 0, :].cpu().numpy()
 
 def get_or_compute_embedding(code: str):
-	code_hash = sha256(code)
-	lock_file = lock_path(code_hash)
-	lock = FileLock(lock_file, timeout=60)
+	code_hash = generate_hash(code)
+	lock_path = build_lock_path(code_hash)
+	lock = FileLock(lock_path, timeout=60)
 
 	with lock:
-		cache_file = embedding_cache_path(code_hash)
+		cache_file = build_embedding_cache_path(code_hash)
 
 		if cache_file.exists():
 			with open(cache_file, "rb") as f:
 				return pickle.load(f)
 
-		emb = embed(code)
+		embedding = embed(code)
 
 		with open(cache_file, "wb") as f:
-			pickle.dump(emb, f)
+			pickle.dump(embedding, f)
 
-		return emb
+		return embedding
 
 # =============================
 # Main
@@ -106,10 +106,10 @@ def main():
 
 	for i, pair in enumerate(pairs):
 		try:
-			ref_emb = get_or_compute_embedding(pair["ref"])
-			hyp_emb = get_or_compute_embedding(pair["hyp"])
+			ref_embedding = get_or_compute_embedding(pair["ref"])
+			hyp_embedding = get_or_compute_embedding(pair["hyp"])
 
-			score = cosine_similarity(ref_emb, hyp_emb)[0][0]
+			score = cosine_similarity(ref_embedding, hyp_embedding)[0][0]
 
 			results[i] = {"success": {"embedding_similarity": float(score)}}
 		except Exception as e:
