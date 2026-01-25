@@ -1,43 +1,9 @@
 #!/usr/bin/env python3
 import argparse
 import json
-import sys
-import subprocess
-import time
-
-def pip_install(pkg, retries=3):
-    for i in range(retries):
-        try:
-            subprocess.check_call([sys.executable, "-m", "pip", "install", pkg])
-            return
-        except subprocess.CalledProcessError:
-            if i == retries - 1:
-                raise
-            time.sleep(5)
-
-def ensure_dependencies():
-    try:
-        import torch
-    except ImportError:
-        pip_install("torch")
-        import torch
-
-    try:
-        from transformers import RobertaTokenizer, RobertaModel
-    except ImportError:
-        pip_install("transformers")
-        from transformers import RobertaTokenizer, RobertaModel
-
-    try:
-        from sklearn.metrics.pairwise import cosine_similarity
-    except ImportError:
-        pip_install("scikit-learn")
-        from sklearn.metrics.pairwise import cosine_similarity
-
-    return torch, RobertaTokenizer, RobertaModel, cosine_similarity
-
-
-torch, RobertaTokenizer, RobertaModel, cosine_similarity = ensure_dependencies()
+import torch
+from transformers import RobertaTokenizer, RobertaModel
+from sklearn.metrics.pairwise import cosine_similarity
 
 MODEL_NAME = "microsoft/graphcodebert-base"
 

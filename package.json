@@ -20,7 +20,8 @@
     "experiment-repo:setup:date-fns": "bash ./scripts/setup-experiment-repo.sh date-fns",
     "experiment-repo:setup:directus": "bash ./scripts/setup-experiment-repo.sh directus",
     "experiment-repo:setup:fastify": "bash ./scripts/setup-experiment-repo.sh fastify",
-    "experiment-repo:setup:tabnews.com.br": "bash ./scripts/setup-experiment-repo.sh tabnews.com.br"
+    "experiment-repo:setup:tabnews.com.br": "bash ./scripts/setup-experiment-repo.sh tabnews.com.br",
+    "python-scripts:dependencies:setup-all": "bash ./scripts/setup-python-scripts-dependencies.sh"
   },
   "author": "",
   "license": "ISC",

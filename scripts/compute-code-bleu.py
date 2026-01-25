@@ -4,13 +4,7 @@ import json
 import sys
 import os
 from concurrent.futures import ProcessPoolExecutor, as_completed
-
-try:
-    from codebleu import calc_codebleu
-except ImportError:
-    print("Installing CodeBLEU...")
-    os.system(f"{sys.executable} -m pip install codebleu")
-    from codebleu import calc_codebleu
+from codebleu import calc_codebleu
 
 def compute_single_pair(reference, hyp, lang):
     return calc_codebleu([reference], [hyp], lang)
