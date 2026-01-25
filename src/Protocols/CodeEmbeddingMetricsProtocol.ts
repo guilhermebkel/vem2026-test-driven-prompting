@@ -1,6 +1,7 @@
 export type CodeEmbeddingRawMetrics = {
 	/**
-	 * GraphCodeBERT cosine similarity result.
+	 * Semantic similarity score between two code snippets computed as the
+	 * cosine similarity of their GraphCodeBERT embeddings.
 	 */
 	embedding_similarity: number
 }
