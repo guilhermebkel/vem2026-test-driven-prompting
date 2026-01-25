@@ -10,8 +10,8 @@ import FileUtil from "@/Utils/FileUtil"
 
 abstract class BaseCodeMetricsUtil<FormattedMetrics, RawMetrics> {
 	private readonly computeInBatch = DataProcessUtil.getBatchAccumulatorProcessor<ComputeCodeMetricsOptions, CodeMetricsResult<RawMetrics>>({
-		maxAccumulatedCount: this.getConfig().batch.maxAccumulatedCount,
-		maxWaitingTimeInMilliseconds: this.getConfig().batch.maxWaitingTimeInMilliseconds,
+		maxAccumulatedCount: this.config.batch.maxAccumulatedCount,
+		maxWaitingTimeInMilliseconds: this.config.batch.maxWaitingTimeInMilliseconds,
 		onItemBatchProcess: async (data) => {
 			const batchInput: CodeMetricsInput[] = data.map(pair => ({
 				ref: pair.item.referenceCode,
@@ -48,7 +48,7 @@ abstract class BaseCodeMetricsUtil<FormattedMetrics, RawMetrics> {
 			scriptArguments,
 			scriptEnvironmentVariables,
 			scriptFileName
-		} = this.getConfig().shell
+		} = this.config.shell
 
 		const result = await ShellUtil.executeCommand(`python3 ${scriptFileName} --pairs-file '${batchInputFilePath}' ${scriptArguments}`, {
 			currentWorkingDirectoryPath: PathUtil.getScriptsDirectoryPath(),
@@ -60,6 +60,10 @@ abstract class BaseCodeMetricsUtil<FormattedMetrics, RawMetrics> {
 		const batchResult: CodeMetricsResult<RawMetrics>[] = JSON.parse(result)
 
 		return batchResult
+	}
+
+	private get config(): Config {
+		return this.getConfig()
 	}
 
 	protected abstract formatRawMetrics(rawMetrics: RawMetrics): FormattedMetrics
