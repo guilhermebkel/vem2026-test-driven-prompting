@@ -20,7 +20,7 @@ def main():
     parser.add_argument(
         "--pairs-file",
         required=True,
-        help="Path for the JSON file containing [{\"ref\":\"...\", \"hyp\":\"...\", \"slug\":\"...\"}, ...]"
+        help="Path for the JSON file containing [{\"ref\":\"...\", \"hyp\":\"...\"}, ...]"
     )
     parser.add_argument("--lang", required=True, help="Coding Language")
     parser.add_argument("--workers", type=int, default=4, help="Parallel Processes")
@@ -48,12 +48,11 @@ def main():
 
         for future in as_completed(future_to_index):
             i = future_to_index[future]
-            pair = pairs[i]
             try:
                 res = future.result()
-                results[i] = {"slug": pair.get("slug"), "success": res}
+                results[i] = {"success": res}
             except Exception as e:
-                results[i] = {"slug": pair.get("slug"), "error": str(e)}
+                results[i] = {"error": str(e)}
 
     print(json.dumps(results, indent=2))
 

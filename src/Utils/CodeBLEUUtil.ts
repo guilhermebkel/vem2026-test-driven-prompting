@@ -50,10 +50,16 @@ class CodeBLEUUtil {
 		const batchInputInJsonString = JSON.stringify(batchInput)
 		await FileUtil.setFileContent(batchInputFilePath, batchInputInJsonString)
 
-		const result = await ShellUtil.executeCommand(
-			`python3 compute-code-bleu.py --pairs-file '${batchInputFilePath}' --lang javascript --workers 14`,
-			PathUtil.getScriptsDirectoryPath()
-		)
+		const result = await ShellUtil.executeCommand(`python3 compute-code-bleu.py --pairs-file '${batchInputFilePath}' --lang javascript --workers 14`, {
+			currentWorkingDirectoryPath: PathUtil.getScriptsDirectoryPath(),
+			environmentVariables: {
+				/**
+				 * WARNING:
+				 * - Forces deterministic iteration order in Python dict/set to avoid CodeBLEU score nondeterminism.
+				 */
+				PYTHONHASHSEED: "0"
+			}
+		})
 
 		await FileUtil.deleteFile(batchInputFilePath)
 

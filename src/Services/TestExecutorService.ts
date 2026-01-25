@@ -16,9 +16,9 @@ class TestExecutorService {
 	async runRepositoryTestSuite(options: RepositoryTestSuiteOptions): Promise<RepositoryTestSuiteResult> {
 		return await TracingUtil.traceAction("Running method tests...", async () => {
 			try {
-				const repositoryRootPath = PathUtil.getRepositoryRootPath(options.repositoryName)
-
-				const result = await ShellUtil.executeCommand(options.repositoryTestSuiteCommand, repositoryRootPath)
+				const result = await ShellUtil.executeCommand(options.repositoryTestSuiteCommand, {
+					currentWorkingDirectoryPath: PathUtil.getRepositoryRootPath(options.repositoryName)
+				})
 
 				return {
 					success: true,
@@ -36,8 +36,9 @@ class TestExecutorService {
 	}
 
 	async collectCoverageReportFromRepositoryTestSuite(options: RepositoryTestSuiteCoverageReportOptions): Promise<RepositoryTestSuiteCoverageReportResult> {
-		const repositoryRootPath = PathUtil.getRepositoryRootPath(options.repositoryName)
-		await ShellUtil.executeCommand(options.repositoryTestSuiteWithCoverageReportCommand, repositoryRootPath)
+		await ShellUtil.executeCommand(options.repositoryTestSuiteWithCoverageReportCommand, {
+			currentWorkingDirectoryPath: PathUtil.getRepositoryRootPath(options.repositoryName)
+		})
 
 		const resolvedCoverageReportFilePaths = await PathUtil.findResolvedRepositoryFilePaths(options.repositoryName, [options.coverageReportFilePattern])
 
