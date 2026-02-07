@@ -159,6 +159,7 @@ class MethodContextExplorerService {
 						if (slug) {
 							context.push({
 								slug,
+								type: "semantic",
 								resolvedFilePath: loadedMethodFile.resolvedFilePath,
 								extractionRule: {
 									type: formattedNode.type,
@@ -199,6 +200,7 @@ class MethodContextExplorerService {
 			if (slug) {
 				context.push({
 					slug,
+					type: "local",
 					resolvedFilePath: exploredMethod.resolvedMethodFilePath,
 					extractionRule: {
 						type: NodeJSCodeParserUtil.turnSyntaxKindIntoDeclarationType(node.getKind()),

@@ -4,18 +4,18 @@ import { DeclarationType } from "@/Protocols/NodeJSCodeParserProtocol"
 export type SourceFileChangesReversionOptions = {
 	repositoryName: RepositoryName
 	sourceFileWithOriginalMethodBody: string
-	methodRelativeFilePath: string
+	methodResolvedFilePath: string
 }
 
 export type SourceFileWithOriginalMethodBodyOptions = {
 	repositoryName: RepositoryName
-	methodRelativeFilePath: string
+	methodResolvedFilePath: string
 }
 
 export type SourceFileWithReconstructedMethodBodyOptions = {
 	repositoryName: RepositoryName,
 	reconstructedMethodBody: string,
-	methodRelativeFilePath: string
+	methodResolvedFilePath: string
 	methodDeclarationType: DeclarationType
 	methodName: string
 }

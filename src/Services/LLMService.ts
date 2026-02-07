@@ -1,8 +1,9 @@
-import TracingUtil from "@/Utils/TracingUtil"
-
-import { MethodReconstructionOptions, MethodReconstructionResult } from "@/Protocols/MethodReconstructorProtocol"
-import ModelUtil from "@/Utils/ModelUtil"
 import { generateText } from "ai"
+
+import TracingUtil from "@/Utils/TracingUtil"
+import ModelUtil from "@/Utils/ModelUtil"
+
+import { MethodReconstructionOptions, MethodReconstructionResult } from "@/Protocols/LLMProtocol"
 
 class LLMService {
 	async reconstructMethod(options: MethodReconstructionOptions): Promise<MethodReconstructionResult> {

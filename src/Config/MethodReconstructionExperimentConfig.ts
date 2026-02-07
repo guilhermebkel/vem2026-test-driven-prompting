@@ -1,40 +1,56 @@
-import { MethodReconstructionExperimentOptions } from "@/Protocols/ExperimentationProtocol"
-import { RepositoryName } from "@/Protocols/RepositoryProtocol"
+import { MethodReconstructionExperimentationOptions } from "@/Protocols/ExperimentationProtocol"
+import { ExperimentComparison } from "@/Protocols/MethodReconstructionExperimenterProtocol"
 
-type RepositoryExperiment = {
-	repositoryName: RepositoryName
-	repositoryTestSuiteCommand: string
-	experiments: Array<{
-		title: MethodReconstructionExperimentOptions["title"]
-		model: MethodReconstructionExperimentOptions["reconstructionOptions"]["model"]
-		method: Omit<MethodReconstructionExperimentOptions["method"], "repositoryName" | "repositoryTestSuiteCommand"> & {
-			specificTestSuiteCommand?: string
-		}
-		context: MethodReconstructionExperimentOptions["reconstructionOptions"]["context"]
-	}>
-}
-
-export const methodReconstructionExperimentConfig: RepositoryExperiment[] = [
+const DEFAULT_EXPERIMENT_COMPARISONS: ExperimentComparison[] = [
 	{
-		repositoryName: "directus",
-		repositoryTestSuiteCommand: "pnpm --workspace-root test",
-		experiments: [
-			{
-				title: "storage-driver-gcs:write",
-				model: {
-					name: "gemini-2.5-flash",
-					reasoningBudget: 0,
-					temperature: 0
-				},
-				method: {
-					name: "write",
-					declarationType: "method",
-					specificTestSuiteCommand: "pnpm --filter storage-driver-gcs test",
-					testRelativeFilePath: "/packages/storage-driver-gcs/src/index.test.ts",
-					methodRelativeFilePath: "/packages/storage-driver-gcs/src/index.ts"
-				},
-				context: []
-			}
-		]
+		model: { name: "gemini-2.5-flash", reasoningBudget: 0, temperature: 0 },
+		context: [{ slug: "same-class-method" }]
+	},
+	{
+		model: { name: "gemini-2.5-flash", reasoningBudget: 0, temperature: 0 },
+		context: [{ slug: "same-file-function" }]
+	},
+	{
+		model: { name: "gemini-2.5-flash", reasoningBudget: 0, temperature: 0 },
+		context: [{ slug: "semantically-similar-method" }]
+	},
+	{
+		model: { name: "gemini-2.5-flash", reasoningBudget: 0, temperature: 0 },
+		context: [{ slug: "structurally-similar-method" }]
+	},
+	{
+		model: { name: "gemini-2.5-flash", reasoningBudget: 0, temperature: 0 },
+		context: [{ slug: "structurally-similar-method" }]
+	}
+]
+
+export const methodReconstructionExperimentConfig: MethodReconstructionExperimentationOptions[] = [
+	{
+		experimentOptions: {
+			repositoryName: "date-fns",
+			repositoryTestSuiteCommand: "pnpm run test",
+			comparisons: DEFAULT_EXPERIMENT_COMPARISONS
+		}
+	},
+	{
+		experimentOptions: {
+			repositoryName: "directus",
+			repositoryTestSuiteCommand: "pnpm --workspace-root test",
+			comparisons: DEFAULT_EXPERIMENT_COMPARISONS
+		}
+	},
+	{
+		experimentOptions: {
+			repositoryName: "fastify",
+			repositoryTestSuiteCommand: "",
+			comparisons: DEFAULT_EXPERIMENT_COMPARISONS
+		}
+	},
+	{
+		experimentOptions: {
+			repositoryName: "tabnews.com.br",
+			repositoryTestSuiteCommand: "",
+			comparisons: DEFAULT_EXPERIMENT_COMPARISONS
+		}
 	}
 ]

@@ -28,20 +28,6 @@ export const methodContextExplorationValidation = {
 export const methodContextExplorationConfig: MethodContextExplorationOptions[] = [
 	{
 		exploreOptions: {
-			repositoryName: "fastify",
-			methodFilePatterns: ["**/*.js"],
-			testFilePatterns: ["**/*.test.js"]
-		}
-	},
-	{
-		exploreOptions: {
-			repositoryName: "tabnews.com.br",
-			methodFilePatterns: ["**/*.js"],
-			testFilePatterns: ["**/*.test.js"]
-		}
-	},
-	{
-		exploreOptions: {
 			repositoryName: "date-fns",
 			methodFilePatterns: ["**/*.ts"],
 			testFilePatterns: ["**/test.ts"]
@@ -52,6 +38,20 @@ export const methodContextExplorationConfig: MethodContextExplorationOptions[] =
 			repositoryName: "directus",
 			methodFilePatterns: ["**/*.ts", "**/*.js"],
 			testFilePatterns: ["**/*.spec.*", "**/*.test.*"]
+		}
+	},
+	{
+		exploreOptions: {
+			repositoryName: "fastify",
+			methodFilePatterns: ["**/*.js"],
+			testFilePatterns: ["**/*.test.js"]
+		}
+	},
+	{
+		exploreOptions: {
+			repositoryName: "tabnews.com.br",
+			methodFilePatterns: ["**/*.js"],
+			testFilePatterns: ["**/*.test.js"]
 		}
 	}
 ]

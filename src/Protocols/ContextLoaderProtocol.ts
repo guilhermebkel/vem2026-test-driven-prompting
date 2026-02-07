@@ -8,10 +8,10 @@ export type ContextLoadOptions = {
 	method: {
 		name: string
 		declarationType: DeclarationType
-		relativeFilePath: string
+		resolvedFilePath: string
 	}
 	test: {
-		relativeFilePath: string
+		resolvedFilePath: string
 	}
 }
 

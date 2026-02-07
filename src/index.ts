@@ -6,8 +6,6 @@ import ExplorationModule from "@/Modules/ExplorationModule"
 import TracingUtil from "@/Utils/TracingUtil"
 import ProcessArgumentUtil from "@/Utils/ProcessArgumentUtil"
 
-import RepositoryTestSuiteFailedError from "@/Errors/RepositoryTestSuiteFailedError"
-
 import { methodReconstructionExperimentConfig } from "@/Config/MethodReconstructionExperimentConfig"
 import { methodExplorationConfig } from "@/Config/MethodExplorationConfig"
 import { methodContextExplorationConfig } from "@/Config/MethodContextExplorationConfig"
@@ -19,28 +17,9 @@ async function main(): Promise<void> {
 
 	const pipelineTypeToPipelineHandlerFn: Record<PipelineType, () => Promise<void>> = {
 		"method-reconstruction-experiment": async () => {
-			for (const repositoryExperiment of methodReconstructionExperimentConfig) {
-				await TracingUtil.traceTask(`Repository: ${repositoryExperiment.repositoryName}`, async () => {
-					for (const experiment of repositoryExperiment.experiments) {
-						await TracingUtil.traceTask(`Experiment: ${experiment.title}`, async (config) => {
-							const result = await ExperimentationModule.runMethodReconstructionExperiment({
-								title: experiment.title,
-								method: {
-									...experiment.method,
-									repositoryName: repositoryExperiment.repositoryName,
-									repositoryTestSuiteCommand: experiment.method?.specificTestSuiteCommand || repositoryExperiment.repositoryTestSuiteCommand
-								},
-								reconstructionOptions: {
-									model: experiment.model,
-									context: experiment.context
-								}
-							})
-
-							if (!result.repositoryTestSuiteResult.success) {
-								config.setError(new RepositoryTestSuiteFailedError())
-							}
-						})
-					}
+			for (const repositoryMethodReconstructionExperiment of methodReconstructionExperimentConfig) {
+				await TracingUtil.traceTask(`Experiment Repository Methods Reconstruction: ${repositoryMethodReconstructionExperiment.experimentOptions.repositoryName}`, async () => {
+					await ExperimentationModule.experimentMethodReconstruction(repositoryMethodReconstructionExperiment)
 				})
 			}
 		},

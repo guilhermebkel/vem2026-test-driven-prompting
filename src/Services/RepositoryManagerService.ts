@@ -1,6 +1,5 @@
 import FileUtil from "@/Utils/FileUtil"
 import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
-import PathUtil from "@/Utils/PathUtil"
 import TracingUtil from "@/Utils/TracingUtil"
 
 import {
@@ -12,17 +11,13 @@ import {
 class RepositoryManagerService {
 	async revertSourceFileChanges(options: SourceFileChangesReversionOptions): Promise<void> {
 		return await TracingUtil.traceAction("Reverting source file changes...", async () => {
-			const methodFilePath = PathUtil.resolveRelativeFilePath(options.repositoryName, options.methodRelativeFilePath)
-
-			await FileUtil.setFileContent(methodFilePath, options.sourceFileWithOriginalMethodBody)
+			await FileUtil.setFileContent(options.methodResolvedFilePath, options.sourceFileWithOriginalMethodBody)
 		})
 	}
 
 	async getSourceFileWithOriginalMethodBody(options: SourceFileWithOriginalMethodBodyOptions): Promise<string> {
 		return await TracingUtil.traceAction("Retrieving source file with original method body...", async () => {
-			const methodFilePath = PathUtil.resolveRelativeFilePath(options.repositoryName, options.methodRelativeFilePath)
-
-			const sourceFileWithOriginalMethodBody = await FileUtil.getFileContent(methodFilePath)
+			const sourceFileWithOriginalMethodBody = await FileUtil.getFileContent(options.methodResolvedFilePath)
 
 			return sourceFileWithOriginalMethodBody
 		})
@@ -30,15 +25,13 @@ class RepositoryManagerService {
 
 	async getSourceFileWithReconstructedMethodBody(options: SourceFileWithReconstructedMethodBodyOptions): Promise<string> {
 		return await TracingUtil.traceAction("Replacing source file with reconstructed method body...", async () => {
-			const methodFilePath = PathUtil.resolveRelativeFilePath(options.repositoryName, options.methodRelativeFilePath)
-
 			const sourceFileWithReconstructedMethodBody = NodeJSCodeParserUtil.replaceSpecificMethodOrFunctionBodyInSourceFile(
-				methodFilePath,
+				options.methodResolvedFilePath,
 				{ type: options.methodDeclarationType, name: options.methodName },
 				options.reconstructedMethodBody
 			)
 
-			await FileUtil.setFileContent(methodFilePath, sourceFileWithReconstructedMethodBody)
+			await FileUtil.setFileContent(options.methodResolvedFilePath, sourceFileWithReconstructedMethodBody)
 
 			return sourceFileWithReconstructedMethodBody
 		})

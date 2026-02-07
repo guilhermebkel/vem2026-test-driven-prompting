@@ -14,11 +14,9 @@ class ContextLoaderService {
 			const contextDefinitionWithResolvedRelativePath = this.resolveContextRelativeFilePath(options.context, options.repositoryName)
 			const buildedContext = await ContextUtil.buildContext(contextDefinitionWithResolvedRelativePath)
 
-			const methodTestFilePath = PathUtil.resolveRelativeFilePath(options.repositoryName, options.test.relativeFilePath)
-			const methodTestContent = await FileUtil.getFileContent(methodTestFilePath)
+			const methodTestContent = await FileUtil.getFileContent(options.test.resolvedFilePath)
 
-			const methodFilePath = PathUtil.resolveRelativeFilePath(options.repositoryName, options.method.relativeFilePath)
-			const methodFileContentWithoutMethodBody = NodeJSCodeParserUtil.removeSpecificMethodOrFunctionBodyInSourceFile(methodFilePath, { type: options.method.declarationType, name: options.method.name })
+			const methodFileContentWithoutMethodBody = NodeJSCodeParserUtil.removeSpecificMethodOrFunctionBodyInSourceFile(options.method.resolvedFilePath, { type: options.method.declarationType, name: options.method.name })
 
 			return {
 				buildedContext,

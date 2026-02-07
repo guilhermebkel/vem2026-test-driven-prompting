@@ -26,7 +26,7 @@ export type ExploredContext = {
 		declarationType: DeclarationType
 		resolvedFilePath: string
 	}
-	context: Array<Pick<ContextDefinitionItem, "slug"> & {
+	context: Array<Pick<ContextDefinitionItem, "slug" | "type"> & {
 		resolvedFilePath: string
 		extractionRule: Partial<ExtractionRule>
 		codeBLEUMetrics?: CodeBLEUFormattedMetrics
