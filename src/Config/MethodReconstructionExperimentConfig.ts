@@ -20,7 +20,7 @@ const DEFAULT_EXPERIMENT_COMPARISONS: ExperimentComparison[] = [
 	},
 	{
 		model: { name: "gemini-2.5-flash", reasoningBudget: 0, temperature: 0 },
-		context: [{ slug: "structurally-similar-method" }]
+		context: [{ slug: "no-context" }]
 	}
 ]
 

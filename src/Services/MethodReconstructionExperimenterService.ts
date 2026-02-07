@@ -154,12 +154,12 @@ class MethodReconstructionExperimenterService {
 			`fn:${exploredMethod.name}`,
 			"|",
 			`m:${experimentComparison.model.name}`,
-			`t:${experimentComparison.model.temperature}`,
+			`_${experimentComparison.model.temperature}`,
 			"|",
 			`c:${experimentComparison.context.map(context => context.slug).join(",")}`
 		]
 
-		return parts.join("_")
+		return parts.join("")
 	}
 }
 
