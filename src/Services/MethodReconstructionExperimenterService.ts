@@ -1,4 +1,5 @@
 import {
+	ExperimentComparison,
 	ExperimentMethodReconstructionOptions,
 	ExperimentMethodReconstructionResult
 } from "@/Protocols/MethodReconstructionExperimenterProtocol"
@@ -15,7 +16,7 @@ import LLMService from "@/Services/LLMService"
 import RepositoryManagerService from "@/Services/RepositoryManagerService"
 import LogService from "@/Services/LogService"
 import { ContextDefinition } from "@/Protocols/ContextProtocol"
-import { ExploreMethodResult } from "@/Protocols/MethodExplorerProtocol"
+import { ExploredMethod, ExploreMethodResult } from "@/Protocols/MethodExplorerProtocol"
 import { DeclarationType } from "@/Protocols/NodeJSCodeParserProtocol"
 import RepositoryTestSuiteFailedError from "@/Errors/RepositoryTestSuiteFailedError"
 
@@ -33,12 +34,12 @@ class MethodReconstructionExperimenterService {
 				&& method.resolvedFilePath === exploredMethod.resolvedMethodFilePath
 			))
 
-			for (const experiment of options.comparisons) {
-				const experimentTitle = `${exploredMethod.name}_${experiment.model.name}`
+			for (const experimentComparison of options.comparisons) {
+				const experimentTitle = this.buildExperimentTitle(exploredMethod, experimentComparison)
 
 				await TracingUtil.traceTask(`Experiment: ${experimentTitle}`, async (config) => {
 					const targetContext: ContextDefinition = (exploredMethodContext?.context || [])
-						.filter(context => experiment.context.some(({ slug }) => slug === context.slug))
+						.filter(context => experimentComparison.context.some(({ slug }) => slug === context.slug))
 						.map(context => ({ slug: context.slug, type: context.type, path: context.resolvedFilePath }))
 
 					const sourceFileWithOriginalMethodBody = await RepositoryManagerService.getSourceFileWithOriginalMethodBody({
@@ -69,9 +70,9 @@ class MethodReconstructionExperimenterService {
 
 						const methodReconstructionResult = await LLMService.reconstructMethod({
 							model: {
-								name: experiment.model.name,
-								temperature: experiment.model.temperature,
-								reasoningBudget: experiment.model.reasoningBudget
+								name: experimentComparison.model.name,
+								temperature: experimentComparison.model.temperature,
+								reasoningBudget: experimentComparison.model.reasoningBudget
 							},
 							systemPrompt: buildPromptResult.systemPrompt,
 							userPrompt: buildPromptResult.userPrompt
@@ -146,6 +147,19 @@ class MethodReconstructionExperimenterService {
 		})
 
 		return exploreMethodResult
+	}
+
+	private buildExperimentTitle(exploredMethod: ExploredMethod, experimentComparison: ExperimentComparison): string {
+		const parts: string[] = [
+			`fn:${exploredMethod.name}`,
+			"|",
+			`m:${experimentComparison.model.name}`,
+			`t:${experimentComparison.model.temperature}`,
+			"|",
+			`c:${experimentComparison.context.map(context => context.slug).join(",")}`
+		]
+
+		return parts.join("_")
 	}
 }
 
