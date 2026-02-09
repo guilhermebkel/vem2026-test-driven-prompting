@@ -35,90 +35,96 @@ class MethodReconstructionExperimenterService {
 			))
 
 			for (const experimentComparison of options.comparisons) {
-				const experimentTitle = `${exploredMethod} > ${experimentComparison.title}`
+				const experimentTitle = `${exploredMethod.name} > ${experimentComparison.title}`
 
 				await TracingUtil.traceTask(`Experiment: ${experimentTitle}`, async (config) => {
 					const targetContext: ContextDefinition = (exploredMethodContext?.context || [])
 						.filter(context => experimentComparison.context.some(({ slug }) => slug === context.slug))
 						.map(context => ({ slug: context.slug, type: context.type, path: context.resolvedFilePath, extractionRule: context.extractionRule as ExtractionRule }))
 
-					const sourceFileWithOriginalMethodBody = await RepositoryManagerService.getSourceFileWithOriginalMethodBody({
-						methodResolvedFilePath: exploredMethod.resolvedMethodFilePath,
-						repositoryName: options.repositoryName
-					})
+					const noTargetContextFoundForExperiment = experimentComparison.context.length > 0 && targetContext.length === 0
 
-					try {
-						const contextLoadResult = await ContextLoaderService.loadContext({
-							context: targetContext,
-							method: {
-								name: exploredMethod.name as string,
-								declarationType: exploredMethod.declarationType as DeclarationType,
-								resolvedFilePath: exploredMethod.resolvedMethodFilePath
-							},
-							repositoryName: options.repositoryName,
-							test: {
-								resolvedFilePath: exploredMethod.resolvedTestFilePaths[0] as string
-							}
-						})
-
-						const buildPromptResult = PromptBuilderService.buildPrompt({
-							buildedContext: contextLoadResult.buildedContext,
-							methodFileContentWithoutMethodBody: contextLoadResult.methodFileContentWithoutMethodBody,
-							methodName: exploredMethod.name as string,
-							methodTestContent: contextLoadResult.methodTestContent
-						})
-
-						const methodReconstructionResult = await LLMService.reconstructMethod({
-							model: {
-								name: experimentComparison.model.name,
-								temperature: experimentComparison.model.temperature,
-								reasoningBudget: experimentComparison.model.reasoningBudget
-							},
-							systemPrompt: buildPromptResult.systemPrompt,
-							userPrompt: buildPromptResult.userPrompt
-						})
-
-						const sourceFileWithReconstructedMethodBody = await RepositoryManagerService.getSourceFileWithReconstructedMethodBody({
-							methodDeclarationType: exploredMethod.declarationType as DeclarationType,
-							methodName: exploredMethod.name as string,
+					if (noTargetContextFoundForExperiment) {
+						config.setOutput("No context was found for this experiment. Skipping...")
+					} else {
+						const sourceFileWithOriginalMethodBody = await RepositoryManagerService.getSourceFileWithOriginalMethodBody({
 							methodResolvedFilePath: exploredMethod.resolvedMethodFilePath,
-							repositoryName: options.repositoryName,
-							reconstructedMethodBody: methodReconstructionResult.reconstructedMethodBody
+							repositoryName: options.repositoryName
 						})
 
-						const repositoryTestSuiteResult = await TestExecutorService.runRepositoryTestSuite({
-							repositoryName: options.repositoryName,
-							repositoryTestSuiteCommand: options.repositoryTestSuiteCommand
-						})
+						try {
+							const contextLoadResult = await ContextLoaderService.loadContext({
+								context: targetContext,
+								method: {
+									name: exploredMethod.name as string,
+									declarationType: exploredMethod.declarationType as DeclarationType,
+									resolvedFilePath: exploredMethod.resolvedMethodFilePath
+								},
+								repositoryName: options.repositoryName,
+								test: {
+									resolvedFilePath: exploredMethod.resolvedTestFilePaths[0] as string
+								}
+							})
 
-						if (!repositoryTestSuiteResult.success) {
-							config.setError(new RepositoryTestSuiteFailedError())
-						}
+							const buildPromptResult = PromptBuilderService.buildPrompt({
+								buildedContext: contextLoadResult.buildedContext,
+								methodFileContentWithoutMethodBody: contextLoadResult.methodFileContentWithoutMethodBody,
+								methodName: exploredMethod.name as string,
+								methodTestContent: contextLoadResult.methodTestContent
+							})
 
-						reconstructedMethodExperiments.push({
-							methodReconstructionResult: {
+							const methodReconstructionResult = await LLMService.reconstructMethod({
+								model: {
+									name: experimentComparison.model.name,
+									temperature: experimentComparison.model.temperature,
+									reasoningBudget: experimentComparison.model.reasoningBudget
+								},
+								systemPrompt: buildPromptResult.systemPrompt,
+								userPrompt: buildPromptResult.userPrompt
+							})
+
+							const sourceFileWithReconstructedMethodBody = await RepositoryManagerService.getSourceFileWithReconstructedMethodBody({
+								methodDeclarationType: exploredMethod.declarationType as DeclarationType,
 								methodName: exploredMethod.name as string,
 								methodResolvedFilePath: exploredMethod.resolvedMethodFilePath,
-								reconstructedMethodBody: methodReconstructionResult.reconstructedMethodBody,
-								methodFileContentWithoutMethodBody: contextLoadResult.methodFileContentWithoutMethodBody,
-								systemPrompt: buildPromptResult.systemPrompt,
-								userPrompt: buildPromptResult.userPrompt,
-								reasoningText: methodReconstructionResult.reasoningText
-							},
-							experimentTitle,
-							repositoryTestSuiteResult,
-							sourceFileWithReconstructedMethodBody,
-							sourceFileWithOriginalMethodBody
-						})
-					} catch (error) {
-						ErrorHandlerUtil.handle(error)
-						throw error
-					} finally {
-						await RepositoryManagerService.revertSourceFileChanges({
-							methodResolvedFilePath: exploredMethod.resolvedMethodFilePath,
-							repositoryName: options.repositoryName,
-							sourceFileWithOriginalMethodBody
-						})
+								repositoryName: options.repositoryName,
+								reconstructedMethodBody: methodReconstructionResult.reconstructedMethodBody
+							})
+
+							const repositoryTestSuiteResult = await TestExecutorService.runRepositoryTestSuite({
+								repositoryName: options.repositoryName,
+								repositoryTestSuiteCommand: options.repositoryTestSuiteCommand
+							})
+
+							if (!repositoryTestSuiteResult.success) {
+								config.setError(new RepositoryTestSuiteFailedError())
+							}
+
+							reconstructedMethodExperiments.push({
+								methodReconstructionResult: {
+									methodName: exploredMethod.name as string,
+									methodResolvedFilePath: exploredMethod.resolvedMethodFilePath,
+									reconstructedMethodBody: methodReconstructionResult.reconstructedMethodBody,
+									methodFileContentWithoutMethodBody: contextLoadResult.methodFileContentWithoutMethodBody,
+									systemPrompt: buildPromptResult.systemPrompt,
+									userPrompt: buildPromptResult.userPrompt,
+									reasoningText: methodReconstructionResult.reasoningText
+								},
+								experimentTitle,
+								repositoryTestSuiteResult,
+								sourceFileWithReconstructedMethodBody,
+								sourceFileWithOriginalMethodBody
+							})
+						} catch (error) {
+							ErrorHandlerUtil.handle(error)
+							throw error
+						} finally {
+							await RepositoryManagerService.revertSourceFileChanges({
+								methodResolvedFilePath: exploredMethod.resolvedMethodFilePath,
+								repositoryName: options.repositoryName,
+								sourceFileWithOriginalMethodBody
+							})
+						}
 					}
 				})
 			}

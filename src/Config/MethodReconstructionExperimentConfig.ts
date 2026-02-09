@@ -20,7 +20,7 @@ const DEFAULT_EXPERIMENT_COMPARISONS: ExperimentComparison[] = [
 	{
 		title: "gemini-2.5-flash|temperature-0|no-context",
 		model: { name: "gemini-2.5-flash", reasoningBudget: 0, temperature: 0 },
-		context: [{ slug: "no-context" }]
+		context: []
 	}
 ]
 
