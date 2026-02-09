@@ -4,6 +4,7 @@ import { OptionalRecord } from "@/Protocols/TypeUtilityProtocol"
 import FileUtil from "@/Utils/FileUtil"
 
 import DataNotFoundError from "@/Errors/DataNotFoundError"
+import NodeJSCodeParserUtil from "./NodeJSCodeParserUtil"
 
 class ContextUtil {
 	private readonly contextSlugToContentHandlerFn: OptionalRecord<ContextSlug, (contextItem: ContextDefinitionItem) => Promise<string>> = {
@@ -36,7 +37,11 @@ class ContextUtil {
 		}
 
 		if (contextItem.path) {
-			genericContent = await FileUtil.getFileContent(contextItem.path)
+			if (contextItem.extractionRule) {
+				genericContent = NodeJSCodeParserUtil.extractSpecificCodeFromSourceFile(contextItem.path, [contextItem.extractionRule])
+			} else {
+				genericContent = await FileUtil.getFileContent(contextItem.path)
+			}
 		}
 
 		if (!genericContent) {

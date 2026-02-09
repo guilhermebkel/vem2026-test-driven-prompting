@@ -1,4 +1,5 @@
 import { AnyOtherString } from "@/Protocols/TypeUtilityProtocol"
+import { ExtractionRule } from "@/Protocols/NodeJSCodeParserProtocol"
 
 export type GlobalContextSlug = "project-metadata" | "repository-root-structure" | AnyOtherString
 export type LocalContextSlug = "typing" | "same-class-method" | "same-file-function" | AnyOtherString
@@ -7,10 +8,25 @@ export type SemanticContextSlug = "similar-method" | "imported-dependency" | "de
 export type ContextType = ContextDefinitionItem["type"]
 export type ContextSlug = LocalContextSlug | SemanticContextSlug | GlobalContextSlug
 
+export type DefaultContextDefinitionItemParams = {
+	path?: string
+	content?: string
+	extractionRule?: ExtractionRule
+}
+
 export type ContextDefinitionItem =
-	| { type: "local"; slug: LocalContextSlug; path?: string; content?: string }
-	| { type: "semantic"; slug: SemanticContextSlug; path?: string; content?: string }
-	| { type: "global"; slug: GlobalContextSlug; path?: string; content?: string }
+	| DefaultContextDefinitionItemParams & {
+		type: "local"
+		slug: LocalContextSlug
+	}
+	| DefaultContextDefinitionItemParams & {
+		type: "semantic"
+		slug: SemanticContextSlug
+	}
+	| DefaultContextDefinitionItemParams & {
+		type: "global"
+		slug: GlobalContextSlug
+	}
 
 export type ContextDefinition = ContextDefinitionItem[]
 

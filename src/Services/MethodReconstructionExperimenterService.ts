@@ -1,9 +1,11 @@
 import {
-	ExperimentComparison,
 	ExperimentMethodReconstructionOptions,
 	ExperimentMethodReconstructionResult
 } from "@/Protocols/MethodReconstructionExperimenterProtocol"
 import { ExploreContextResult } from "@/Protocols/MethodContextExplorerProtocol"
+import { ContextDefinition } from "@/Protocols/ContextProtocol"
+import { ExploreMethodResult } from "@/Protocols/MethodExplorerProtocol"
+import { DeclarationType, ExtractionRule } from "@/Protocols/NodeJSCodeParserProtocol"
 
 import ErrorHandlerUtil from "@/Utils/ErrorHandlerUtil"
 import TracingUtil from "@/Utils/TracingUtil"
@@ -15,9 +17,7 @@ import PromptBuilderService from "@/Services/PromptBuilderService"
 import LLMService from "@/Services/LLMService"
 import RepositoryManagerService from "@/Services/RepositoryManagerService"
 import LogService from "@/Services/LogService"
-import { ContextDefinition } from "@/Protocols/ContextProtocol"
-import { ExploredMethod, ExploreMethodResult } from "@/Protocols/MethodExplorerProtocol"
-import { DeclarationType } from "@/Protocols/NodeJSCodeParserProtocol"
+
 import RepositoryTestSuiteFailedError from "@/Errors/RepositoryTestSuiteFailedError"
 
 class MethodReconstructionExperimenterService {
@@ -35,12 +35,12 @@ class MethodReconstructionExperimenterService {
 			))
 
 			for (const experimentComparison of options.comparisons) {
-				const experimentTitle = this.buildExperimentTitle(exploredMethod, experimentComparison)
+				const experimentTitle = `${exploredMethod} > ${experimentComparison.title}`
 
 				await TracingUtil.traceTask(`Experiment: ${experimentTitle}`, async (config) => {
 					const targetContext: ContextDefinition = (exploredMethodContext?.context || [])
 						.filter(context => experimentComparison.context.some(({ slug }) => slug === context.slug))
-						.map(context => ({ slug: context.slug, type: context.type, path: context.resolvedFilePath }))
+						.map(context => ({ slug: context.slug, type: context.type, path: context.resolvedFilePath, extractionRule: context.extractionRule as ExtractionRule }))
 
 					const sourceFileWithOriginalMethodBody = await RepositoryManagerService.getSourceFileWithOriginalMethodBody({
 						methodResolvedFilePath: exploredMethod.resolvedMethodFilePath,
@@ -147,19 +147,6 @@ class MethodReconstructionExperimenterService {
 		})
 
 		return exploreMethodResult
-	}
-
-	private buildExperimentTitle(exploredMethod: ExploredMethod, experimentComparison: ExperimentComparison): string {
-		const parts: string[] = [
-			`fn:${exploredMethod.name}`,
-			"|",
-			`m:${experimentComparison.model.name}`,
-			`_${experimentComparison.model.temperature}`,
-			"|",
-			`c:${experimentComparison.context.map(context => context.slug).join(",")}`
-		]
-
-		return parts.join("")
 	}
 }
 

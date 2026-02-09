@@ -4,6 +4,7 @@ import { RepositoryName } from "@/Protocols/RepositoryProtocol"
 import { RepositoryTestSuiteResult } from "@/Protocols/TestExecutorProtocol"
 
 export type ExperimentComparison = {
+	title: string
 	model: {
 		name: LanguageModelName
 		reasoningBudget: number
