@@ -4,11 +4,13 @@ export type PrototypeOptions = {
 	repositoryName: RepositoryName
 }
 
-export type PrototypeResultItem = {
+export type PrototypeResult = {
+	testCaseDistributionByMethod: TestCaseDistributionByMethod[]
+}
+
+export type TestCaseDistributionByMethod = {
 	repositoryName: RepositoryName
 	methodTitle: string
 	testSuiteCount: number
 	testCaseCount: number
 }
-
-export type PrototypeResult = PrototypeResultItem[]

@@ -82,15 +82,19 @@ class LogService {
 		await FileUtil.setFileContent(methodExplorationResultLogFilePath, JSON.stringify(exploreResult, null, 2))
 	}
 
-	getPrototypeResultLogFilePath(repositoryName: RepositoryName): string {
+	getPrototypeResultLogFilePath(repositoryName: RepositoryName, prototypeItemName: keyof PrototypeResult): string {
 		const logPath: string[] = ["prototype", repositoryName]
 
-		return this.getLogFilePath(logPath, "result", ".json")
+		return this.getLogFilePath(logPath, prototypeItemName, ".json")
 	}
 
 	async savePrototypeLogs(prototypeOptions: PrototypeOptions, prototypeResult: PrototypeResult): Promise<void> {
-		const prototypeLogFilePath = this.getPrototypeResultLogFilePath(prototypeOptions.repositoryName)
-		await FileUtil.setFileContent(prototypeLogFilePath, JSON.stringify(prototypeResult, null, 2))
+		await Promise.all(
+			Object.entries(prototypeResult).map(async ([prototypeItemName, value]) => {
+				const prototypeLogFilePath = this.getPrototypeResultLogFilePath(prototypeOptions.repositoryName, <keyof PrototypeResult>prototypeItemName)
+				await FileUtil.setFileContent(prototypeLogFilePath, JSON.stringify(value, null, 2))
+			})
+		)
 	}
 
 	private getLogFilePath(logPath: string[], logFileName: string, logFileExtension = ".txt"): string {
