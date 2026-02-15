@@ -20,16 +20,17 @@ class PrototypingModule {
 
 		const project = NodeJSCodeParserUtil.createProject()
 
-		const prototypeResult: { [testFilePath: string]: { testCaseCount: number } } = {}
+		const prototypeResult: PrototypeResult = []
 
 		uniqueResolvedTestFilePaths.forEach(testFilePath => {
 			const sourceFile = project.addSourceFileAtPath(testFilePath)
 
 			const testCases = NodeJSCodeParserUtil.extractNodes(sourceFile, [{ type: "test-case" }])
 
-			prototypeResult[testFilePath] = {
+			prototypeResult.push({
+				testFilePath,
 				testCaseCount: testCases.length
-			}
+			})
 
 			project.removeSourceFile(sourceFile)
 		})

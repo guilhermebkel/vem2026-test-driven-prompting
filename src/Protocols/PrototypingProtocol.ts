@@ -4,4 +4,7 @@ export type PrototypeOptions = {
 	repositoryName: RepositoryName
 }
 
-export type PrototypeResult = Record<string, unknown>
+export type PrototypeResult = Array<{
+	testFilePath: string
+	testCaseCount: number
+}>
