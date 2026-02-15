@@ -15,11 +15,11 @@ export const methodContextExplorationValidation = {
 		codeBLEUMetrics.syntaxMatchScore >= 0.60
 		|| codeBLEUMetrics.weightedNgramScore >= 0.55
 	),
-	isSameClassMethod: (exploredMethod: ExploredMethod, node: NodeType): boolean => (
+	isSameClassMethod: (exploredMethod: ExploredMethod, node: NodeType<"method" | "function">): boolean => (
 		exploredMethod.name !== node.getName()
 		&& NodeJSCodeParserUtil.turnSyntaxKindIntoDeclarationType(node.getKind()) === "method"
 	),
-	isSameFileFunction: (exploredMethod: ExploredMethod, node: NodeType): boolean => (
+	isSameFileFunction: (exploredMethod: ExploredMethod, node: NodeType<"method" | "function">): boolean => (
 		exploredMethod.name !== node.getName()
 		&& NodeJSCodeParserUtil.turnSyntaxKindIntoDeclarationType(node.getKind()) === "function"
 	)

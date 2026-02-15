@@ -8,7 +8,7 @@ import { OptionalRecord } from "@/Protocols/TypeUtilityProtocol"
 class NodeJSCodeParserUtil {
 	private readonly project = this.createProject()
 
-	extractSpecificCodeFromSourceFile(filePath: string, extractionRules: ExtractionRule[]): string {
+	extractSpecificCodeFromSourceFile<DType extends DeclarationType>(filePath: string, extractionRules: ExtractionRule<DType>[]): string {
 		const sourceFile = this.project.addSourceFileAtPath(filePath)
 
 		const extractedNodes = this.extractNodes(sourceFile, extractionRules)
@@ -24,7 +24,7 @@ class NodeJSCodeParserUtil {
 		return extractedCode
 	}
 
-	replaceSpecificCodeInSourceFile(filePath: string, extractionRule: ExtractionRule, changedCode: string): string {
+	replaceSpecificCodeInSourceFile<DType extends DeclarationType>(filePath: string, extractionRule: ExtractionRule<DType>, changedCode: string): string {
 		const originalSourceFile = this.project.addSourceFileAtPath(filePath)
 		const [originalNode] = this.extractNodes(originalSourceFile, [extractionRule])
 
@@ -40,11 +40,11 @@ class NodeJSCodeParserUtil {
 		return sourceCodeWithChanges
 	}
 
-	removeSpecificMethodOrFunctionBodyInSourceFile(filePath: string, extractionRule: ExtractionRule): string {
+	removeSpecificMethodOrFunctionBodyInSourceFile<DType extends DeclarationType>(filePath: string, extractionRule: ExtractionRule<DType>): string {
 		return this.replaceSpecificMethodOrFunctionBodyInSourceFile(filePath, extractionRule, "")
 	}
 
-	replaceSpecificMethodOrFunctionBodyInSourceFile(filePath: string, extractionRule: ExtractionRule, changedCode: string): string {
+	replaceSpecificMethodOrFunctionBodyInSourceFile<DType extends DeclarationType>(filePath: string, extractionRule: ExtractionRule<DType>, changedCode: string): string {
 		const originalSourceFile = this.project.addSourceFileAtPath(filePath)
 		const [originalNode] = this.extractNodes(originalSourceFile, [extractionRule])
 
@@ -76,28 +76,36 @@ class NodeJSCodeParserUtil {
 		})
 	}
 
-	extractNodes(sourceFile: SourceFile, extractionRules: ExtractionRule[]): NodeType[] {
-		const ruleKindToNodeExtractorFn: Record<DeclarationType, (rule: ExtractionRule) => Array<NodeType | undefined>> = {
-			class: (rule) => rule.name ? (
-				[sourceFile.getClass(rule.name)]
-			) : (
-				sourceFile.getClasses()
-			),
-			interface: (rule) => rule.name ? (
-				[sourceFile.getInterface(rule.name)]
-			) : (
-				sourceFile.getInterfaces()
-			),
-			type: (rule) => rule.name ? (
-				[sourceFile.getTypeAlias(rule.name)]
-			) : (
-				sourceFile.getTypeAliases()
-			),
-			function: (rule) => rule.name ? (
-				[sourceFile.getFunction(rule.name)]
-			) : (
-				sourceFile.getFunctions()
-			),
+	extractNodes<DType extends DeclarationType>(sourceFile: SourceFile, extractionRules: ExtractionRule<DType>[]): NodeType<DType>[] {
+		const ruleKindToNodeExtractorFn: Record<DeclarationType, (rule: ExtractionRule<DType>) => Array<NodeType<DType> | undefined>> = {
+			class: (rule) => (
+				rule.name ? (
+					[sourceFile.getClass(rule.name)]
+				) : (
+					sourceFile.getClasses()
+				)
+			) as Array<NodeType<DType>>,
+			interface: (rule) => (
+				rule.name ? (
+					[sourceFile.getInterface(rule.name)]
+				) : (
+					sourceFile.getInterfaces()
+				)
+			) as Array<NodeType<DType>>,
+			type: (rule) => (
+				rule.name ? (
+					[sourceFile.getTypeAlias(rule.name)]
+				) : (
+					sourceFile.getTypeAliases()
+				)
+			) as Array<NodeType<DType>>,
+			function: (rule) => (
+				rule.name ? (
+					[sourceFile.getFunction(rule.name)]
+				) : (
+					sourceFile.getFunctions()
+				)
+			) as Array<NodeType<DType>>,
 			method: (rule) => (
 				sourceFile.getClasses().flatMap(cls => {
 					if (rule.name) {
@@ -106,11 +114,44 @@ class NodeJSCodeParserUtil {
 
 					return cls.getMethods()
 				})
-			)
+			) as Array<NodeType<DType>>,
+			"test-call": (rule) => (
+				sourceFile
+					.getDescendantsOfKind(SyntaxKind.CallExpression)
+					.filter(call => {
+						const testNames: string[] = ["it", "test"]
+
+						const expression = call.getExpression()
+
+						let callName: string | undefined
+
+						if (expression.isKind(SyntaxKind.Identifier)) {
+							callName = expression.getText()
+						} else if (expression.isKind(SyntaxKind.PropertyAccessExpression)) {
+							callName = expression.getExpression().getText()
+						}
+
+						if (!callName || !testNames.includes(callName)) {
+							return false
+						}
+
+						if (!rule.name) {
+							return true
+						}
+
+						const testDescription = call.getArguments()[0]
+
+						if (!testDescription || !testDescription.isKind(SyntaxKind.StringLiteral)) {
+							return false
+						}
+
+						return testDescription.getLiteralText() === rule.name
+					})
+			) as Array<NodeType<DType>>
 		}
 
-		const extractedNodes: NodeType[] = extractionRules.flatMap(rule => (
-			ruleKindToNodeExtractorFn[rule.type](rule).filter((node): node is NodeType => node !== undefined)
+		const extractedNodes: Array<NodeType<DType>> = extractionRules.flatMap(rule => (
+			ruleKindToNodeExtractorFn[rule.type](rule).filter((node): node is NodeType<DType> => node !== undefined)
 		))
 
 		return extractedNodes || []
@@ -119,7 +160,12 @@ class NodeJSCodeParserUtil {
 	turnSyntaxKindIntoDeclarationType(syntaxKind: SyntaxKind): DeclarationType | undefined {
 		const kindNameToDeclarationType: OptionalRecord<SyntaxKind, DeclarationType> = {
 			[SyntaxKind.FunctionDeclaration]: "function",
-			[SyntaxKind.MethodDeclaration]: "method"
+			[SyntaxKind.FunctionExpression]: "function",
+			[SyntaxKind.ArrowFunction]: "function",
+			[SyntaxKind.MethodDeclaration]: "method",
+			[SyntaxKind.Constructor]: "method",
+			[SyntaxKind.GetAccessor]: "method",
+			[SyntaxKind.SetAccessor]: "method"
 		}
 
 		return kindNameToDeclarationType[syntaxKind]

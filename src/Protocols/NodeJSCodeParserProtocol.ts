@@ -1,17 +1,21 @@
-import { ClassDeclaration, FunctionDeclaration, InterfaceDeclaration, MethodDeclaration, Project, TypeAliasDeclaration } from "ts-morph"
+import { CallExpression, ClassDeclaration, FunctionDeclaration, InterfaceDeclaration, MethodDeclaration, Project, TypeAliasDeclaration } from "ts-morph"
 
-export type DeclarationType = "class" | "interface" | "type" | "function" | "method"
-
-export type ExtractionRule = {
-	type: DeclarationType
-	name?: string
+export type DeclarationTypeToNodeType = {
+	class: ClassDeclaration
+	interface: InterfaceDeclaration
+	type: TypeAliasDeclaration
+	function: FunctionDeclaration
+	method: MethodDeclaration
+	"test-call": CallExpression
 }
 
-export type NodeType =
-	ClassDeclaration |
-	InterfaceDeclaration |
-	TypeAliasDeclaration |
-	FunctionDeclaration |
-	MethodDeclaration
+export type DeclarationType = keyof DeclarationTypeToNodeType
+
+export type NodeType<DType extends DeclarationType> = DeclarationTypeToNodeType[DType]
 
 export type ProjectType = Project
+
+export type ExtractionRule<DType extends DeclarationType> = {
+	type: DType
+	name?: string
+}

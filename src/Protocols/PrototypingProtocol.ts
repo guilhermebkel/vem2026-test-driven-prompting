@@ -4,4 +4,4 @@ export type PrototypeOptions = {
 	repositoryName: RepositoryName
 }
 
-export type PrototypeResult = void
+export type PrototypeResult = Record<string, unknown>

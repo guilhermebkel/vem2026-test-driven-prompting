@@ -7,6 +7,7 @@ import PathUtil from "@/Utils/PathUtil"
 import { MethodReconstructionExperimentationOptions, MethodReconstructionExperimentationResult } from "@/Protocols/ExperimentationProtocol"
 import { MethodContextExplorationOptions, MethodContextExplorationResult, MethodExplorationOptions, MethodExplorationResult } from "@/Protocols/ExplorationProtocol"
 import { RepositoryName } from "@/Protocols/RepositoryProtocol"
+import { PrototypeOptions, PrototypeResult } from "@/Protocols/PrototypingProtocol"
 
 class LogService {
 	async saveMethodReconstructionExperimentLogs(methodReconstructionExperimentationOptions: MethodReconstructionExperimentationOptions, methodReconstructionExperimentationResult: MethodReconstructionExperimentationResult): Promise<void> {
@@ -53,6 +54,12 @@ class LogService {
 		})
 	}
 
+	getMethodExplorationResultLogFilePath(repositoryName: RepositoryName): string {
+		const logPath: string[] = ["method-exploration", repositoryName]
+
+		return this.getLogFilePath(logPath, "exploreResult", ".json")
+	}
+
 	async saveMethodExplorationLogs(methodExplorationOptions: MethodExplorationOptions, methodExplorationResult: MethodExplorationResult): Promise<void> {
 		const { exploreOptions } = methodExplorationOptions
 		const { exploreResult } = methodExplorationResult
@@ -61,8 +68,8 @@ class LogService {
 		await FileUtil.setFileContent(methodExplorationResultLogFilePath, JSON.stringify(exploreResult, null, 2))
 	}
 
-	getMethodExplorationResultLogFilePath(repositoryName: RepositoryName): string {
-		const logPath: string[] = ["method-exploration", repositoryName]
+	getMethodContextExplorationResultLogFilePath(repositoryName: RepositoryName): string {
+		const logPath: string[] = ["method-context-exploration", repositoryName]
 
 		return this.getLogFilePath(logPath, "exploreResult", ".json")
 	}
@@ -75,10 +82,15 @@ class LogService {
 		await FileUtil.setFileContent(methodExplorationResultLogFilePath, JSON.stringify(exploreResult, null, 2))
 	}
 
-	getMethodContextExplorationResultLogFilePath(repositoryName: RepositoryName): string {
-		const logPath: string[] = ["method-context-exploration", repositoryName]
+	getPrototypeResultLogFilePath(repositoryName: RepositoryName): string {
+		const logPath: string[] = ["prototype", repositoryName]
 
-		return this.getLogFilePath(logPath, "exploreResult", ".json")
+		return this.getLogFilePath(logPath, "result", ".json")
+	}
+
+	async savePrototypeLogs(prototypeOptions: PrototypeOptions, prototypeResult: PrototypeResult): Promise<void> {
+		const prototypeLogFilePath = this.getPrototypeResultLogFilePath(prototypeOptions.repositoryName)
+		await FileUtil.setFileContent(prototypeLogFilePath, JSON.stringify(prototypeResult, null, 2))
 	}
 
 	private getLogFilePath(logPath: string[], logFileName: string, logFileExtension = ".txt"): string {
