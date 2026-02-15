@@ -4,7 +4,11 @@ export type PrototypeOptions = {
 	repositoryName: RepositoryName
 }
 
-export type PrototypeResult = Array<{
-	testFilePath: string
+export type PrototypeResultItem = {
+	repositoryName: RepositoryName
+	methodTitle: string
+	testSuiteCount: number
 	testCaseCount: number
-}>
+}
+
+export type PrototypeResult = PrototypeResultItem[]

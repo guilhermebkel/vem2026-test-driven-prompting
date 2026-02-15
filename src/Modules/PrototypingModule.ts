@@ -1,7 +1,8 @@
 import { ExploreMethodResult } from "@/Protocols/MethodExplorerProtocol"
 import {
 	PrototypeOptions,
-	PrototypeResult
+	PrototypeResult,
+	PrototypeResultItem
 } from "@/Protocols/PrototypingProtocol"
 
 import LogService from "@/Services/LogService"
@@ -15,24 +16,29 @@ class PrototypingModule {
 		const methodExplorationResultLogFileContent = await FileUtil.getFileContent(methodExplorationResultLogFilePath)
 		const exploreMethodResult: ExploreMethodResult = JSON.parse(methodExplorationResultLogFileContent)
 
-		const resolvedTestFilePaths = exploreMethodResult.map(result => result.resolvedTestFilePaths).flat()
-		const uniqueResolvedTestFilePaths = [...new Set(resolvedTestFilePaths)]
-
 		const project = NodeJSCodeParserUtil.createProject()
 
 		const prototypeResult: PrototypeResult = []
 
-		uniqueResolvedTestFilePaths.forEach(testFilePath => {
-			const sourceFile = project.addSourceFileAtPath(testFilePath)
+		exploreMethodResult.forEach(result => {
+			const prototypeResultItem: PrototypeResultItem = {
+				repositoryName: options.repositoryName,
+				methodTitle: `${result.declarationType}:${result.name}`,
+				testSuiteCount: result.resolvedTestFilePaths.length,
+				testCaseCount: 0
+			}
 
-			const testCases = NodeJSCodeParserUtil.extractNodes(sourceFile, [{ type: "test-case" }])
+			result.resolvedTestFilePaths.forEach(testFilePath => {
+				const sourceFile = project.addSourceFileAtPath(testFilePath)
 
-			prototypeResult.push({
-				testFilePath,
-				testCaseCount: testCases.length
+				const testCases = NodeJSCodeParserUtil.extractNodes(sourceFile, [{ type: "test-case" }])
+
+				prototypeResultItem.testCaseCount += testCases.length
+
+				project.removeSourceFile(sourceFile)
 			})
 
-			project.removeSourceFile(sourceFile)
+			prototypeResult.push(prototypeResultItem)
 		})
 
 		await LogService.savePrototypeLogs(options, prototypeResult)
