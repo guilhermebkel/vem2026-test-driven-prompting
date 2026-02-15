@@ -25,10 +25,10 @@ class PrototypingModule {
 		uniqueResolvedTestFilePaths.forEach(testFilePath => {
 			const sourceFile = project.addSourceFileAtPath(testFilePath)
 
-			const testCalls = NodeJSCodeParserUtil.extractNodes(sourceFile, [{ type: "test-call" }])
+			const testCases = NodeJSCodeParserUtil.extractNodes(sourceFile, [{ type: "test-case" }])
 
 			prototypeResult[testFilePath] = {
-				testCaseCount: testCalls.length
+				testCaseCount: testCases.length
 			}
 
 			project.removeSourceFile(sourceFile)

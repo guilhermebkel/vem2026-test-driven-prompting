@@ -6,7 +6,7 @@ export type DeclarationTypeToNodeType = {
 	type: TypeAliasDeclaration
 	function: FunctionDeclaration
 	method: MethodDeclaration
-	"test-call": CallExpression
+	"test-case": CallExpression
 }
 
 export type DeclarationType = keyof DeclarationTypeToNodeType

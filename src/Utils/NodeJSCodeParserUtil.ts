@@ -115,7 +115,7 @@ class NodeJSCodeParserUtil {
 					return cls.getMethods()
 				})
 			) as Array<NodeType<DType>>,
-			"test-call": (rule) => (
+			"test-case": (rule) => (
 				sourceFile
 					.getDescendantsOfKind(SyntaxKind.CallExpression)
 					.filter(call => {
