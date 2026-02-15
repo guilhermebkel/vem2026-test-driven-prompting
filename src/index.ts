@@ -2,6 +2,7 @@ import "dotenv/config"
 
 import ExperimentationModule from "@/Modules/ExperimentationModule"
 import ExplorationModule from "@/Modules/ExplorationModule"
+import PrototypingModule from "@/Modules/PrototypingModule"
 
 import TracingUtil from "@/Utils/TracingUtil"
 import ProcessArgumentUtil from "@/Utils/ProcessArgumentUtil"
@@ -9,6 +10,7 @@ import ProcessArgumentUtil from "@/Utils/ProcessArgumentUtil"
 import { methodReconstructionExperimentConfig } from "@/Config/MethodReconstructionExperimentConfig"
 import { methodExplorationConfig } from "@/Config/MethodExplorationConfig"
 import { methodContextExplorationConfig } from "@/Config/MethodContextExplorationConfig"
+import { prototypeConfig } from "@/Config/PrototypeConfig"
 
 import { PipelineType } from "@/Protocols/ProcessArgumentProtocol"
 
@@ -36,6 +38,13 @@ async function main(): Promise<void> {
 					await ExplorationModule.exploreMethodContexts(repositoryMethodContextExploration)
 				})
 			}
+		},
+		"prototype": async () => {
+			for (const prototype of prototypeConfig) {
+				await TracingUtil.traceTask(`Prototype: ${prototype.repositoryName}`, async () => {
+					await PrototypingModule.prototype(prototype)
+				})
+			}
 		}
 	}
 
@@ -46,6 +55,8 @@ async function main(): Promise<void> {
 	}
 
 	await selectedPipelineHandlerFn()
+
+	setInterval(() => process.exit(0))
 }
 
 main()

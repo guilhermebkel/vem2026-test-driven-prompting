@@ -1,4 +1,9 @@
-import { MethodContextExplorationOptions, MethodContextExplorationResult, MethodExplorationOptions, MethodExplorationResult } from "@/Protocols/ExplorationProtocol"
+import {
+	MethodContextExplorationOptions,
+	MethodContextExplorationResult,
+	MethodExplorationOptions,
+	MethodExplorationResult
+} from "@/Protocols/ExplorationProtocol"
 
 import LogService from "@/Services/LogService"
 import MethodExplorerService from "@/Services/MethodExplorerService"

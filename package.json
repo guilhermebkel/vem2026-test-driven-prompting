@@ -9,6 +9,7 @@
     "dev:method-exploration": "tsx src/index.ts --pipeline=method-exploration",
     "dev:method-reconstruction-experiment": "tsx src/index.ts --pipeline=method-reconstruction-experiment",
     "dev:method-context-exploration": "tsx src/index.ts --pipeline=method-context-exploration",
+    "dev:prototype": "tsx src/index.ts --pipeline=prototype",
     "experiment-repo:add": "bash ./scripts/add-experiment-repo.sh",
     "experiment-repo:fetch-all": "git submodule update --init --recursive",
     "experiment-repo:refresh-all": "pnpm run experiment-repo:refresh:date-fns && pnpm run experiment-repo:refresh:directus && pnpm run experiment-repo:refresh:fastify && pnpm run experiment-repo:refresh:tabnews.com.br",
