@@ -9,6 +9,7 @@ export type PrototypeResult = {
 }
 
 export type TestCaseDistributionByMethod = {
+	id: string
 	repositoryName: RepositoryName
 	methodTitle: string
 	testSuiteCount: number
