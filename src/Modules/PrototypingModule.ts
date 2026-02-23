@@ -10,6 +10,8 @@ import LogService from "@/Services/LogService"
 import FileUtil from "@/Utils/FileUtil"
 import HashUtil from "@/Utils/HashUtil"
 import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
+import MutationExecutorUtil from "@/Utils/MutationExecuterUtil"
+import PathUtil from "@/Utils/PathUtil"
 
 import { methodWithRelevantTestsValidation } from "@/Config/PrototypeConfig"
 
@@ -51,7 +53,15 @@ class PrototypingModule {
 			)
 		})
 
-		console.log(filteredExploredMethods.length)
+		const exploredMethod = filteredExploredMethods[0]
+
+		const result = await MutationExecutorUtil.run({
+			repositoryRootPath: PathUtil.getRepositoryRootPath(options.repositoryName),
+			targetFilePath: exploredMethod!.resolvedMethodFilePath,
+			testRunner: "vitest"
+		})
+
+		console.log(result)
 	}
 
 	private async collectTestCaseDistributionByMethod(options: PrototypeOptions): Promise<TestCaseDistributionByMethod[]> {
