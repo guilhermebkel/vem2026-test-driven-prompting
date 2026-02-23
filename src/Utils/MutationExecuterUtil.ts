@@ -5,15 +5,22 @@ import path from "path"
 
 const execAsync = promisify(exec)
 
-export interface MutationExecutionOptions {
+type MutationExecutionOptions = {
 	repositoryRootPath: string
 	targetFilePath: string
 	testRunner: "vitest" | "jest"
 }
 
-export interface MutationTestStrength {
+type MutationTestStrength = {
 	testName: string
 	killedMutantsCount: number
+}
+
+type MutationReport = {
+	mutants: Array<{
+		status: string
+		killedBy: string
+	}>
 }
 
 class MutationExecutorUtil {
@@ -48,7 +55,7 @@ class MutationExecutorUtil {
 		configPath: string
 		targetFilePath: string
 		testRunner: string
-	}) {
+	}): Promise<void> {
 		const config = {
 			mutate: [targetFilePath],
 			testRunner,
@@ -60,14 +67,14 @@ class MutationExecutorUtil {
 		await fs.writeFile(configPath, JSON.stringify(config, null, 2))
 	}
 
-	private async executeStryker(repoRoot: string, configPath: string) {
+	private async executeStryker(repoRoot: string, configPath: string): Promise<void> {
 		await execAsync(
-			`npx stryker run --configFile ${configPath}`,
+			`npx @stryker-mutator/core run --configFile ${configPath}`,
 			{ cwd: repoRoot }
 		)
 	}
 
-	private async readMutationReport(repoRoot: string) {
+	private async readMutationReport(repoRoot: string): Promise<MutationReport> {
 		const reportPath = path.join(
 			repoRoot,
 			"reports/mutation/mutation-report.json"
@@ -78,7 +85,7 @@ class MutationExecutorUtil {
 		return JSON.parse(content)
 	}
 
-	private extractTestStrength(report: any): MutationTestStrength[] {
+	private extractTestStrength(report: MutationReport): MutationTestStrength[] {
 		const testMap: Record<string, number> = {}
 
 		for (const mutant of report.mutants || []) {
