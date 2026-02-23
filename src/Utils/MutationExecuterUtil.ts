@@ -69,7 +69,7 @@ class MutationExecutorUtil {
 
 	private async executeStryker(repoRoot: string, configPath: string): Promise<void> {
 		await execAsync(
-			`npx @stryker-mutator/core run --configFile ${configPath}`,
+			`npx @stryker-mutator/core run --config-file ${configPath}`,
 			{ cwd: repoRoot }
 		)
 	}
