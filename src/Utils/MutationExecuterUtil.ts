@@ -1,6 +1,7 @@
 import { exec } from "child_process"
 import { promisify } from "util"
 import fs from "fs/promises"
+import { existsSync } from "fs"
 import path from "path"
 
 const execAsync = promisify(exec)
@@ -23,26 +24,30 @@ type MutationReport = {
 	}>
 }
 
+const STRYKER_CONFIG_FILE_NAME = "stryker.conf.json"
+
+const STRYKER_TEMP_DIR_NAME = ".stryker-tmp"
+
 class MutationExecutorUtil {
 	async run(options: MutationExecutionOptions): Promise<MutationTestStrength[]> {
 		const { repositoryRootPath, targetFilePath, testRunner } = options
 
-		const tempConfigPath = path.join(
-			repositoryRootPath,
-			"stryker.temp.config.json"
-		)
+		const tempConfigFilePath = path.join(repositoryRootPath, STRYKER_CONFIG_FILE_NAME)
 
 		await this.generateTempConfig({
-			configPath: tempConfigPath,
+			configPath: tempConfigFilePath,
 			targetFilePath,
 			testRunner
 		})
 
-		await this.executeStryker(repositoryRootPath, tempConfigPath)
+		await this.executeStryker(repositoryRootPath)
 
 		const report = await this.readMutationReport(repositoryRootPath)
 
-		await fs.unlink(tempConfigPath).catch(() => { })
+		await fs.unlink(tempConfigFilePath).catch(() => { })
+
+		const tempDirPath = path.join(repositoryRootPath, STRYKER_TEMP_DIR_NAME)
+		await fs.unlink(tempDirPath).catch(() => { })
 
 		return this.extractTestStrength(report)
 	}
@@ -61,15 +66,17 @@ class MutationExecutorUtil {
 			testRunner,
 			coverageAnalysis: "perTest",
 			reporters: ["json"],
-			tempDirName: ".stryker-tmp"
+			tempDirName: STRYKER_TEMP_DIR_NAME
 		}
 
 		await fs.writeFile(configPath, JSON.stringify(config, null, 2))
 	}
 
-	private async executeStryker(repoRoot: string, configPath: string): Promise<void> {
+	private async executeStryker(repoRoot: string): Promise<void> {
+		await this.ensureMutationDependencies(repoRoot)
+
 		await execAsync(
-			`npx @stryker-mutator/core run --config-file ${configPath}`,
+			"./node_modules/.bin/stryker run",
 			{ cwd: repoRoot }
 		)
 	}
@@ -100,6 +107,32 @@ class MutationExecutorUtil {
 			testName,
 			killedMutantsCount: count
 		}))
+	}
+
+	private hasLocalDependency(repoRoot: string, pkg: string): boolean {
+		return existsSync(
+			path.join(repoRoot, "node_modules", pkg)
+		)
+	}
+
+	private async ensureMutationDependencies(repoRoot: string): Promise<void> {
+		const requiredDeps = [
+			"vitest",
+			"typescript",
+			"@stryker-mutator/core@9.5.1",
+			"@stryker-mutator/vitest-runner@9.5.1"
+		]
+
+		const missingDepds = requiredDeps.filter(
+			dep => !this.hasLocalDependency(repoRoot, dep)
+		)
+
+		if (missingDepds.length > 0) {
+			await execAsync(
+				`pnpm install -D -w ${requiredDeps.join(" ")}`,
+				{ cwd: repoRoot }
+			)
+		}
 	}
 }
 

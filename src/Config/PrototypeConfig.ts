@@ -12,8 +12,5 @@ export const methodWithRelevantTestsValidation = {
 export const prototypeConfig: PrototypeOptions[] = [
 	{
 		repositoryName: "date-fns"
-	},
-	{
-		repositoryName: "directus"
 	}
 ]
