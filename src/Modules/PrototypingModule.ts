@@ -53,15 +53,17 @@ class PrototypingModule {
 			)
 		})
 
-		const exploredMethod = filteredExploredMethods[0]
+		const exploredMethodFileResolvedPaths = filteredExploredMethods
+			.map(exploredMethod => exploredMethod!.resolvedMethodFilePath)
+			.slice(0, 5)
 
 		const result = await MutationExecutorUtil.run({
 			repositoryRootPath: PathUtil.getRepositoryRootPath(options.repositoryName),
-			targetFilePath: exploredMethod!.resolvedMethodFilePath,
+			targetFileResolvedPaths: exploredMethodFileResolvedPaths,
 			testRunner: "vitest"
 		})
 
-		console.log(result)
+		console.dir(result, { depth: null, colors: true })
 	}
 
 	private async collectTestCaseDistributionByMethod(options: PrototypeOptions): Promise<TestCaseDistributionByMethod[]> {
