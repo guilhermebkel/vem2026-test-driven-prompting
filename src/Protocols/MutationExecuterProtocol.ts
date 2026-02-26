@@ -12,7 +12,7 @@ export type MutationTestStrength = {
 	}>
 }
 
-export type MutationReport = {
+export type StrykerMutationReport = {
 	files: Record<string, {
 		mutants: Array<{
 			status: string

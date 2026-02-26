@@ -5,7 +5,7 @@ import { StrykerOptions } from "@stryker-mutator/api/core"
 
 import ShellUtil from "@/Utils/ShellUtil"
 
-import { MutationExecutionOptions, MutationReport, MutationTestStrength, SetupStrykerConfigOptions } from "@/Protocols/MutationExecuterProtocol"
+import { MutationExecutionOptions, StrykerMutationReport, MutationTestStrength, SetupStrykerConfigOptions } from "@/Protocols/MutationExecuterProtocol"
 
 class MutationExecutorUtil {
 	async run(options: MutationExecutionOptions): Promise<MutationTestStrength[]> {
@@ -26,9 +26,9 @@ class MutationExecutorUtil {
 
 			await this.executeStryker(clonedRepositoryRootPath)
 
-			const report = await this.readMutationReport(clonedRepositoryRootPath)
+			const strykerMutationReport = await this.readStrykerMutationReport(clonedRepositoryRootPath)
 
-			return this.extractTestsStrength(report)
+			return this.extractTestsStrengthFromStrykerMutationReport(strykerMutationReport)
 		} finally {
 			await this.removeClonedRepository(clonedRepositoryRootPath)
 		}
@@ -55,7 +55,7 @@ class MutationExecutorUtil {
 		})
 	}
 
-	private async readMutationReport(repositoryRootPath: string): Promise<MutationReport> {
+	private async readStrykerMutationReport(repositoryRootPath: string): Promise<StrykerMutationReport> {
 		const reportPath = path.join(repositoryRootPath, this.defaultStrykerOptions.jsonReporter!.fileName)
 
 		const content = await fs.readFile(reportPath, "utf-8")
@@ -63,7 +63,7 @@ class MutationExecutorUtil {
 		return JSON.parse(content)
 	}
 
-	private extractTestsStrength(report: MutationReport): MutationTestStrength[] {
+	private extractTestsStrengthFromStrykerMutationReport(report: StrykerMutationReport): MutationTestStrength[] {
 		if (!report?.files) {
 			return []
 		}
