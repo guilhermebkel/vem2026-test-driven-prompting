@@ -5,28 +5,7 @@ import { StrykerOptions } from "@stryker-mutator/api/core"
 
 import ShellUtil from "@/Utils/ShellUtil"
 
-type MutationExecutionOptions = {
-	repositoryRootPath: string
-	targetFileResolvedPaths: string[]
-	testRunner: "vitest" | "jest"
-}
-
-type MutationTestStrength = {
-	targetFileRelativePath: string
-	results: Array<{
-		testName: string
-		killedMutantsCount: number
-	}>
-}
-
-type MutationReport = {
-	files: Record<string, {
-		mutants: Array<{
-			status: string
-			killedBy: string
-		}>
-	}>
-}
+import { MutationExecutionOptions, MutationReport, MutationTestStrength, SetupStrykerConfigOptions } from "@/Protocols/MutationExecuterProtocol"
 
 class MutationExecutorUtil {
 	async run(options: MutationExecutionOptions): Promise<MutationTestStrength[]> {
@@ -55,23 +34,15 @@ class MutationExecutorUtil {
 		}
 	}
 
-	private async setupStrykerConfig({
-		repositoryRootPath,
-		targetFileResolvedPaths,
-		testRunner
-	}: {
-		repositoryRootPath: string
-		targetFileResolvedPaths: string[]
-		testRunner: string
-	}): Promise<void> {
+	private async setupStrykerConfig(options: SetupStrykerConfigOptions): Promise<void> {
 		const config: Partial<StrykerOptions> = {
 			...this.defaultStrykerOptions,
-			mutate: targetFileResolvedPaths,
-			testRunner
+			mutate: options.targetFileResolvedPaths,
+			testRunner: options.testRunner
 		}
 
 		const STRYKER_CONFIG_FILE_NAME = "stryker.conf.json"
-		const tempConfigFilePath = path.join(repositoryRootPath, STRYKER_CONFIG_FILE_NAME)
+		const tempConfigFilePath = path.join(options.repositoryRootPath, STRYKER_CONFIG_FILE_NAME)
 
 		await fs.writeFile(tempConfigFilePath, JSON.stringify(config, null, 2))
 	}
