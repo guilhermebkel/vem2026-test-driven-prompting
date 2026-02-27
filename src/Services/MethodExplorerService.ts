@@ -1,6 +1,6 @@
 import { ExploredMethod, ExploreMethodOptions, ExploreMethodResult } from "@/Protocols/MethodExplorerProtocol"
 import { CoverageReport } from "@/Protocols/TestExecutorProtocol"
-import { ProjectType } from "@/Protocols/NodeJSCodeParserProtocol"
+import { DeclarationType, ProjectType } from "@/Protocols/NodeJSCodeParserProtocol"
 
 import { methodExplorationValidation } from "@/Config/MethodExplorationConfig"
 
@@ -94,8 +94,8 @@ class MethodExplorerService {
 							const resolvedTestFilePathsIncludingDuplicates = referencedFilePaths.filter(referencedFilePath => PathUtil.pathMatchesPatterns(referencedFilePath, options.testFilePatterns))
 
 							const exploredMethod: ExploredMethod = {
-								name: node.getName(),
-								declarationType: NodeJSCodeParserUtil.turnSyntaxKindIntoDeclarationType(node.getKind()),
+								name: node.getName() as string,
+								declarationType: NodeJSCodeParserUtil.turnSyntaxKindIntoDeclarationType(node.getKind()) as DeclarationType,
 								resolvedMethodFilePath,
 								resolvedTestFilePaths: ArrayUtil.keepUniqueValues(resolvedTestFilePathsIncludingDuplicates),
 								testCoverageDetails: TestCoverageUtil.getMethodTestCoverageDetails(node, testCoverageReport)

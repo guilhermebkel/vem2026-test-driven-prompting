@@ -28,7 +28,7 @@ export type ExploredContext = {
 	}
 	context: Array<Pick<ContextDefinitionItem, "slug" | "type"> & {
 		resolvedFilePath: string
-		extractionRule: Partial<ExtractionRule>
+		extractionRule: Required<ExtractionRule<DeclarationType>>
 		codeBLEUMetrics?: CodeBLEUFormattedMetrics
 		codeEmbeddingMetrics?: CodeEmbeddingFormattedMetrics
 	}>
@@ -39,8 +39,8 @@ export type ExploreContextResult = ExploredContext[]
 export type LoadedMethodFile = {
 	resolvedFilePath: string
 	formattedNodes: Array<{
-		name?: string
+		name: string
 		code: string
-		type?: DeclarationType
+		type: DeclarationType
 	}>
 }

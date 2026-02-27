@@ -68,9 +68,9 @@ class MethodContextExplorerService {
 						const data: LoadedMethodFile = {
 							resolvedFilePath: resolvedMethodFilePath,
 							formattedNodes: nodes.map(node => ({
-								name: node.getName(),
+								name: node.getName() as string,
 								code: node.getText(),
-								type: NodeJSCodeParserUtil.turnSyntaxKindIntoDeclarationType(node.getKind())
+								type: NodeJSCodeParserUtil.turnSyntaxKindIntoDeclarationType(node.getKind()) as DeclarationType
 							}))
 						}
 
@@ -162,8 +162,8 @@ class MethodContextExplorerService {
 								type: "semantic",
 								resolvedFilePath: loadedMethodFile.resolvedFilePath,
 								extractionRule: {
-									type: formattedNode.type,
-									name: formattedNode.name
+									name: formattedNode.name,
+									type: formattedNode.type
 								},
 								codeBLEUMetrics,
 								codeEmbeddingMetrics
@@ -203,8 +203,8 @@ class MethodContextExplorerService {
 					type: "local",
 					resolvedFilePath: exploredMethod.resolvedMethodFilePath,
 					extractionRule: {
-						type: NodeJSCodeParserUtil.turnSyntaxKindIntoDeclarationType(node.getKind()),
-						name: node.getName()
+						name: node.getName() as string,
+						type: NodeJSCodeParserUtil.turnSyntaxKindIntoDeclarationType(node.getKind()) as DeclarationType
 					}
 				})
 			}
@@ -221,7 +221,7 @@ class MethodContextExplorerService {
 				.sort((a, b) => a.method.resolvedFilePath.localeCompare(b.method.resolvedFilePath))
 				.map((exploredMethodContext) => {
 					const sortedContext = exploredMethodContext.context.sort((a, b) => (
-						a.resolvedFilePath.localeCompare(b.resolvedFilePath) || a.extractionRule.name!.localeCompare(b.extractionRule.name!)
+						a.resolvedFilePath.localeCompare(b.resolvedFilePath) || a.extractionRule.name.localeCompare(b.extractionRule.name!)
 					))
 
 					return {

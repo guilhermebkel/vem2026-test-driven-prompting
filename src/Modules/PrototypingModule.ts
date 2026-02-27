@@ -58,7 +58,7 @@ class PrototypingModule {
 			)
 		})
 
-		const resolvedMethodFilePaths = filteredExploredMethods.map(exploredMethod => exploredMethod!.resolvedMethodFilePath)
+		const resolvedMethodFilePaths = filteredExploredMethods.map(exploredMethod => exploredMethod.resolvedMethodFilePath)
 
 		const mutationTestResult = await MutationTestUtil.execute({
 			repositoryRootPath: PathUtil.getRepositoryRootPath(options.repositoryName),
@@ -109,6 +109,7 @@ class PrototypingModule {
 
 					const mutationTestResultForTestCase = currentMethodMutationTestResult.results.find(result => (
 						result.rawTestCaseName.endsWith(testCaseName)
+						&& result.rawTestCaseName.startsWith(filteredExploredMethod.name)
 					))
 
 					return {

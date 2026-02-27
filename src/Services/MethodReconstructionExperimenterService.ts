@@ -40,7 +40,12 @@ class MethodReconstructionExperimenterService {
 				await TracingUtil.traceTask(`Experiment: ${experimentTitle}`, async (config) => {
 					const targetContext: ContextDefinition = (exploredMethodContext?.context || [])
 						.filter(context => experimentComparison.context.some(({ slug }) => slug === context.slug))
-						.map(context => ({ slug: context.slug, type: context.type, path: context.resolvedFilePath, extractionRule: context.extractionRule as ExtractionRule }))
+						.map(context => ({
+							slug: context.slug,
+							type: context.type,
+							path: context.resolvedFilePath,
+							extractionRule: context.extractionRule as ExtractionRule<DeclarationType>
+						}))
 
 					const noTargetContextFoundForExperiment = experimentComparison.context.length > 0 && targetContext.length === 0
 

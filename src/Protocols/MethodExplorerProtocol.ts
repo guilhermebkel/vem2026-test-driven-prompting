@@ -3,8 +3,8 @@ import { RepositoryName } from "@/Protocols/RepositoryProtocol"
 import { MethodTestCoverageDetails } from "@/Protocols/TestCoverageProtocol"
 
 export type ExploredMethod = {
-	name?: string
-	declarationType?: DeclarationType
+	name: string
+	declarationType: DeclarationType
 	resolvedMethodFilePath: string
 	resolvedTestFilePaths: string[]
 	testCoverageDetails: MethodTestCoverageDetails
