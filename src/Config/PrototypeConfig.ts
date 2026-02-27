@@ -11,6 +11,7 @@ export const methodWithRelevantTestsValidation = {
 
 export const prototypeConfig: PrototypeOptions[] = [
 	{
-		repositoryName: "date-fns"
+		repositoryName: "date-fns",
+		testRunnerId: "vitest"
 	}
 ]

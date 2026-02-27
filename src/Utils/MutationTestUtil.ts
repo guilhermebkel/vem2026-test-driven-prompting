@@ -5,30 +5,36 @@ import { StrykerOptions } from "@stryker-mutator/api/core"
 
 import ShellUtil from "@/Utils/ShellUtil"
 
-import { MutationExecutionOptions, StrykerMutationReport, MutationTestStrength, SetupStrykerConfigOptions } from "@/Protocols/MutationExecuterProtocol"
+import {
+	ExecuteOptions,
+	StrykerMutationReport,
+	MutationTestStrength,
+	SetupStrykerConfigOptions,
+	MutationTestResult
+} from "@/Protocols/MutationTestProtocol"
 
-class MutationExecutorUtil {
-	async run(options: MutationExecutionOptions): Promise<MutationTestStrength[]> {
-		const { repositoryRootPath, targetFileResolvedPaths, testRunner } = options
+class MutationTestUtil {
+	async execute(options: ExecuteOptions): Promise<MutationTestResult> {
+		const { repositoryRootPath, targetResolvedFilePaths, testRunnerId } = options
 
 		const clonedRepositoryRootPath = await this.cloneRepository(repositoryRootPath)
 
 		try {
-			const clonedTargetFileResolvedPaths = targetFileResolvedPaths.map(targetFileResolvedPath => (
+			const clonedTargetResolvedFilePaths = targetResolvedFilePaths.map(targetFileResolvedPath => (
 				targetFileResolvedPath.replace(repositoryRootPath, clonedRepositoryRootPath)
 			))
 
 			await this.setupStrykerConfig({
 				repositoryRootPath: clonedRepositoryRootPath,
-				targetFileResolvedPaths: clonedTargetFileResolvedPaths,
-				testRunner
+				targetResolvedFilePaths: clonedTargetResolvedFilePaths,
+				testRunnerId
 			})
 
 			await this.executeStryker(clonedRepositoryRootPath)
 
 			const strykerMutationReport = await this.readStrykerMutationReport(clonedRepositoryRootPath)
 
-			return this.extractTestsStrengthFromStrykerMutationReport(strykerMutationReport)
+			return this.extractTestsStrengthFromStrykerMutationReport(repositoryRootPath, strykerMutationReport)
 		} finally {
 			await this.removeClonedRepository(clonedRepositoryRootPath)
 		}
@@ -37,8 +43,8 @@ class MutationExecutorUtil {
 	private async setupStrykerConfig(options: SetupStrykerConfigOptions): Promise<void> {
 		const config: Partial<StrykerOptions> = {
 			...this.defaultStrykerOptions,
-			mutate: options.targetFileResolvedPaths,
-			testRunner: options.testRunner
+			mutate: options.targetResolvedFilePaths,
+			testRunner: options.testRunnerId
 		}
 
 		const STRYKER_CONFIG_FILE_NAME = "stryker.conf.json"
@@ -63,29 +69,41 @@ class MutationExecutorUtil {
 		return JSON.parse(content)
 	}
 
-	private extractTestsStrengthFromStrykerMutationReport(report: StrykerMutationReport): MutationTestStrength[] {
+	private extractTestsStrengthFromStrykerMutationReport(repositoryRootPath: string, report: StrykerMutationReport): MutationTestStrength[] {
 		if (!report?.files) {
 			return []
 		}
 
+		const testCaseIdToRawTestCaseName: Record<string, string> = {}
+
+		if (report.testFiles) {
+			for (const fileData of Object.values(report.testFiles)) {
+				for (const test of fileData.tests || []) {
+					testCaseIdToRawTestCaseName[test.id] = test.name
+				}
+			}
+		}
+
 		return Object.entries(report.files).map(([relativeFilePath, fileData]) => {
-			const testMap: Record<string, number> = {}
+			const rawTestCaseNameToTestCount: Record<string, number> = {}
 
 			for (const mutant of fileData.mutants || []) {
 				if (mutant.status === "Killed" && mutant.killedBy?.length) {
-					for (const testName of mutant.killedBy) {
-						testMap[testName] = (testMap[testName] || 0) + 1
+					for (const testCaseId of mutant.killedBy) {
+						const rawTestCaseName = testCaseIdToRawTestCaseName[testCaseId] ?? `Unknown (${testCaseId})`
+
+						rawTestCaseNameToTestCount[rawTestCaseName] = (rawTestCaseNameToTestCount[rawTestCaseName] || 0) + 1
 					}
 				}
 			}
 
-			const results = Object.entries(testMap).map(([testName, count]) => ({
-				testName,
+			const results = Object.entries(rawTestCaseNameToTestCount).map(([rawTestCaseName, count]) => ({
+				rawTestCaseName,
 				killedMutantsCount: count
 			}))
 
 			return {
-				targetFileRelativePath: relativeFilePath,
+				targetResolvedFilePath: path.join(repositoryRootPath, relativeFilePath),
 				results
 			}
 		})
@@ -142,4 +160,4 @@ class MutationExecutorUtil {
 	}
 }
 
-export default new MutationExecutorUtil()
+export default new MutationTestUtil()

@@ -2,7 +2,8 @@ import { ExploredMethod, ExploreMethodResult } from "@/Protocols/MethodExplorerP
 import {
 	PrototypeOptions,
 	PrototypeResult,
-	TestCaseDistributionByMethod
+	TestCaseDistributionByMethod,
+	TestRelevanceByMethod
 } from "@/Protocols/PrototypingProtocol"
 
 import LogService from "@/Services/LogService"
@@ -10,20 +11,24 @@ import LogService from "@/Services/LogService"
 import FileUtil from "@/Utils/FileUtil"
 import HashUtil from "@/Utils/HashUtil"
 import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
-import MutationExecutorUtil from "@/Utils/MutationExecuterUtil"
+import MutationTestUtil from "@/Utils/MutationTestUtil"
 import PathUtil from "@/Utils/PathUtil"
 
 import { methodWithRelevantTestsValidation } from "@/Config/PrototypeConfig"
 
 class PrototypingModule {
 	async prototype(options: PrototypeOptions): Promise<PrototypeResult> {
-		const [testCaseDistributionByMethod] = await Promise.all([
+		const [
+			testCaseDistributionByMethod,
+			testRelevanceByMethod
+		] = await Promise.all([
 			await this.collectTestCaseDistributionByMethod(options),
-			await this.collectMethodsWithRelevantTests(options)
+			await this.collectTestRelevanceByMethod(options)
 		])
 
 		const prototypeResult: PrototypeResult = {
-			testCaseDistributionByMethod
+			testCaseDistributionByMethod,
+			testRelevanceByMethod
 		}
 
 		await LogService.savePrototypeLogs(options, prototypeResult)
@@ -31,7 +36,7 @@ class PrototypingModule {
 		return prototypeResult
 	}
 
-	private async collectMethodsWithRelevantTests(options: PrototypeOptions): Promise<void> {
+	private async collectTestRelevanceByMethod(options: PrototypeOptions): Promise<TestRelevanceByMethod[]> {
 		const methodExplorationResultLogFilePath = LogService.getMethodExplorationResultLogFilePath(options.repositoryName)
 		const methodExplorationResultLogFileContent = await FileUtil.getFileContent(methodExplorationResultLogFilePath)
 		const exploreMethodResult: ExploreMethodResult = JSON.parse(methodExplorationResultLogFileContent)
@@ -53,17 +58,74 @@ class PrototypingModule {
 			)
 		})
 
-		const exploredMethodFileResolvedPaths = filteredExploredMethods
-			.map(exploredMethod => exploredMethod!.resolvedMethodFilePath)
-			.slice(0, 5)
+		const resolvedMethodFilePaths = filteredExploredMethods.map(exploredMethod => exploredMethod!.resolvedMethodFilePath)
 
-		const result = await MutationExecutorUtil.run({
+		const mutationTestResult = await MutationTestUtil.execute({
 			repositoryRootPath: PathUtil.getRepositoryRootPath(options.repositoryName),
-			targetFileResolvedPaths: exploredMethodFileResolvedPaths,
-			testRunner: "vitest"
+			targetResolvedFilePaths: resolvedMethodFilePaths,
+			testRunnerId: options.testRunnerId
 		})
 
-		console.dir(result, { depth: null, colors: true })
+		const project = NodeJSCodeParserUtil.createProject()
+
+		const result: TestRelevanceByMethod[] = filteredExploredMethods.map(filteredExploredMethod => {
+			const resultItem: TestRelevanceByMethod = {
+				id: this.generateExploredMethodId(filteredExploredMethod),
+				repositoryName: options.repositoryName,
+				methodTitle: this.generateMethodTitle(filteredExploredMethod),
+				testCaseCount: 0,
+				testCaseMutationRelevanceCount: 0,
+				testCases: []
+			}
+
+			const testCaseDistributionByMethod = testCaseDistributionByMethodList.find(testCaseDistributionByMethod => (
+				testCaseDistributionByMethod.id === this.generateExploredMethodId(filteredExploredMethod)
+			))
+
+			if (!testCaseDistributionByMethod) {
+				return resultItem
+			}
+
+			resultItem.testCaseCount = testCaseDistributionByMethod.testCaseCount
+
+			const currentMethodMutationTestResult = mutationTestResult.find(mutationTestResultItem => (
+				filteredExploredMethod.resolvedMethodFilePath === mutationTestResultItem.targetResolvedFilePath
+			))
+
+			filteredExploredMethod.resolvedTestFilePaths.forEach(testFilePath => {
+				const sourceFile = project.addSourceFileAtPath(testFilePath)
+
+				const testCases = NodeJSCodeParserUtil.extractNodes(sourceFile, [{ type: "test-case" }])
+
+				resultItem.testCases = testCases.map(testCase => {
+					const testCaseName = String(testCase.getArguments()?.[0]?.getText()?.replace(/"/g, ""))
+
+					if (!currentMethodMutationTestResult) {
+						return {
+							name: testCaseName,
+							mutationScore: "unknown"
+						}
+					}
+
+					const mutationTestResultForTestCase = currentMethodMutationTestResult.results.find(result => (
+						result.rawTestCaseName.endsWith(testCaseName)
+					))
+
+					return {
+						name: testCaseName,
+						mutationScore: Number(mutationTestResultForTestCase?.killedMutantsCount) > 0 ? "relevant" : "not-relevant"
+					}
+				})
+
+				project.removeSourceFile(sourceFile)
+			})
+
+			resultItem.testCaseMutationRelevanceCount = resultItem.testCases.filter(testCase => testCase.mutationScore === "relevant").length
+
+			return resultItem
+		})
+
+		return result
 	}
 
 	private async collectTestCaseDistributionByMethod(options: PrototypeOptions): Promise<TestCaseDistributionByMethod[]> {
@@ -79,7 +141,7 @@ class PrototypingModule {
 			const resultItem: TestCaseDistributionByMethod = {
 				id: this.generateExploredMethodId(methodExplorationResult),
 				repositoryName: options.repositoryName,
-				methodTitle: `${methodExplorationResult.declarationType}:${methodExplorationResult.name}`,
+				methodTitle: this.generateMethodTitle(methodExplorationResult),
 				testSuiteCount: methodExplorationResult.resolvedTestFilePaths.length,
 				testCaseCount: 0
 			}
@@ -102,6 +164,10 @@ class PrototypingModule {
 
 	private generateExploredMethodId(exploredMethod: ExploredMethod): string {
 		return HashUtil.turnIntoSHA1(exploredMethod)
+	}
+
+	private generateMethodTitle(exploredMethod: ExploredMethod): string {
+		return `${exploredMethod.declarationType}:${exploredMethod.name}`
 	}
 }
 
