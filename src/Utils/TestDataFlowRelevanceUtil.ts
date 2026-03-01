@@ -10,7 +10,7 @@ import {
 } from "@/Protocols/TestDataFlowRelevanceProtocol"
 
 import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
-import FormatUtil from "@/Utils/FormatUtil"
+import SanitizationUtil from "@/Utils/SanitizationUtil"
 
 class TestDataFlowRelevanceUtil {
 	async execute(options: ExecuteOptions): Promise<DataFlowAnalysisResult> {
@@ -20,7 +20,7 @@ class TestDataFlowRelevanceUtil {
 		const testCaseNodes = NodeJSCodeParserUtil.extractNodes(sourceFile, [{ type: "test-case" }])
 
 		return testCaseNodes.reduce<DataFlowAnalysisResult>((results, testCaseNode) => {
-			const testCaseName = FormatUtil.extractTestCaseName(testCaseNode)
+			const testCaseName = SanitizationUtil.extractTestCaseName(testCaseNode)
 
 			if (!testCaseName) {
 				return results

@@ -13,7 +13,7 @@ import FileUtil from "@/Utils/FileUtil"
 import HashUtil from "@/Utils/HashUtil"
 import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
 import PathUtil from "@/Utils/PathUtil"
-import FormatUtil from "@/Utils/FormatUtil"
+import SanitizationUtil from "@/Utils/SanitizationUtil"
 import TestMutationRelevanceUtil from "@/Utils/TestMutationRelevanceUtil"
 import TestDataFlowRelevanceUtil from "@/Utils/TestDataFlowRelevanceUtil"
 
@@ -108,7 +108,7 @@ class PrototypingModule {
 
 					resultItem.testCases = testCases.map(testCase => {
 						const testCaseRelevance: TestCaseRelevance = {
-							name: FormatUtil.extractTestCaseName(testCase),
+							name: SanitizationUtil.extractTestCaseName(testCase),
 							mutationScore: "not-relevant",
 							dataFlowScore: "not-relevant"
 						}
