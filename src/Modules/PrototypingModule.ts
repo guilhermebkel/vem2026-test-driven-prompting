@@ -127,7 +127,7 @@ class PrototypingModule {
 								result.testCaseName === testCaseRelevance.name
 							))
 
-							testCaseRelevance.dataFlowScore = Object.values(testDataFlowResultForTestCase?.heuristics || {}).some(Boolean) ? "relevant" : "not-relevant"
+							testCaseRelevance.dataFlowScore = testDataFlowResultForTestCase?.heuristics?.directExpectUse ? "relevant" : "not-relevant"
 						}
 
 						return testCaseRelevance
