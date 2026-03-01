@@ -26,7 +26,11 @@ export const prototypeConfig: PrototypeOptions[] = [
 				testRunner: "vitest",
 				ignorePatterns: [
 					"tests/blackbox/**",
-					"**/blackbox/**"
+					"**/blackbox/**",
+					"**/*.vue",
+					"**/*.yaml",
+					"**/app/**",
+					"**/composables/**"
 				]
 			}
 		}

@@ -9,7 +9,8 @@ class ShellUtil {
 
 		const { stdout } = await execAsync(command, {
 			cwd: options?.currentWorkingDirectoryPath,
-			env: options?.environmentVariables
+			env: options?.environmentVariables,
+			maxBuffer: 1024 * 1024 * 500 // 500MB
 		})
 
 		return stdout

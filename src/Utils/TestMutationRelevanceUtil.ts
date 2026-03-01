@@ -56,7 +56,7 @@ class TestMutationRelevanceUtil {
 	private async executeStryker(repositoryRootPath: string): Promise<void> {
 		await this.ensureMutationDependencies(repositoryRootPath)
 
-		await ShellUtil.executeCommand("./node_modules/.bin/stryker run", {
+		await ShellUtil.executeCommand("./node_modules/.bin/stryker run --logLevel debug", {
 			currentWorkingDirectoryPath: repositoryRootPath
 		})
 	}
