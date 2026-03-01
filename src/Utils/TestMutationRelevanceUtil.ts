@@ -15,7 +15,7 @@ import {
 
 class TestMutationRelevanceUtil {
 	async execute(options: ExecuteOptions): Promise<TestMutationAnalysisResult> {
-		const { repositoryRootPath, targetResolvedFilePaths, testRunnerId } = options
+		const { repositoryRootPath, targetResolvedFilePaths, customStrykerOptions } = options
 
 		const clonedRepositoryRootPath = await this.cloneRepository(repositoryRootPath)
 
@@ -27,7 +27,7 @@ class TestMutationRelevanceUtil {
 			await this.setupStrykerConfig({
 				repositoryRootPath: clonedRepositoryRootPath,
 				targetResolvedFilePaths: clonedTargetResolvedFilePaths,
-				testRunnerId
+				customStrykerOptions
 			})
 
 			await this.executeStryker(clonedRepositoryRootPath)
@@ -43,8 +43,8 @@ class TestMutationRelevanceUtil {
 	private async setupStrykerConfig(options: SetupStrykerConfigOptions): Promise<void> {
 		const config: Partial<StrykerOptions> = {
 			...this.defaultStrykerOptions,
-			mutate: options.targetResolvedFilePaths,
-			testRunner: options.testRunnerId
+			...options.customStrykerOptions,
+			mutate: options.targetResolvedFilePaths
 		}
 
 		const STRYKER_CONFIG_FILE_NAME = "stryker.conf.json"

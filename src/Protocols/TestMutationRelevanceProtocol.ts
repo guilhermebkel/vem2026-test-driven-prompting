@@ -1,11 +1,13 @@
-import { MutantTestCoverage } from "@stryker-mutator/api/core"
+import { MutantTestCoverage, StrykerOptions } from "@stryker-mutator/api/core"
 
-export type TestRunnerId = "vitest" | "jest"
+export type CustomStrykerOptions = Pick<StrykerOptions, "testRunner" | "ignorePatterns"> & {
+	testRunner: "vitest" | "jest"
+}
 
 export type ExecuteOptions = {
 	repositoryRootPath: string
 	targetResolvedFilePaths: string[]
-	testRunnerId: TestRunnerId
+	customStrykerOptions: CustomStrykerOptions
 }
 
 export type MutationTestStrength = {
@@ -31,7 +33,7 @@ export type StrykerMutationReport = {
 export type SetupStrykerConfigOptions = {
 	repositoryRootPath: string
 	targetResolvedFilePaths: string[]
-	testRunnerId: TestRunnerId
+	customStrykerOptions: CustomStrykerOptions
 }
 
 export type TestMutationAnalysisResult = MutationTestStrength[]

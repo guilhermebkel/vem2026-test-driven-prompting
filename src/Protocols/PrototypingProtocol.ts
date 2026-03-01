@@ -1,9 +1,11 @@
 import { RepositoryName } from "@/Protocols/RepositoryProtocol"
-import { TestRunnerId } from "@/Protocols/TestMutationRelevanceProtocol"
+import { CustomStrykerOptions } from "@/Protocols/TestMutationRelevanceProtocol"
 
 export type PrototypeOptions = {
 	repositoryName: RepositoryName
-	testRunnerId: TestRunnerId
+	testRelevanceOptions: {
+		customStrykerOptions: CustomStrykerOptions
+	}
 }
 
 export type PrototypeResult = {

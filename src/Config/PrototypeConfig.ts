@@ -10,8 +10,25 @@ export const methodWithRelevantTestsValidation = {
 }
 
 export const prototypeConfig: PrototypeOptions[] = [
+	// {
+	// 	repositoryName: "date-fns",
+	// 	testRelevanceOptions: {
+	// 		customStrykerOptions: {
+	// 			testRunner: "vitest",
+	// 			ignorePatterns: []
+	// 		}
+	// 	}
+	// },
 	{
-		repositoryName: "date-fns",
-		testRunnerId: "vitest"
+		repositoryName: "directus",
+		testRelevanceOptions: {
+			customStrykerOptions: {
+				testRunner: "vitest",
+				ignorePatterns: [
+					"tests/blackbox/**",
+					"**/blackbox/**"
+				]
+			}
+		}
 	}
 ]

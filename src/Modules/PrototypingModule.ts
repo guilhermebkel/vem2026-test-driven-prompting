@@ -66,7 +66,7 @@ class PrototypingModule {
 		const allMethodTestMutationResults = await TestMutationRelevanceUtil.execute({
 			repositoryRootPath: PathUtil.getRepositoryRootPath(options.repositoryName),
 			targetResolvedFilePaths: resolvedMethodFilePaths,
-			testRunnerId: options.testRunnerId
+			customStrykerOptions: options.testRelevanceOptions.customStrykerOptions
 		})
 
 		const project = NodeJSCodeParserUtil.createProject()
