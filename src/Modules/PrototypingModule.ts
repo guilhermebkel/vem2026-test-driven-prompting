@@ -109,8 +109,8 @@ class PrototypingModule {
 					resultItem.testCases = testCases.map(testCase => {
 						const testCaseRelevance: TestCaseRelevance = {
 							name: SanitizationUtil.extractTestCaseName(testCase),
-							mutationScore: "not-relevant",
-							dataFlowScore: "not-relevant"
+							mutationScore: "unknown",
+							dataFlowScore: "unknown"
 						}
 
 						if (currentTestMutationResult) {
