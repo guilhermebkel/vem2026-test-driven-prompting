@@ -85,21 +85,25 @@ class TestMutationRelevanceUtil {
 		}
 
 		return Object.entries(report.files).map(([relativeFilePath, fileData]) => {
-			const rawTestCaseNameToTestCount: Record<string, number> = {}
+			const rawTestCaseNameToKilledCount: Record<string, number> = {}
+
+			for (const rawTestCaseName of Object.values(testCaseIdToRawTestCaseName)) {
+				rawTestCaseNameToKilledCount[rawTestCaseName] = 0
+			}
 
 			for (const mutant of fileData.mutants || []) {
 				if (mutant.status === "Killed" && mutant.killedBy?.length) {
 					for (const testCaseId of mutant.killedBy) {
 						const rawTestCaseName = testCaseIdToRawTestCaseName[testCaseId] ?? `Unknown (${testCaseId})`
 
-						rawTestCaseNameToTestCount[rawTestCaseName] = (rawTestCaseNameToTestCount[rawTestCaseName] || 0) + 1
+						rawTestCaseNameToKilledCount[rawTestCaseName] = (rawTestCaseNameToKilledCount[rawTestCaseName] || 0) + 1
 					}
 				}
 			}
 
-			const results = Object.entries(rawTestCaseNameToTestCount).map(([rawTestCaseName, count]) => ({
+			const results = Object.entries(rawTestCaseNameToKilledCount).map(([rawTestCaseName, killedCount]) => ({
 				rawTestCaseName,
-				killedMutantsCount: count
+				killedMutantsCount: killedCount
 			}))
 
 			return {
