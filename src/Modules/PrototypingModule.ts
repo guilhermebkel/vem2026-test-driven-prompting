@@ -3,6 +3,7 @@ import {
 	PrototypeOptions,
 	PrototypeResult,
 	TestCaseDistributionByMethod,
+	TestCaseRelevance,
 	TestRelevanceByMethod
 } from "@/Protocols/PrototypingProtocol"
 
@@ -11,8 +12,10 @@ import LogService from "@/Services/LogService"
 import FileUtil from "@/Utils/FileUtil"
 import HashUtil from "@/Utils/HashUtil"
 import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
-import MutationTestUtil from "@/Utils/MutationTestUtil"
 import PathUtil from "@/Utils/PathUtil"
+import FormatUtil from "@/Utils/FormatUtil"
+import TestMutationRelevanceUtil from "@/Utils/TestMutationRelevanceUtil"
+import TestDataFlowRelevanceUtil from "@/Utils/TestDataFlowRelevanceUtil"
 
 import { methodWithRelevantTestsValidation } from "@/Config/PrototypeConfig"
 
@@ -60,7 +63,7 @@ class PrototypingModule {
 
 		const resolvedMethodFilePaths = filteredExploredMethods.map(exploredMethod => exploredMethod.resolvedMethodFilePath)
 
-		const mutationTestResult = await MutationTestUtil.execute({
+		const allMethodTestMutationResults = await TestMutationRelevanceUtil.execute({
 			repositoryRootPath: PathUtil.getRepositoryRootPath(options.repositoryName),
 			targetResolvedFilePaths: resolvedMethodFilePaths,
 			testRunnerId: options.testRunnerId
@@ -68,63 +71,79 @@ class PrototypingModule {
 
 		const project = NodeJSCodeParserUtil.createProject()
 
-		const result: TestRelevanceByMethod[] = filteredExploredMethods.map(filteredExploredMethod => {
-			const resultItem: TestRelevanceByMethod = {
-				id: this.generateExploredMethodId(filteredExploredMethod),
-				repositoryName: options.repositoryName,
-				methodTitle: this.generateMethodTitle(filteredExploredMethod),
-				testCaseCount: 0,
-				testCaseMutationRelevanceCount: 0,
-				testCases: []
-			}
+		const result: TestRelevanceByMethod[] = await Promise.all(
+			filteredExploredMethods.map(async filteredExploredMethod => {
+				const resultItem: TestRelevanceByMethod = {
+					id: this.generateExploredMethodId(filteredExploredMethod),
+					repositoryName: options.repositoryName,
+					methodTitle: this.generateMethodTitle(filteredExploredMethod),
+					testCaseCount: 0,
+					testCaseRelevanceCount: {
+						byDataFlowScore: 0,
+						byMutationScore: 0
+					},
+					testCases: []
+				}
 
-			const testCaseDistributionByMethod = testCaseDistributionByMethodList.find(testCaseDistributionByMethod => (
-				testCaseDistributionByMethod.id === this.generateExploredMethodId(filteredExploredMethod)
-			))
+				const testCaseDistributionByMethod = testCaseDistributionByMethodList.find(testCaseDistributionByMethod => (
+					testCaseDistributionByMethod.id === this.generateExploredMethodId(filteredExploredMethod)
+				))
 
-			if (!testCaseDistributionByMethod) {
-				return resultItem
-			}
+				if (!testCaseDistributionByMethod) {
+					return resultItem
+				}
 
-			resultItem.testCaseCount = testCaseDistributionByMethod.testCaseCount
+				resultItem.testCaseCount = testCaseDistributionByMethod.testCaseCount
 
-			const currentMethodMutationTestResult = mutationTestResult.find(mutationTestResultItem => (
-				filteredExploredMethod.resolvedMethodFilePath === mutationTestResultItem.targetResolvedFilePath
-			))
+				const currentTestMutationResult = allMethodTestMutationResults.find(mutationTestStrength => (
+					filteredExploredMethod.resolvedMethodFilePath === mutationTestStrength.targetResolvedFilePath
+				))
 
-			filteredExploredMethod.resolvedTestFilePaths.forEach(testFilePath => {
-				const sourceFile = project.addSourceFileAtPath(testFilePath)
+				const currentTestDataFlowResult = await TestDataFlowRelevanceUtil.execute({ resolvedTestFilePath: filteredExploredMethod.resolvedTestFilePaths[0]! })
 
-				const testCases = NodeJSCodeParserUtil.extractNodes(sourceFile, [{ type: "test-case" }])
+				filteredExploredMethod.resolvedTestFilePaths.forEach(resolvedTestFilePath => {
+					const sourceFile = project.addSourceFileAtPath(resolvedTestFilePath)
 
-				resultItem.testCases = testCases.map(testCase => {
-					const testCaseName = String(testCase.getArguments()?.[0]?.getText()?.replace(/"/g, ""))
+					const testCases = NodeJSCodeParserUtil.extractNodes(sourceFile, [{ type: "test-case" }])
 
-					if (!currentMethodMutationTestResult) {
-						return {
-							name: testCaseName,
-							mutationScore: "unknown"
+					resultItem.testCases = testCases.map(testCase => {
+						const testCaseRelevance: TestCaseRelevance = {
+							name: FormatUtil.extractTestCaseName(testCase),
+							mutationScore: "not-relevant",
+							dataFlowScore: "not-relevant"
 						}
-					}
 
-					const mutationTestResultForTestCase = currentMethodMutationTestResult.results.find(result => (
-						result.rawTestCaseName.endsWith(testCaseName)
-						&& result.rawTestCaseName.startsWith(filteredExploredMethod.name)
-					))
+						if (currentTestMutationResult) {
+							const testMutationResultForTestCase = currentTestMutationResult.results.find(result => (
+								result.rawTestCaseName.endsWith(testCaseRelevance.name)
+								&& result.rawTestCaseName.startsWith(filteredExploredMethod.name)
+							))
 
-					return {
-						name: testCaseName,
-						mutationScore: Number(mutationTestResultForTestCase?.killedMutantsCount) > 0 ? "relevant" : "not-relevant"
-					}
+							testCaseRelevance.mutationScore = Number(testMutationResultForTestCase?.killedMutantsCount) > 0 ? "relevant" : "not-relevant"
+						}
+
+						if (currentTestDataFlowResult) {
+							const testDataFlowResultForTestCase = currentTestDataFlowResult.find(result => (
+								result.testCaseName === testCaseRelevance.name
+							))
+
+							testCaseRelevance.mutationScore = Object.values(testDataFlowResultForTestCase?.heuristics || {}).some(Boolean) ? "relevant" : "not-relevant"
+						}
+
+						return testCaseRelevance
+					})
+
+					project.removeSourceFile(sourceFile)
 				})
 
-				project.removeSourceFile(sourceFile)
+				resultItem.testCaseRelevanceCount = {
+					byMutationScore: resultItem.testCases.filter(testCase => testCase.mutationScore === "relevant").length,
+					byDataFlowScore: resultItem.testCases.filter(testCase => testCase.dataFlowScore === "relevant").length
+				}
+
+				return resultItem
 			})
-
-			resultItem.testCaseMutationRelevanceCount = resultItem.testCases.filter(testCase => testCase.mutationScore === "relevant").length
-
-			return resultItem
-		})
+		)
 
 		return result
 	}

@@ -34,4 +34,4 @@ export type SetupStrykerConfigOptions = {
 	testRunnerId: TestRunnerId
 }
 
-export type MutationTestResult = MutationTestStrength[]
+export type TestMutationAnalysisResult = MutationTestStrength[]

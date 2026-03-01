@@ -10,11 +10,11 @@ import {
 	StrykerMutationReport,
 	MutationTestStrength,
 	SetupStrykerConfigOptions,
-	MutationTestResult
-} from "@/Protocols/MutationTestProtocol"
+	TestMutationAnalysisResult
+} from "@/Protocols/TestMutationRelevanceProtocol"
 
-class MutationTestUtil {
-	async execute(options: ExecuteOptions): Promise<MutationTestResult> {
+class TestMutationRelevanceUtil {
+	async execute(options: ExecuteOptions): Promise<TestMutationAnalysisResult> {
 		const { repositoryRootPath, targetResolvedFilePaths, testRunnerId } = options
 
 		const clonedRepositoryRootPath = await this.cloneRepository(repositoryRootPath)
@@ -62,7 +62,7 @@ class MutationTestUtil {
 	}
 
 	private async readStrykerMutationReport(repositoryRootPath: string): Promise<StrykerMutationReport> {
-		const reportPath = path.join(repositoryRootPath, this.defaultStrykerOptions.jsonReporter!.fileName)
+		const reportPath = path.join(repositoryRootPath, this.defaultStrykerOptions.jsonReporter.fileName)
 
 		const content = await fs.readFile(reportPath, "utf-8")
 
@@ -145,7 +145,7 @@ class MutationTestUtil {
 		await fs.rm(clonedRepositoryRootPath, { recursive: true, force: true })
 	}
 
-	private get defaultStrykerOptions(): Partial<StrykerOptions> {
+	private get defaultStrykerOptions(): Pick<StrykerOptions, "plugins" | "coverageAnalysis" | "reporters" | "jsonReporter" | "tempDirName"> {
 		return {
 			plugins: [
 				"@stryker-mutator/vitest-runner"
@@ -160,4 +160,4 @@ class MutationTestUtil {
 	}
 }
 
-export default new MutationTestUtil()
+export default new TestMutationRelevanceUtil()

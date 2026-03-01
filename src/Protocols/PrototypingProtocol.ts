@@ -1,5 +1,5 @@
 import { RepositoryName } from "@/Protocols/RepositoryProtocol"
-import { TestRunnerId } from "@/Protocols/MutationTestProtocol"
+import { TestRunnerId } from "@/Protocols/TestMutationRelevanceProtocol"
 
 export type PrototypeOptions = {
 	repositoryName: RepositoryName
@@ -19,14 +19,22 @@ export type TestCaseDistributionByMethod = {
 	testCaseCount: number
 }
 
+export type RelevanceScore = "relevant" | "not-relevant" | "unknown"
+
+export type TestCaseRelevance = {
+	name: string
+	mutationScore: RelevanceScore
+	dataFlowScore: RelevanceScore
+}
+
 export type TestRelevanceByMethod = {
 	id: string
 	repositoryName: RepositoryName
 	methodTitle: string
 	testCaseCount: number
-	testCaseMutationRelevanceCount: number
-	testCases: Array<{
-		name: string
-		mutationScore: "relevant" | "not-relevant" | "unknown"
-	}>
+	testCaseRelevanceCount: {
+		byMutationScore: number
+		byDataFlowScore: number
+	}
+	testCases: TestCaseRelevance[]
 }
