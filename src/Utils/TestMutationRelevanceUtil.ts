@@ -36,21 +36,59 @@ class TestMutationRelevanceUtil {
 
 			return this.extractTestsStrengthFromStrykerMutationReport(repositoryRootPath, strykerMutationReport)
 		} finally {
-			await this.removeClonedRepository(clonedRepositoryRootPath)
+			// await this.removeClonedRepository(clonedRepositoryRootPath)
 		}
 	}
 
 	private async setupStrykerConfig(options: SetupStrykerConfigOptions): Promise<void> {
+		const vitestWorkspaceConfigFilePath = await this.setupVitestWorkspaceConfig(
+			options.repositoryRootPath,
+			options.customStrykerOptions?.excludedVitestConfigs
+		)
+
 		const config: Partial<StrykerOptions> = {
 			...this.defaultStrykerOptions,
 			...options.customStrykerOptions,
-			mutate: options.targetResolvedFilePaths
+			mutate: options.targetResolvedFilePaths,
+			...(vitestWorkspaceConfigFilePath ? { vitest: { configFile: vitestWorkspaceConfigFilePath } } : {})
 		}
 
 		const STRYKER_CONFIG_FILE_NAME = "stryker.conf.json"
 		const tempConfigFilePath = path.join(options.repositoryRootPath, STRYKER_CONFIG_FILE_NAME)
 
 		await fs.writeFile(tempConfigFilePath, JSON.stringify(config, null, 2))
+	}
+
+	private async setupVitestWorkspaceConfig(repositoryRootPath: string, excludedVitestConfigs: string[] = []): Promise<string | null> {
+		const findVitestConfigsOutput = await ShellUtil.executeCommand(
+			"find . -name \"vitest.config.*\" -not -path \"*/node_modules/*\" -not -path \"*/.stryker*\" -not -path \"*/dist/*\"",
+			{ currentWorkingDirectoryPath: repositoryRootPath }
+		)
+
+		const vitestConfigFilePaths = findVitestConfigsOutput
+			.split("\n")
+			.map(line => line.trim().replace(/^\.\//, ""))
+			.filter(Boolean)
+			.filter(configPath => !excludedVitestConfigs.some(excluded => configPath.includes(excluded)))
+
+		const isMonorepo = vitestConfigFilePaths.length > 1
+
+		if (!isMonorepo) {
+			return null
+		}
+
+		const workspaceFileContent = `
+			export default {
+				test: {
+					projects: ${JSON.stringify(vitestConfigFilePaths, null, 4)}
+				}
+			}
+		`
+
+		const WORKSPACE_CONFIG_FILE_NAME = "vitest.workspace.stryker.mjs"
+		await fs.writeFile(path.join(repositoryRootPath, WORKSPACE_CONFIG_FILE_NAME), workspaceFileContent)
+
+		return WORKSPACE_CONFIG_FILE_NAME
 	}
 
 	private async executeStryker(repositoryRootPath: string): Promise<void> {

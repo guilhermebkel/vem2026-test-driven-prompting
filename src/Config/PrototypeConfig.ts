@@ -29,8 +29,10 @@ export const prototypeConfig: PrototypeOptions[] = [
 					"**/blackbox/**",
 					"**/*.vue",
 					"**/*.yaml",
-					"**/app/**",
-					"**/composables/**"
+					"api/src/services/payload.test.ts"
+				],
+				excludedVitestConfigs: [
+					"tests/blackbox"
 				]
 			}
 		}
