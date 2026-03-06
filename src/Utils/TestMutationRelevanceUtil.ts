@@ -36,7 +36,7 @@ class TestMutationRelevanceUtil {
 
 			return this.extractTestsStrengthFromStrykerMutationReport(repositoryRootPath, strykerMutationReport)
 		} finally {
-			// await this.removeClonedRepository(clonedRepositoryRootPath)
+			await this.removeClonedRepository(clonedRepositoryRootPath)
 		}
 	}
 
