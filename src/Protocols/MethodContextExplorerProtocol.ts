@@ -4,8 +4,21 @@ import { DeclarationType, ExtractionRule } from "@/Protocols/NodeJSCodeParserPro
 import { CodeBLEUFormattedMetrics } from "@/Protocols/CodeBLEUMetricsProtocol"
 import { CodeEmbeddingFormattedMetrics } from "@/Protocols/CodeEmbeddingMetricsProtocol"
 import { TestCaseRelevance } from "@/Protocols/PrototypingProtocol"
+import { CustomStrykerOptions } from "@/Protocols/TestMutationRelevanceProtocol"
 
-export type ExploreContextOptions = {
+export type ExploreContextTypeToCustomOptions = {
+	"same-location": void,
+	"similar-method": void
+	"test-case": {
+		customStrykerOptions: CustomStrykerOptions
+	}
+}
+
+export type ExploreContextType = keyof ExploreContextTypeToCustomOptions
+
+export type ExploreContextCustomOptions<EContextType extends ExploreContextType> = ExploreContextTypeToCustomOptions[EContextType]
+
+export type ExploreContextOptions<EContextType extends ExploreContextType = ExploreContextType> = {
 	repositoryName: RepositoryName
 	/**
 	 * Examples:
@@ -19,7 +32,8 @@ export type ExploreContextOptions = {
 	 * - \/**\/*.test.\*
 	 */
 	testFilePatterns: string[]
-	contextTypes: Array<"same-location" | "similar-method" | "test-case">
+	contextTypes: Array<EContextType>
+	contextCustomOptions?: ExploreContextCustomOptions<EContextType>
 }
 
 export type ExploredContext = {
@@ -35,8 +49,8 @@ export type ExploredContext = {
 			codeBLEU?: CodeBLEUFormattedMetrics
 			codeEmbedding?: CodeEmbeddingFormattedMetrics
 			testing?: {
-				totalTestSuites: number
-				totalTestCases: number
+				totalTestSuiteCount: number
+				totalTestCaseCount: number
 				mutationScore: TestCaseRelevance["mutationScore"]
 			}
 		}

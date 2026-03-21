@@ -7,8 +7,7 @@ import { NodeType } from "@/Protocols/NodeJSCodeParserProtocol"
 import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
 
 const DEFAULT_CONTEXT_TYPES: MethodContextExplorationOptions["exploreOptions"]["contextTypes"] = [
-	"same-location",
-	"similar-method"
+	"test-case"
 ]
 
 export const methodContextExplorationValidation = {
@@ -36,7 +35,13 @@ export const methodContextExplorationConfig: MethodContextExplorationOptions[] =
 			repositoryName: "date-fns",
 			methodFilePatterns: ["**/*.ts"],
 			testFilePatterns: ["**/test.ts"],
-			contextTypes: DEFAULT_CONTEXT_TYPES
+			contextTypes: DEFAULT_CONTEXT_TYPES,
+			contextCustomOptions: {
+				customStrykerOptions: {
+					testRunner: "vitest",
+					ignorePatterns: []
+				}
+			}
 		}
 	},
 	{
@@ -44,7 +49,22 @@ export const methodContextExplorationConfig: MethodContextExplorationOptions[] =
 			repositoryName: "directus",
 			methodFilePatterns: ["**/*.ts", "**/*.js"],
 			testFilePatterns: ["**/*.spec.*", "**/*.test.*"],
-			contextTypes: DEFAULT_CONTEXT_TYPES
+			contextTypes: DEFAULT_CONTEXT_TYPES,
+			contextCustomOptions: {
+				customStrykerOptions: {
+					testRunner: "vitest",
+					ignorePatterns: [
+						"tests/blackbox/**",
+						"**/blackbox/**",
+						"**/*.vue",
+						"**/*.yaml",
+						"api/src/services/payload.test.ts"
+					],
+					excludedVitestConfigs: [
+						"tests/blackbox"
+					]
+				}
+			}
 		}
 	}
 ]

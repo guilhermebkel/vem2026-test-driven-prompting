@@ -12,23 +12,23 @@ class InMemoryCacheUtil<Model> {
 		})
 	}
 
-	get(key: string): Model | undefined {
-		return this.cache.get(key)
+	async get(key: string): Promise<Model | undefined> {
+		return Promise.resolve(this.cache.get(key))
 	}
 
-	set(key: string, model: Model): void {
+	async set(key: string, model: Model): Promise<void> {
 		this.cache.set(key, model)
 	}
 
-	cachefy(key: string, getFreshData: () => Model): Model {
-		let cachedData = this.get(key)
+	async cachefy(key: string, getFreshData: () => Promise<Model>): Promise<Model> {
+		let cachedData = await this.get(key)
 
 		const isInvalidCache = cachedData === undefined || cachedData === null
 
 		if (isInvalidCache) {
-			cachedData = getFreshData()
+			cachedData = await getFreshData()
 
-			this.set(key, cachedData)
+			await this.set(key, cachedData)
 		}
 
 		return cachedData as Model

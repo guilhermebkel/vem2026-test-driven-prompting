@@ -2,6 +2,7 @@ import { LocalContextSlug, SemanticContextSlug } from "@/Protocols/ContextProtoc
 import { ExploreContextOptions, ExploreContextResult, ExploredContext, LoadedMethodFile } from "@/Protocols/MethodContextExplorerProtocol"
 import { ExploredMethod, ExploreMethodResult } from "@/Protocols/MethodExplorerProtocol"
 import { DeclarationType } from "@/Protocols/NodeJSCodeParserProtocol"
+import { TestMutationAnalysisResult } from "@/Protocols/TestMutationRelevanceProtocol"
 
 import { methodContextExplorationValidation } from "@/Config/MethodContextExplorationConfig"
 
@@ -14,8 +15,15 @@ import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
 import PathUtil from "@/Utils/PathUtil"
 import TracingUtil from "@/Utils/TracingUtil"
 import CodeEmbeddingMetricsUtil from "@/Utils/CodeEmbeddingMetricsUtil"
+import InMemoryCacheUtil from "@/Utils/InMemoryCacheUtil"
+import InMemoryMutexUtil from "@/Utils/InMemoryMutexUtil"
+import TestMutationRelevanceUtil from "@/Utils/TestMutationRelevanceUtil"
+import SanitizationUtil from "@/Utils/SanitizationUtil"
 
 class MethodContextExplorerService {
+	private testMutationAnalysisResultCache = new InMemoryCacheUtil<TestMutationAnalysisResult>({ defaultExpirationInSeconds: 3600 })
+	private testMutationAnalysisResultMutex = new InMemoryMutexUtil()
+
 	async explore(options: ExploreContextOptions): Promise<ExploreContextResult> {
 		const exploreMethodResult = await this.getExploredMethodResult(options)
 
@@ -23,7 +31,7 @@ class MethodContextExplorerService {
 
 		const loadedMethodFiles = await this.loadMethodFiles(resolvedMethodFilePaths)
 
-		const exploredMethodContexts = await this.exploreMethodContexts(exploreMethodResult, loadedMethodFiles, options.contextTypes)
+		const exploredMethodContexts = await this.exploreMethodContexts(exploreMethodResult, loadedMethodFiles, options)
 
 		const sortedExploredMethodContexts = await this.sortExploredMethodContexts(exploredMethodContexts)
 
@@ -85,7 +93,7 @@ class MethodContextExplorerService {
 		}) as LoadedMethodFile[]
 	}
 
-	private async exploreMethodContexts(exploreMethodResult: ExploreMethodResult, loadedMethodFiles: LoadedMethodFile[], contextTypes: ExploreContextOptions["contextTypes"]): Promise<ExploredContext[]> {
+	private async exploreMethodContexts(exploreMethodResult: ExploreMethodResult, loadedMethodFiles: LoadedMethodFile[], exploreContextOptions: ExploreContextOptions): Promise<ExploredContext[]> {
 		return await TracingUtil.traceTask("Explore method contexts...", async () => {
 			const exploreContextResult: ExploreContextResult = []
 
@@ -104,14 +112,14 @@ class MethodContextExplorerService {
 						}
 
 						exploredContext.context = await Promise.all([
-							...(contextTypes.includes("similar-method") ? (
+							...(exploreContextOptions.contextTypes.includes("similar-method") ? (
 								await this.exploreSimilarMethodContext(exploredMethod, loadedMethodFiles)
 							) : []),
-							...(contextTypes.includes("same-location") ? (
+							...(exploreContextOptions.contextTypes.includes("same-location") ? (
 								await this.exploreSameLocationContext(exploredMethod)
 							) : []),
-							...(contextTypes.includes("test-case") ? (
-								await this.exploreTestCaseContext(exploredMethod, exploreMethodResult)
+							...(exploreContextOptions.contextTypes.includes("test-case") ? (
+								await this.exploreTestCaseContext(exploredMethod, exploreMethodResult, exploreContextOptions)
 							) : [])
 						])
 
@@ -225,41 +233,73 @@ class MethodContextExplorerService {
 		return context
 	}
 
-	private async exploreTestCaseContext(exploredMethod: ExploredMethod, exploreMethodResult: ExploreMethodResult): Promise<ExploredContext["context"]> {
+	private async exploreTestCaseContext(exploredMethod: ExploredMethod, exploreMethodResult: ExploreMethodResult, exploreContextOptions: ExploreContextOptions): Promise<ExploredContext["context"]> {
 		const context: ExploredContext["context"] = []
+
+		const totalTestSuiteCount = exploredMethod.resolvedTestFilePaths.length
+		let totalTestCaseCount = 0
 
 		const project = NodeJSCodeParserUtil.createProject()
 
-		const exploredMethodSourceFile = project.addSourceFileAtPath(exploredMethod.resolvedMethodFilePath)
-		const nodes = NodeJSCodeParserUtil.extractNodes(exploredMethodSourceFile, [{ type: "function" }, { type: "method" }])
+		exploredMethod.resolvedTestFilePaths.forEach(testFilePath => {
+			const sourceFile = project.addSourceFileAtPath(testFilePath)
 
-		nodes.forEach(node => {
-			let slug: LocalContextSlug | null = null
+			const testCases = NodeJSCodeParserUtil.extractNodes(sourceFile, [{ type: "test-case" }])
 
-			const isSameClassMethod = methodContextExplorationValidation.isSameClassMethod(exploredMethod, node)
-			const isSameFileFunction = methodContextExplorationValidation.isSameFileFunction(exploredMethod, node)
+			totalTestCaseCount += testCases.length
 
-			if (isSameClassMethod) {
-				slug = "same-class-method"
-			} else if (isSameFileFunction) {
-				slug = "same-file-function"
-			}
-
-			if (slug) {
-				context.push({
-					slug,
-					type: "local",
-					resolvedFilePath: exploredMethod.resolvedMethodFilePath,
-					extractionRule: {
-						name: node.getName() as string,
-						type: NodeJSCodeParserUtil.turnSyntaxKindIntoDeclarationType(node.getKind()) as DeclarationType
-					},
-					metrics: {}
-				})
-			}
+			project.removeSourceFile(sourceFile)
 		})
 
-		project.removeSourceFile(exploredMethodSourceFile)
+		const resolvedMethodFilePaths = exploreMethodResult.map(exploreMethodResult => exploreMethodResult.resolvedMethodFilePath)
+
+		const allMethodTestMutationResults = await this.testMutationAnalysisResultMutex.execute(exploreContextOptions.repositoryName, async () => (
+			await this.testMutationAnalysisResultCache.cachefy(exploreContextOptions.repositoryName, async () => (
+				await TestMutationRelevanceUtil.execute({
+					repositoryRootPath: PathUtil.getRepositoryRootPath(exploreContextOptions.repositoryName),
+					targetResolvedFilePaths: resolvedMethodFilePaths,
+					customStrykerOptions: exploreContextOptions.contextCustomOptions!.customStrykerOptions
+				})
+			))
+		))
+
+		const currentTestMutationResult = allMethodTestMutationResults.find(mutationTestStrength => (
+			exploredMethod.resolvedMethodFilePath === mutationTestStrength.targetResolvedFilePath
+		))
+
+		exploredMethod.resolvedTestFilePaths.forEach(resolvedTestFilePath => {
+			const sourceFile = project.addSourceFileAtPath(resolvedTestFilePath)
+
+			const testCases = NodeJSCodeParserUtil.extractNodes(sourceFile, [{ type: "test-case" }])
+
+			testCases.forEach(testCase => {
+				const testCaseName = SanitizationUtil.extractTestCaseName(testCase)
+
+				const testMutationResultForTestCase = currentTestMutationResult?.results.find(result => (
+					result.rawTestCaseName.endsWith(testCaseName)
+					&& result.rawTestCaseName.startsWith(exploredMethod.name)
+				))
+
+				context.push({
+					slug: "test-case",
+					type: "semantic",
+					resolvedFilePath: resolvedTestFilePath,
+					extractionRule: {
+						type: "test-case",
+						name: testCaseName
+					},
+					metrics: {
+						testing: {
+							totalTestSuiteCount,
+							totalTestCaseCount,
+							mutationScore: Number(testMutationResultForTestCase?.killedMutantsCount) > 0 ? "relevant" : "not-relevant"
+						}
+					}
+				})
+			})
+
+			project.removeSourceFile(sourceFile)
+		})
 
 		return context
 	}
