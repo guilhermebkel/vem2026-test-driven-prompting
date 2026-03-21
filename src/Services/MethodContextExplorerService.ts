@@ -109,6 +109,9 @@ class MethodContextExplorerService {
 							) : []),
 							...(contextTypes.includes("same-location") ? (
 								await this.exploreSameLocationContext(exploredMethod)
+							) : []),
+							...(contextTypes.includes("test-case") ? (
+								await this.exploreTestCaseContext(exploredMethod, exploreMethodResult)
 							) : [])
 						])
 
@@ -169,8 +172,10 @@ class MethodContextExplorerService {
 									name: formattedNode.name,
 									type: formattedNode.type
 								},
-								codeBLEUMetrics,
-								codeEmbeddingMetrics
+								metrics: {
+									codeBLEU: codeBLEUMetrics,
+									codeEmbedding: codeEmbeddingMetrics
+								}
 							})
 						}
 					})
@@ -209,7 +214,47 @@ class MethodContextExplorerService {
 					extractionRule: {
 						name: node.getName() as string,
 						type: NodeJSCodeParserUtil.turnSyntaxKindIntoDeclarationType(node.getKind()) as DeclarationType
-					}
+					},
+					metrics: {}
+				})
+			}
+		})
+
+		project.removeSourceFile(exploredMethodSourceFile)
+
+		return context
+	}
+
+	private async exploreTestCaseContext(exploredMethod: ExploredMethod, exploreMethodResult: ExploreMethodResult): Promise<ExploredContext["context"]> {
+		const context: ExploredContext["context"] = []
+
+		const project = NodeJSCodeParserUtil.createProject()
+
+		const exploredMethodSourceFile = project.addSourceFileAtPath(exploredMethod.resolvedMethodFilePath)
+		const nodes = NodeJSCodeParserUtil.extractNodes(exploredMethodSourceFile, [{ type: "function" }, { type: "method" }])
+
+		nodes.forEach(node => {
+			let slug: LocalContextSlug | null = null
+
+			const isSameClassMethod = methodContextExplorationValidation.isSameClassMethod(exploredMethod, node)
+			const isSameFileFunction = methodContextExplorationValidation.isSameFileFunction(exploredMethod, node)
+
+			if (isSameClassMethod) {
+				slug = "same-class-method"
+			} else if (isSameFileFunction) {
+				slug = "same-file-function"
+			}
+
+			if (slug) {
+				context.push({
+					slug,
+					type: "local",
+					resolvedFilePath: exploredMethod.resolvedMethodFilePath,
+					extractionRule: {
+						name: node.getName() as string,
+						type: NodeJSCodeParserUtil.turnSyntaxKindIntoDeclarationType(node.getKind()) as DeclarationType
+					},
+					metrics: {}
 				})
 			}
 		})

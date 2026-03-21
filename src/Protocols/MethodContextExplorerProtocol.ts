@@ -2,7 +2,8 @@ import { RepositoryName } from "@/Protocols/RepositoryProtocol"
 import { ContextDefinitionItem } from "@/Protocols/ContextProtocol"
 import { DeclarationType, ExtractionRule } from "@/Protocols/NodeJSCodeParserProtocol"
 import { CodeBLEUFormattedMetrics } from "@/Protocols/CodeBLEUMetricsProtocol"
-import { CodeEmbeddingFormattedMetrics } from "./CodeEmbeddingMetricsProtocol"
+import { CodeEmbeddingFormattedMetrics } from "@/Protocols/CodeEmbeddingMetricsProtocol"
+import { TestCaseRelevance } from "@/Protocols/PrototypingProtocol"
 
 export type ExploreContextOptions = {
 	repositoryName: RepositoryName
@@ -30,8 +31,15 @@ export type ExploredContext = {
 	context: Array<Pick<ContextDefinitionItem, "slug" | "type"> & {
 		resolvedFilePath: string
 		extractionRule: Required<ExtractionRule<DeclarationType>>
-		codeBLEUMetrics?: CodeBLEUFormattedMetrics
-		codeEmbeddingMetrics?: CodeEmbeddingFormattedMetrics
+		metrics: {
+			codeBLEU?: CodeBLEUFormattedMetrics
+			codeEmbedding?: CodeEmbeddingFormattedMetrics
+			testing?: {
+				totalTestSuites: number
+				totalTestCases: number
+				mutationScore: TestCaseRelevance["mutationScore"]
+			}
+		}
 	}>
 }
 
