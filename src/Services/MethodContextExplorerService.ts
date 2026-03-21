@@ -23,7 +23,7 @@ class MethodContextExplorerService {
 
 		const loadedMethodFiles = await this.loadMethodFiles(resolvedMethodFilePaths)
 
-		const exploredMethodContexts = await this.exploreMethodContexts(exploreMethodResult, loadedMethodFiles)
+		const exploredMethodContexts = await this.exploreMethodContexts(exploreMethodResult, loadedMethodFiles, options.contextTypes)
 
 		const sortedExploredMethodContexts = await this.sortExploredMethodContexts(exploredMethodContexts)
 
@@ -85,7 +85,7 @@ class MethodContextExplorerService {
 		}) as LoadedMethodFile[]
 	}
 
-	private async exploreMethodContexts(exploreMethodResult: ExploreMethodResult, loadedMethodFiles: LoadedMethodFile[]): Promise<ExploredContext[]> {
+	private async exploreMethodContexts(exploreMethodResult: ExploreMethodResult, loadedMethodFiles: LoadedMethodFile[], contextTypes: ExploreContextOptions["contextTypes"]): Promise<ExploredContext[]> {
 		return await TracingUtil.traceTask("Explore method contexts...", async () => {
 			const exploreContextResult: ExploreContextResult = []
 
@@ -104,8 +104,12 @@ class MethodContextExplorerService {
 						}
 
 						exploredContext.context = await Promise.all([
-							...await this.exploreSemanticContext(exploredMethod, loadedMethodFiles),
-							...await this.exploreLocalContext(exploredMethod)
+							...(contextTypes.includes("similar-method") ? (
+								await this.exploreSimilarMethodContext(exploredMethod, loadedMethodFiles)
+							) : []),
+							...(contextTypes.includes("same-location") ? (
+								await this.exploreSameLocationContext(exploredMethod)
+							) : [])
 						])
 
 						exploreContextResult.push(exploredContext)
@@ -117,7 +121,7 @@ class MethodContextExplorerService {
 		}) as ExploredContext[]
 	}
 
-	private async exploreSemanticContext(exploredMethod: ExploredMethod, loadedMethodFiles: LoadedMethodFile[]): Promise<ExploredContext["context"]> {
+	private async exploreSimilarMethodContext(exploredMethod: ExploredMethod, loadedMethodFiles: LoadedMethodFile[]): Promise<ExploredContext["context"]> {
 		const context: ExploredContext["context"] = []
 
 		const exploredMethodCode = NodeJSCodeParserUtil.extractSpecificCodeFromSourceFile(exploredMethod.resolvedMethodFilePath, [{
@@ -177,7 +181,7 @@ class MethodContextExplorerService {
 		return context
 	}
 
-	private async exploreLocalContext(exploredMethod: ExploredMethod): Promise<ExploredContext["context"]> {
+	private async exploreSameLocationContext(exploredMethod: ExploredMethod): Promise<ExploredContext["context"]> {
 		const context: ExploredContext["context"] = []
 
 		const project = NodeJSCodeParserUtil.createProject()

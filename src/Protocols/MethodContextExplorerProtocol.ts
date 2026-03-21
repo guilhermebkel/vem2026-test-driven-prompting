@@ -18,6 +18,7 @@ export type ExploreContextOptions = {
 	 * - \/**\/*.test.\*
 	 */
 	testFilePatterns: string[]
+	contextTypes: Array<"same-location" | "similar-method" | "test-case">
 }
 
 export type ExploredContext = {

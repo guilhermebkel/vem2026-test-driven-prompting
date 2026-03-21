@@ -6,6 +6,11 @@ import { NodeType } from "@/Protocols/NodeJSCodeParserProtocol"
 
 import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
 
+const DEFAULT_CONTEXT_TYPES: MethodContextExplorationOptions["exploreOptions"]["contextTypes"] = [
+	"same-location",
+	"similar-method"
+]
+
 export const methodContextExplorationValidation = {
 	isSemanticallySimilarMethod: (codeBLEUMetrics: CodeBLEUFormattedMetrics, codeEmbeddingMetrics: CodeEmbeddingFormattedMetrics): boolean => (
 		codeEmbeddingMetrics.embeddingSimilarity >= 0.78
@@ -30,28 +35,16 @@ export const methodContextExplorationConfig: MethodContextExplorationOptions[] =
 		exploreOptions: {
 			repositoryName: "date-fns",
 			methodFilePatterns: ["**/*.ts"],
-			testFilePatterns: ["**/test.ts"]
+			testFilePatterns: ["**/test.ts"],
+			contextTypes: DEFAULT_CONTEXT_TYPES
 		}
 	},
 	{
 		exploreOptions: {
 			repositoryName: "directus",
 			methodFilePatterns: ["**/*.ts", "**/*.js"],
-			testFilePatterns: ["**/*.spec.*", "**/*.test.*"]
-		}
-	},
-	{
-		exploreOptions: {
-			repositoryName: "fastify",
-			methodFilePatterns: ["**/*.js"],
-			testFilePatterns: ["**/*.test.js"]
-		}
-	},
-	{
-		exploreOptions: {
-			repositoryName: "tabnews.com.br",
-			methodFilePatterns: ["**/*.js"],
-			testFilePatterns: ["**/*.test.js"]
+			testFilePatterns: ["**/*.spec.*", "**/*.test.*"],
+			contextTypes: DEFAULT_CONTEXT_TYPES
 		}
 	}
 ]
