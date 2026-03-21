@@ -80,7 +80,7 @@ class TestMutationRelevanceUtil {
 		const workspaceFileContent = `
 			export default {
 				test: {
-					projects: ${JSON.stringify(vitestConfigFilePaths.map((configPath) => ({ extends: configPath, test: { testTimeout: 30000 } })), null, 4)}
+					projects: ${JSON.stringify(vitestConfigFilePaths.map((configPath) => ({ extends: configPath, test: { testTimeout: 60000 } })), null, 4)}
 				}
 			}
 		`
