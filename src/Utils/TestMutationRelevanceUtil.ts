@@ -64,7 +64,7 @@ class TestMutationRelevanceUtil {
 	}
 
 	private async setupVitestWorkspaceConfig(options: SetupStrykerOptions): Promise<string | null> {
-		if (!options.customStrykerOptions?.isProbablyMonoRepo) {
+		if (!options.customStrykerOptions?.isProbablyMonorepo) {
 			return null
 		}
 

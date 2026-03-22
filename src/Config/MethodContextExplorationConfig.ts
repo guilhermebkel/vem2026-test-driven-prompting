@@ -69,7 +69,7 @@ export const methodContextExplorationConfig: MethodContextExplorationOptions[] =
 					excludedVitestConfigs: [
 						"tests/blackbox"
 					],
-					isProbablyMonoRepo: true
+					isProbablyMonorepo: true
 				}
 			}
 		}
