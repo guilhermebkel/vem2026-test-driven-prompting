@@ -2,8 +2,11 @@ import NodeCache from "node-cache"
 
 import { ConstructorOptions } from "@/Protocols/InMemoryCacheProtocol"
 
+import InMemoryMutexUtil from "@/Utils/InMemoryMutexUtil"
+
 class InMemoryCacheUtil<Model> {
 	private readonly cache: NodeCache
+	private readonly mutex = new InMemoryMutexUtil()
 
 	constructor(options: ConstructorOptions) {
 		this.cache = new NodeCache({
@@ -22,17 +25,19 @@ class InMemoryCacheUtil<Model> {
 	}
 
 	async cachefy(key: string, getFreshData: () => Promise<Model>): Promise<Model> {
-		let cachedData = await this.get(key)
+		return await this.mutex.execute(key, async () => {
+			let cachedData = await this.get(key)
 
-		const isInvalidCache = cachedData === undefined || cachedData === null
+			const isInvalidCache = cachedData === undefined || cachedData === null
 
-		if (isInvalidCache) {
-			cachedData = await getFreshData()
+			if (isInvalidCache) {
+				cachedData = await getFreshData()
 
-			await this.set(key, cachedData)
-		}
+				await this.set(key, cachedData)
+			}
 
-		return cachedData as Model
+			return cachedData as Model
+		})
 	}
 }
 

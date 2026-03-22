@@ -2,7 +2,6 @@ import { LocalContextSlug, SemanticContextSlug } from "@/Protocols/ContextProtoc
 import { ExploreContextOptions, ExploreContextResult, ExploredContext, LoadedMethodFile, TestingMetrics } from "@/Protocols/MethodContextExplorerProtocol"
 import { ExploredMethod, ExploreMethodResult } from "@/Protocols/MethodExplorerProtocol"
 import { DeclarationType } from "@/Protocols/NodeJSCodeParserProtocol"
-import { TestMutationAnalysisResult } from "@/Protocols/TestMutationRelevanceProtocol"
 
 import { methodContextExplorationValidation } from "@/Config/MethodContextExplorationConfig"
 
@@ -15,15 +14,10 @@ import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
 import PathUtil from "@/Utils/PathUtil"
 import TracingUtil from "@/Utils/TracingUtil"
 import CodeEmbeddingMetricsUtil from "@/Utils/CodeEmbeddingMetricsUtil"
-import InMemoryCacheUtil from "@/Utils/InMemoryCacheUtil"
-import InMemoryMutexUtil from "@/Utils/InMemoryMutexUtil"
 import TestMutationRelevanceUtil from "@/Utils/TestMutationRelevanceUtil"
 import SanitizationUtil from "@/Utils/SanitizationUtil"
 
 class MethodContextExplorerService {
-	private testMutationAnalysisResultCache = new InMemoryCacheUtil<TestMutationAnalysisResult>({ defaultExpirationInSeconds: 3600 })
-	private testMutationAnalysisResultMutex = new InMemoryMutexUtil()
-
 	async explore(options: ExploreContextOptions): Promise<ExploreContextResult> {
 		const exploreMethodResult = await this.getExploredMethodResult(options)
 
@@ -253,15 +247,11 @@ class MethodContextExplorerService {
 
 		const resolvedMethodFilePaths = exploreMethodResult.map(exploreMethodResult => exploreMethodResult.resolvedMethodFilePath)
 
-		const allMethodTestMutationResults = await this.testMutationAnalysisResultMutex.execute(exploreContextOptions.repositoryName, async () => (
-			await this.testMutationAnalysisResultCache.cachefy(exploreContextOptions.repositoryName, async () => (
-				await TestMutationRelevanceUtil.execute({
-					repositoryRootPath: PathUtil.getRepositoryRootPath(exploreContextOptions.repositoryName),
-					targetResolvedFilePaths: resolvedMethodFilePaths,
-					customStrykerOptions: exploreContextOptions.contextCustomOptions!.customStrykerOptions
-				})
-			))
-		))
+		const allMethodTestMutationResults = await TestMutationRelevanceUtil.execute({
+			repositoryRootPath: PathUtil.getRepositoryRootPath(exploreContextOptions.repositoryName),
+			targetResolvedFilePaths: resolvedMethodFilePaths,
+			customStrykerOptions: exploreContextOptions.contextCustomOptions!.customStrykerOptions
+		})
 
 		const currentTestMutationResult = allMethodTestMutationResults.find(mutationTestStrength => (
 			exploredMethod.resolvedMethodFilePath === mutationTestStrength.targetResolvedFilePath

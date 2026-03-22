@@ -5,9 +5,11 @@ import { ConstructorOptions } from "@/Protocols/LocalPersistedCacheProtocol"
 
 import HashUtil from "@/Utils/HashUtil"
 import PathUtil from "@/Utils/PathUtil"
+import InMemoryCacheUtil from "@/Utils/InMemoryCacheUtil"
 
 class LocalPersistedCacheUtil<Model> {
 	private readonly cachesDirectory: string
+	private readonly inMemoryCache = new InMemoryCacheUtil<Model>({ defaultExpirationInSeconds: 3600 })
 
 	constructor(options: ConstructorOptions) {
 		this.cachesDirectory = path.join(PathUtil.getCachesDirectoryPath(), options.namespace)
@@ -36,16 +38,24 @@ class LocalPersistedCacheUtil<Model> {
 	}
 
 	async cachefy(key: unknown, getFreshData: () => Promise<Model>): Promise<Model> {
-		let cachedData = await this.get(key)
+		/**
+		 * WARNING:
+		 * - Use an in-memory cache layer to prevent multiple concurrent calls with the same key from repeatedly accessing the file system, since it
+		 * may be invoked multiple times before the first call completes writing to the cache file.
+		 * - This approach also improves performance by prioritizing memory access, which is significantly faster than disk I/O.
+		 */
+		return await this.inMemoryCache.cachefy(this.getCacheFilePath(key), async () => {
+			let cachedData = await this.get(key)
 
-		const isInvalidCache = cachedData === undefined || cachedData === null
+			const isInvalidCache = cachedData === undefined || cachedData === null
 
-		if (isInvalidCache) {
-			cachedData = await getFreshData()
-			await this.set(key, cachedData)
-		}
+			if (isInvalidCache) {
+				cachedData = await getFreshData()
+				await this.set(key, cachedData)
+			}
 
-		return cachedData as Model
+			return cachedData as Model
+		})
 	}
 
 	private getCacheFilePath(key: unknown): string {
