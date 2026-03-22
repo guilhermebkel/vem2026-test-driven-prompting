@@ -9,7 +9,7 @@ import {
 	ExecuteOptions,
 	StrykerMutationReport,
 	MutationTestStrength,
-	SetupStrykerConfigOptions,
+	SetupStrykerOptions,
 	TestMutationAnalysisResult
 } from "@/Protocols/TestMutationRelevanceProtocol"
 
@@ -24,7 +24,7 @@ class TestMutationRelevanceUtil {
 				targetFileResolvedPath.replace(repositoryRootPath, clonedRepositoryRootPath)
 			))
 
-			await this.setupStrykerConfig({
+			await this.setupStryker({
 				repositoryRootPath: clonedRepositoryRootPath,
 				targetResolvedFilePaths: clonedTargetResolvedFilePaths,
 				customStrykerOptions
@@ -40,7 +40,9 @@ class TestMutationRelevanceUtil {
 		}
 	}
 
-	private async setupStrykerConfig(options: SetupStrykerConfigOptions): Promise<void> {
+	private async setupStryker(options: SetupStrykerOptions): Promise<void> {
+		await this.ensureMutationDependencies(options.repositoryRootPath)
+
 		const vitestWorkspaceConfigFilePath = await this.setupVitestWorkspaceConfig(
 			options.repositoryRootPath,
 			options.customStrykerOptions?.excludedVitestConfigs
@@ -92,8 +94,6 @@ class TestMutationRelevanceUtil {
 	}
 
 	private async executeStryker(repositoryRootPath: string): Promise<void> {
-		await this.ensureMutationDependencies(repositoryRootPath)
-
 		await ShellUtil.executeCommand("./node_modules/.bin/stryker run --logLevel debug", {
 			currentWorkingDirectoryPath: repositoryRootPath
 		})

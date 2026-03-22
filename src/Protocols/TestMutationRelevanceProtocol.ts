@@ -33,7 +33,7 @@ export type StrykerMutationReport = {
 	}>
 }
 
-export type SetupStrykerConfigOptions = {
+export type SetupStrykerOptions = {
 	repositoryRootPath: string
 	targetResolvedFilePaths: string[]
 	customStrykerOptions: CustomStrykerOptions
