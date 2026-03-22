@@ -56,13 +56,19 @@ class TestMutationRelevanceUtil {
 		const config: Partial<StrykerOptions> = {
 			...this.defaultStrykerOptions,
 			...options.customStrykerOptions,
-			...(vitestWorkspaceConfigFilePath ? { vitest: { configFile: vitestWorkspaceConfigFilePath } } : {}),
-			plugins: [
-				...this.defaultStrykerOptions.plugins,
-				...this.testRunnerTypeToSpecificStrykerConfig[options.customStrykerOptions.testRunner].plugins
-			],
 			mutate: options.targetResolvedFilePaths
 		}
+
+		if (vitestWorkspaceConfigFilePath) {
+			config.vitest = {
+				configFile: vitestWorkspaceConfigFilePath
+			}
+		}
+
+		config.plugins = [
+			...config.plugins!,
+			...this.testRunnerTypeToSpecificStrykerConfig[options.customStrykerOptions.testRunner].plugins
+		]
 
 		const STRYKER_CONFIG_FILE_NAME = "stryker.conf.json"
 		const tempConfigFilePath = path.join(options.repositoryRootPath, STRYKER_CONFIG_FILE_NAME)
