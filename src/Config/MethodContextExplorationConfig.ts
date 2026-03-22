@@ -64,7 +64,8 @@ export const methodContextExplorationConfig: MethodContextExplorationOptions[] =
 						"**/blackbox/**",
 						"**/*.vue",
 						"**/*.yaml",
-						"api/src/services/payload.test.ts"
+						"api/src/services/payload.test.ts",
+						"api/src/utils/stall.test.ts"
 					],
 					excludedVitestConfigs: [
 						"tests/blackbox"
