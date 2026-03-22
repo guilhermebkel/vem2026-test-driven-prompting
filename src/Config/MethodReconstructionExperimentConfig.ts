@@ -39,7 +39,7 @@ export const methodReconstructionExperimentConfig: MethodReconstructionExperimen
 		experimentOptions: {
 			repositoryName: "directus",
 			repositoryTestSuiteCommand: "pnpm --workspace-root test",
-			repositorySingleFileTestSuiteCommand: `pnpm -r exec sh -c 'npx vitest related ${METHOD_FILE_PATH_PLACEHOLDER} --run'  `,
+			repositorySingleFileTestSuiteCommand: `pnpm -r --parallel exec sh -c 'npx vitest related ${METHOD_FILE_PATH_PLACEHOLDER} --run'  `,
 			comparisons: DEFAULT_EXPERIMENT_COMPARISONS
 		}
 	}
