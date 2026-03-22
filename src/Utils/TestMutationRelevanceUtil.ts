@@ -57,11 +57,13 @@ class TestMutationRelevanceUtil {
 			mutate: options.targetResolvedFilePaths
 		}
 
-		const vitestWorkspaceConfigFilePath = await this.setupVitestWorkspaceConfig(options)
+		if (options.customStrykerOptions.testRunner === "vitest") {
+			const vitestWorkspaceConfigFilePath = await this.setupVitestWorkspaceConfig(options)
 
-		if (vitestWorkspaceConfigFilePath) {
-			config.vitest = {
-				configFile: vitestWorkspaceConfigFilePath
+			if (vitestWorkspaceConfigFilePath) {
+				config.vitest = {
+					configFile: vitestWorkspaceConfigFilePath
+				}
 			}
 		}
 
@@ -77,10 +79,6 @@ class TestMutationRelevanceUtil {
 	}
 
 	private async setupVitestWorkspaceConfig(options: SetupStrykerOptions): Promise<string | null> {
-		if (options.customStrykerOptions.testRunner !== "vitest") {
-			return null
-		}
-
 		const findVitestConfigsOutput = await ShellUtil.executeCommand(
 			"find . -name \"vitest.config.*\" -not -path \"*/node_modules/*\" -not -path \"*/.stryker*\" -not -path \"*/dist/*\"",
 			{ currentWorkingDirectoryPath: options.repositoryRootPath }
