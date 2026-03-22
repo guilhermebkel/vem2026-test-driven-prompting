@@ -5,7 +5,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "pnpm run dev:method-context-exploration",
     "dev:method-exploration": "tsx src/index.ts --pipeline=method-exploration",
     "dev:method-reconstruction-experiment": "tsx src/index.ts --pipeline=method-reconstruction-experiment",
     "dev:method-context-exploration": "tsx src/index.ts --pipeline=method-context-exploration",
@@ -22,7 +21,8 @@
     "experiment-repo:setup:directus": "bash ./scripts/setup-experiment-repo.sh directus",
     "experiment-repo:setup:fastify": "bash ./scripts/setup-experiment-repo.sh fastify",
     "experiment-repo:setup:tabnews.com.br": "bash ./scripts/setup-experiment-repo.sh tabnews.com.br",
-    "python-scripts:dependencies:setup-all": "bash ./scripts/setup-python-scripts-dependencies.sh"
+    "python-scripts:dependencies:setup-all": "bash ./scripts/setup-python-scripts-dependencies.sh",
+    "research:notebook": "cd research && uv run jupyter notebook"
   },
   "author": "",
   "license": "ISC",

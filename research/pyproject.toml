@@ -1,0 +1,7 @@
+[project]
+name = "tcc-context-importance-in-llm-development-tasks"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "jupyter>=1.1.1"
+]

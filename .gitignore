@@ -14,3 +14,7 @@ experiment-repos/*-mutation-*
 
 # Built Files
 dist/
+
+# Jupyter Notebook
+.venv
+.ipynb_checkpoints
