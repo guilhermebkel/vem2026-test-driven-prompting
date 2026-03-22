@@ -39,8 +39,8 @@ pnpm run experiment-repo:setup-all
 | Command | Description |
 |---------|-------------|
 | `pnpm run dev:method-exploration` | Runs the `method-exploration` pipeline |
-| `pnpm run dev:method-reconstruction-experiment` | Runs the `method-reconstruction-experiment` pipeline |
 | `pnpm run dev:method-context-exploration` | Runs the `method-context-exploration` pipeline |
+| `pnpm run dev:method-reconstruction-experiment` | Runs the `method-reconstruction-experiment` pipeline |
 | `pnpm run dev:prototype` | Runs the `prototype` pipeline |
 
 ### Experiment Repositories
