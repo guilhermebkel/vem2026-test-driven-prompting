@@ -19,7 +19,7 @@ import RepositoryManagerService from "@/Services/RepositoryManagerService"
 import LogService from "@/Services/LogService"
 
 import RepositoryTestSuiteFailedError from "@/Errors/RepositoryTestSuiteFailedError"
-import { methodReconstructionExperimentValidation } from "@/Config/MethodReconstructionExperimentConfig"
+import { METHOD_FILE_PATH_PLACEHOLDER, methodReconstructionExperimentValidation } from "@/Config/MethodReconstructionExperimentConfig"
 
 class MethodReconstructionExperimenterService {
 	async experiment(options: ExperimentMethodReconstructionOptions): Promise<ExperimentMethodReconstructionResult> {
@@ -113,7 +113,7 @@ class MethodReconstructionExperimenterService {
 
 							const repositoryTestSuiteResult = await TestExecutorService.runRepositoryTestSuite({
 								repositoryName: options.repositoryName,
-								repositoryTestSuiteCommand: options.repositoryTestSuiteCommand
+								repositoryTestSuiteCommand: options.repositorySingleFileTestSuiteCommand.replace(METHOD_FILE_PATH_PLACEHOLDER, exploredMethod.resolvedMethodFilePath)
 							})
 
 							if (!repositoryTestSuiteResult.success) {

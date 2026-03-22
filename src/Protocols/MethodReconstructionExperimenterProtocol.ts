@@ -16,6 +16,7 @@ export type ExperimentComparison = {
 export type ExperimentMethodReconstructionOptions = {
 	repositoryName: RepositoryName
 	repositoryTestSuiteCommand: string
+	repositorySingleFileTestSuiteCommand: string
 	comparisons: ExperimentComparison[]
 }
 

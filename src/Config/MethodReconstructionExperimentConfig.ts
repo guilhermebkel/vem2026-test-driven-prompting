@@ -15,6 +15,8 @@ const DEFAULT_EXPERIMENT_COMPARISONS: ExperimentComparison[] = [
 	}
 ]
 
+export const METHOD_FILE_PATH_PLACEHOLDER = "<method_file_path>"
+
 export const methodReconstructionExperimentValidation = {
 	hasMinimumContextCount: (exploredContext?: ExploredContext): boolean => (
 		Number(exploredContext?.context?.length) >= 2
@@ -29,6 +31,7 @@ export const methodReconstructionExperimentConfig: MethodReconstructionExperimen
 		experimentOptions: {
 			repositoryName: "date-fns",
 			repositoryTestSuiteCommand: "pnpm run test",
+			repositorySingleFileTestSuiteCommand: `npx vitest related ${METHOD_FILE_PATH_PLACEHOLDER}`,
 			comparisons: DEFAULT_EXPERIMENT_COMPARISONS
 		}
 	},
@@ -36,6 +39,7 @@ export const methodReconstructionExperimentConfig: MethodReconstructionExperimen
 		experimentOptions: {
 			repositoryName: "directus",
 			repositoryTestSuiteCommand: "pnpm --workspace-root test",
+			repositorySingleFileTestSuiteCommand: `pnpm -r exec sh -c 'npx vitest related ${METHOD_FILE_PATH_PLACEHOLDER} --run'  `,
 			comparisons: DEFAULT_EXPERIMENT_COMPARISONS
 		}
 	}
