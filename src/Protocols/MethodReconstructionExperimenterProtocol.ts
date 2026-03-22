@@ -10,7 +10,10 @@ export type ExperimentComparison = {
 		reasoningBudget: number
 		temperature: number
 	}
-	context: Array<{ slug: ContextDefinitionItem["slug"] }>
+	context: {
+		definitions: Array<{ slug: ContextDefinitionItem["slug"] }>
+		maxPermutationCount: number
+	}
 }
 
 export type ExperimentMethodReconstructionOptions = {
