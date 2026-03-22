@@ -10,6 +10,7 @@ logs/method-reconstruction-experiment
 
 # Temporary
 temp
+experiment-repos/*-mutation-*
 
 # Built Files
 dist/
