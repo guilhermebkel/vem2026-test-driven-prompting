@@ -7,8 +7,8 @@ import { NodeType } from "@/Protocols/NodeJSCodeParserProtocol"
 
 import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
 
-const DEFAULT_CONTEXT_TYPES: MethodContextExplorationOptions["exploreOptions"]["contextTypes"] = [
-	"test-case"
+const DEFAULT_EXPLORATION_CONTEXT_TYPES: MethodContextExplorationOptions["exploreOptions"]["contextTypes"] = [
+	"relevant-test-case"
 ]
 
 export const methodContextExplorationValidation = {
@@ -41,7 +41,7 @@ export const methodContextExplorationConfig: MethodContextExplorationOptions[] =
 			repositoryName: "date-fns",
 			methodFilePatterns: ["**/*.ts"],
 			testFilePatterns: ["**/test.ts"],
-			contextTypes: DEFAULT_CONTEXT_TYPES,
+			contextTypes: DEFAULT_EXPLORATION_CONTEXT_TYPES,
 			contextCustomOptions: {
 				customStrykerOptions: {
 					testRunner: "vitest",
@@ -56,7 +56,7 @@ export const methodContextExplorationConfig: MethodContextExplorationOptions[] =
 			repositoryName: "directus",
 			methodFilePatterns: ["**/*.ts", "**/*.js"],
 			testFilePatterns: ["**/*.spec.*", "**/*.test.*"],
-			contextTypes: DEFAULT_CONTEXT_TYPES,
+			contextTypes: DEFAULT_EXPLORATION_CONTEXT_TYPES,
 			contextCustomOptions: {
 				customStrykerOptions: {
 					testRunner: "vitest",

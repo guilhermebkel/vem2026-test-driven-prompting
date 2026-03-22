@@ -112,8 +112,8 @@ class MethodContextExplorerService {
 							...(exploreContextOptions.contextTypes.includes("same-location") ? (
 								await this.exploreSameLocationContext(exploredMethod)
 							) : []),
-							...(exploreContextOptions.contextTypes.includes("test-case") ? (
-								await this.exploreTestCaseContext(exploredMethod, exploreMethodResult, exploreContextOptions)
+							...(exploreContextOptions.contextTypes.includes("relevant-test-case") ? (
+								await this.exploreRelevantTestCaseContext(exploredMethod, exploreMethodResult, exploreContextOptions)
 							) : [])
 						])
 
@@ -227,7 +227,7 @@ class MethodContextExplorerService {
 		return context
 	}
 
-	private async exploreTestCaseContext(exploredMethod: ExploredMethod, exploreMethodResult: ExploreMethodResult, exploreContextOptions: ExploreContextOptions): Promise<ExploredContext["context"]> {
+	private async exploreRelevantTestCaseContext(exploredMethod: ExploredMethod, exploreMethodResult: ExploreMethodResult, exploreContextOptions: ExploreContextOptions): Promise<ExploredContext["context"]> {
 		const context: ExploredContext["context"] = []
 
 		const totalTestSuiteCount = exploredMethod.resolvedTestFilePaths.length

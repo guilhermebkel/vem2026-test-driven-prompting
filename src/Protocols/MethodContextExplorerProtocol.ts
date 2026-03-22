@@ -5,19 +5,19 @@ import { CodeBLEUFormattedMetrics } from "@/Protocols/CodeBLEUMetricsProtocol"
 import { CodeEmbeddingFormattedMetrics } from "@/Protocols/CodeEmbeddingMetricsProtocol"
 import { CustomStrykerOptions, MutationTestStrengthResult } from "@/Protocols/TestMutationRelevanceProtocol"
 
-export type ExploreContextTypeToCustomOptions = {
-	"same-location": void,
+export type ExplorationContextTypeToCustomOptions = {
+	"same-location": void
 	"similar-method": void
-	"test-case": {
+	"relevant-test-case": {
 		customStrykerOptions: CustomStrykerOptions
 	}
 }
 
-export type ExploreContextType = keyof ExploreContextTypeToCustomOptions
+export type ExplorationContextType = keyof ExplorationContextTypeToCustomOptions
 
-export type ExploreContextCustomOptions<EContextType extends ExploreContextType> = ExploreContextTypeToCustomOptions[EContextType]
+export type ExploreContextCustomOptions<EContextType extends ExplorationContextType> = ExplorationContextTypeToCustomOptions[EContextType]
 
-export type ExploreContextOptions<EContextType extends ExploreContextType = ExploreContextType> = {
+export type ExploreContextOptions<EContextType extends ExplorationContextType = ExplorationContextType> = {
 	repositoryName: RepositoryName
 	/**
 	 * Examples:
