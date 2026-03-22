@@ -2,6 +2,7 @@ import fs from "fs/promises"
 import { existsSync } from "fs"
 import path from "path"
 import { StrykerOptions } from "@stryker-mutator/api/core"
+import { TestProjectConfiguration, TestUserConfig } from "vitest/config"
 
 import ShellUtil from "@/Utils/ShellUtil"
 import LocalPersistedCacheUtil from "@/Utils/LocalPersistedCacheUtil"
@@ -64,10 +65,6 @@ class TestMutationRelevanceUtil {
 	}
 
 	private async setupVitestWorkspaceConfig(options: SetupStrykerOptions): Promise<string | null> {
-		if (!options.customStrykerOptions?.isProbablyMonorepo) {
-			return null
-		}
-
 		const findVitestConfigsOutput = await ShellUtil.executeCommand(
 			"find . -name \"vitest.config.*\" -not -path \"*/node_modules/*\" -not -path \"*/.stryker*\" -not -path \"*/dist/*\"",
 			{ currentWorkingDirectoryPath: options.repositoryRootPath }
@@ -85,11 +82,20 @@ class TestMutationRelevanceUtil {
 			return null
 		}
 
+		const testUserConfig: TestUserConfig = {
+			projects: vitestConfigFilePaths.map<TestProjectConfiguration>(vitestConfigFilePath => options.customStrykerOptions?.testTimeoutInMilliseconds ? ({
+				extends: vitestConfigFilePath,
+				test: {
+					testTimeout: options.customStrykerOptions!.testTimeoutInMilliseconds
+				}
+			}) : (
+				vitestConfigFilePath
+			))
+		}
+
 		const workspaceFileContent = `
 			export default {
-				test: {
-					projects: ${JSON.stringify(vitestConfigFilePaths)}
-				}
+				test: ${JSON.stringify(testUserConfig)}
 			}
 		`
 

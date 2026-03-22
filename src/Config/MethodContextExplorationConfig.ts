@@ -45,7 +45,8 @@ export const methodContextExplorationConfig: MethodContextExplorationOptions[] =
 			contextCustomOptions: {
 				customStrykerOptions: {
 					testRunner: "vitest",
-					ignorePatterns: []
+					ignorePatterns: [],
+					testTimeoutInMilliseconds: 60000
 				}
 			}
 		}
@@ -69,8 +70,7 @@ export const methodContextExplorationConfig: MethodContextExplorationOptions[] =
 					],
 					excludedVitestConfigs: [
 						"tests/blackbox"
-					],
-					isProbablyMonorepo: true
+					]
 				}
 			}
 		}
