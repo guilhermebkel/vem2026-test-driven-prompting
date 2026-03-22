@@ -1,7 +1,14 @@
 import { MutantTestCoverage, StrykerOptions } from "@stryker-mutator/api/core"
 
+export type TestRunnerType = "vitest" | "jest"
+
+export type TestRunnerSpecificStrykerConfig = {
+	plugins: string[],
+	requiredDeps: string[]
+}
+
 export type CustomStrykerOptions = Pick<StrykerOptions, "testRunner" | "ignorePatterns"> & {
-	testRunner: "vitest" | "jest"
+	testRunner: TestRunnerType
 	excludedVitestConfigs?: string[]
 	testTimeoutInMilliseconds?: number
 }

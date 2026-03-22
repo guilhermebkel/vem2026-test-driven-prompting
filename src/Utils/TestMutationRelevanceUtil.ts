@@ -12,7 +12,9 @@ import {
 	StrykerMutationReport,
 	MutationTestStrength,
 	SetupStrykerOptions,
-	TestMutationAnalysisResult
+	TestMutationAnalysisResult,
+	TestRunnerType,
+	TestRunnerSpecificStrykerConfig
 } from "@/Protocols/TestMutationRelevanceProtocol"
 
 class TestMutationRelevanceUtil {
@@ -47,15 +49,19 @@ class TestMutationRelevanceUtil {
 	}
 
 	private async setupStryker(options: SetupStrykerOptions): Promise<void> {
-		await this.ensureMutationDependencies(options.repositoryRootPath)
+		await this.ensureMutationDependencies(options)
 
 		const vitestWorkspaceConfigFilePath = await this.setupVitestWorkspaceConfig(options)
 
 		const config: Partial<StrykerOptions> = {
 			...this.defaultStrykerOptions,
 			...options.customStrykerOptions,
-			mutate: options.targetResolvedFilePaths,
-			...(vitestWorkspaceConfigFilePath ? { vitest: { configFile: vitestWorkspaceConfigFilePath } } : {})
+			...(vitestWorkspaceConfigFilePath ? { vitest: { configFile: vitestWorkspaceConfigFilePath } } : {}),
+			plugins: [
+				...this.defaultStrykerOptions.plugins,
+				...this.testRunnerTypeToSpecificStrykerConfig[options.customStrykerOptions.testRunner].plugins
+			],
+			mutate: options.targetResolvedFilePaths
 		}
 
 		const STRYKER_CONFIG_FILE_NAME = "stryker.conf.json"
@@ -65,6 +71,10 @@ class TestMutationRelevanceUtil {
 	}
 
 	private async setupVitestWorkspaceConfig(options: SetupStrykerOptions): Promise<string | null> {
+		if (options.customStrykerOptions.testRunner !== "vitest") {
+			return null
+		}
+
 		const findVitestConfigsOutput = await ShellUtil.executeCommand(
 			"find . -name \"vitest.config.*\" -not -path \"*/node_modules/*\" -not -path \"*/.stryker*\" -not -path \"*/dist/*\"",
 			{ currentWorkingDirectoryPath: options.repositoryRootPath }
@@ -163,23 +173,22 @@ class TestMutationRelevanceUtil {
 		})
 	}
 
-	private async ensureMutationDependencies(repositoryRootPath: string): Promise<void> {
+	private async ensureMutationDependencies(options: SetupStrykerOptions): Promise<void> {
 		const requiredDeps: string[] = [
-			"vitest",
 			"typescript",
 			"@stryker-mutator/core@9.5.1",
-			"@stryker-mutator/vitest-runner@9.5.1"
+			...this.testRunnerTypeToSpecificStrykerConfig[options.customStrykerOptions.testRunner].requiredDeps
 		]
 
 		const missingDependencies = requiredDeps.filter(dependency => {
-			const dependencyExists = existsSync(path.join(repositoryRootPath, "node_modules", dependency))
+			const dependencyExists = existsSync(path.join(options.repositoryRootPath, "node_modules", dependency))
 
 			return !dependencyExists
 		})
 
 		if (missingDependencies.length > 0) {
 			await ShellUtil.executeCommand(`pnpm install -D -w ${requiredDeps.join(" ")}`, {
-				currentWorkingDirectoryPath: repositoryRootPath
+				currentWorkingDirectoryPath: options.repositoryRootPath
 			})
 		}
 	}
@@ -201,15 +210,26 @@ class TestMutationRelevanceUtil {
 
 	private get defaultStrykerOptions(): Pick<StrykerOptions, "plugins" | "coverageAnalysis" | "reporters" | "jsonReporter" | "tempDirName"> {
 		return {
-			plugins: [
-				"@stryker-mutator/vitest-runner"
-			],
+			plugins: [],
 			coverageAnalysis: "perTest",
 			reporters: ["json"],
 			jsonReporter: {
 				fileName: "reports/mutation/mutation.json"
 			},
 			tempDirName: ".stryker-tmp"
+		}
+	}
+
+	private get testRunnerTypeToSpecificStrykerConfig(): Record<TestRunnerType, TestRunnerSpecificStrykerConfig> {
+		return {
+			vitest: {
+				plugins: ["@stryker-mutator/vitest-runner"],
+				requiredDeps: ["vitest", "@stryker-mutator/vitest-runner@9.5.1"]
+			},
+			jest: {
+				plugins: [],
+				requiredDeps: []
+			}
 		}
 	}
 }
