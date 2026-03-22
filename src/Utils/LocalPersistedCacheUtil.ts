@@ -7,13 +7,13 @@ import HashUtil from "@/Utils/HashUtil"
 import PathUtil from "@/Utils/PathUtil"
 
 class LocalPersistedCacheUtil<Model> {
-	private readonly cacheDirectory: string
+	private readonly cachesDirectory: string
 
 	constructor(options: ConstructorOptions) {
-		this.cacheDirectory = path.join(PathUtil.getCachesDirectoryPath(), options.namespace)
+		this.cachesDirectory = path.join(PathUtil.getCachesDirectoryPath(), options.namespace)
 
-		if (!fs.existsSync(this.cacheDirectory)) {
-			fs.mkdirSync(this.cacheDirectory, { recursive: true })
+		if (!fs.existsSync(this.cachesDirectory)) {
+			fs.mkdirSync(this.cachesDirectory, { recursive: true })
 		}
 	}
 
@@ -51,7 +51,7 @@ class LocalPersistedCacheUtil<Model> {
 	private getCacheFilePath(key: unknown): string {
 		const keyHash = HashUtil.turnIntoSHA1(key)
 
-		return path.join(this.cacheDirectory, `${keyHash}.json`)
+		return path.join(this.cachesDirectory, `${keyHash}.json`)
 	}
 }
 
