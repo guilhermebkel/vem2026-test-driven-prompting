@@ -48,10 +48,7 @@ class TestMutationRelevanceUtil {
 	private async setupStryker(options: SetupStrykerOptions): Promise<void> {
 		await this.ensureMutationDependencies(options.repositoryRootPath)
 
-		const vitestWorkspaceConfigFilePath = await this.setupVitestWorkspaceConfig(
-			options.repositoryRootPath,
-			options.customStrykerOptions?.excludedVitestConfigs
-		)
+		const vitestWorkspaceConfigFilePath = await this.setupVitestWorkspaceConfig(options)
 
 		const config: Partial<StrykerOptions> = {
 			...this.defaultStrykerOptions,
@@ -66,17 +63,21 @@ class TestMutationRelevanceUtil {
 		await fs.writeFile(tempConfigFilePath, JSON.stringify(config, null, 2))
 	}
 
-	private async setupVitestWorkspaceConfig(repositoryRootPath: string, excludedVitestConfigs: string[] = []): Promise<string | null> {
+	private async setupVitestWorkspaceConfig(options: SetupStrykerOptions): Promise<string | null> {
+		if (!options.customStrykerOptions?.isProbablyMonoRepo) {
+			return null
+		}
+
 		const findVitestConfigsOutput = await ShellUtil.executeCommand(
 			"find . -name \"vitest.config.*\" -not -path \"*/node_modules/*\" -not -path \"*/.stryker*\" -not -path \"*/dist/*\"",
-			{ currentWorkingDirectoryPath: repositoryRootPath }
+			{ currentWorkingDirectoryPath: options.repositoryRootPath }
 		)
 
 		const vitestConfigFilePaths = findVitestConfigsOutput
 			.split("\n")
 			.map(line => line.trim().replace(/^\.\//, ""))
 			.filter(Boolean)
-			.filter(configPath => !excludedVitestConfigs.some(excluded => configPath.includes(excluded)))
+			.filter(configPath => !(options.customStrykerOptions.excludedVitestConfigs || []).some(excluded => configPath.includes(excluded)))
 
 		const isMonorepo = vitestConfigFilePaths.length > 1
 
@@ -87,13 +88,13 @@ class TestMutationRelevanceUtil {
 		const workspaceFileContent = `
 			export default {
 				test: {
-					projects: ${JSON.stringify(vitestConfigFilePaths.map((configPath) => ({ extends: configPath, test: { testTimeout: 60000 } })), null, 4)}
+					projects: ${JSON.stringify(vitestConfigFilePaths, null, 4)}
 				}
 			}
 		`
 
 		const WORKSPACE_CONFIG_FILE_NAME = "vitest.workspace.stryker.mjs"
-		await fs.writeFile(path.join(repositoryRootPath, WORKSPACE_CONFIG_FILE_NAME), workspaceFileContent)
+		await fs.writeFile(path.join(options.repositoryRootPath, WORKSPACE_CONFIG_FILE_NAME), workspaceFileContent)
 
 		return WORKSPACE_CONFIG_FILE_NAME
 	}

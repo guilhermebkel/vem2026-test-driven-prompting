@@ -3,6 +3,7 @@ import { MutantTestCoverage, StrykerOptions } from "@stryker-mutator/api/core"
 export type CustomStrykerOptions = Pick<StrykerOptions, "testRunner" | "ignorePatterns"> & {
 	testRunner: "vitest" | "jest"
 	excludedVitestConfigs?: string[]
+	isProbablyMonoRepo?: boolean
 }
 
 export type ExecuteOptions = {
