@@ -11,12 +11,14 @@ export type ExecuteOptions = {
 	customStrykerOptions: CustomStrykerOptions
 }
 
+export type MutationTestStrengthResult = {
+	rawTestCaseName: string
+	killedMutantsCount: number
+}
+
 export type MutationTestStrength = {
 	targetResolvedFilePath: string
-	results: Array<{
-		rawTestCaseName: string
-		killedMutantsCount: number
-	}>
+	results: MutationTestStrengthResult[]
 }
 
 export type StrykerMutationReport = {

@@ -1,5 +1,5 @@
 import { LocalContextSlug, SemanticContextSlug } from "@/Protocols/ContextProtocol"
-import { ExploreContextOptions, ExploreContextResult, ExploredContext, LoadedMethodFile } from "@/Protocols/MethodContextExplorerProtocol"
+import { ExploreContextOptions, ExploreContextResult, ExploredContext, LoadedMethodFile, TestingMetrics } from "@/Protocols/MethodContextExplorerProtocol"
 import { ExploredMethod, ExploreMethodResult } from "@/Protocols/MethodExplorerProtocol"
 import { DeclarationType } from "@/Protocols/NodeJSCodeParserProtocol"
 import { TestMutationAnalysisResult } from "@/Protocols/TestMutationRelevanceProtocol"
@@ -280,22 +280,28 @@ class MethodContextExplorerService {
 					&& result.rawTestCaseName.startsWith(exploredMethod.name)
 				))
 
-				context.push({
-					slug: "test-case",
-					type: "semantic",
-					resolvedFilePath: resolvedTestFilePath,
-					extractionRule: {
-						type: "test-case",
-						name: testCaseName
-					},
-					metrics: {
-						testing: {
-							totalTestSuiteCount,
-							totalTestCaseCount,
-							mutationScore: Number(testMutationResultForTestCase?.killedMutantsCount) > 0 ? "relevant" : "not-relevant"
+				const testingMetrics: TestingMetrics = {
+					totalTestSuiteCount,
+					totalTestCaseCount,
+					killedMutantsCount: testMutationResultForTestCase?.killedMutantsCount ?? 0
+				}
+
+				const isRelevantTestCase = methodContextExplorationValidation.isRelevantTestCase(testingMetrics)
+
+				if (isRelevantTestCase) {
+					context.push({
+						slug: "relevant-test-case",
+						type: "semantic",
+						resolvedFilePath: resolvedTestFilePath,
+						extractionRule: {
+							type: "test-case",
+							name: testCaseName
+						},
+						metrics: {
+							testing: testingMetrics
 						}
-					}
-				})
+					})
+				}
 			})
 
 			project.removeSourceFile(sourceFile)

@@ -3,7 +3,7 @@ import { DeclarationType, ExtractionRule } from "@/Protocols/NodeJSCodeParserPro
 
 export type GlobalContextSlug = "project-metadata" | "repository-root-structure" | AnyOtherString
 export type LocalContextSlug = "typing" | "same-class-method" | "same-file-function" | AnyOtherString
-export type SemanticContextSlug = "similar-method" | "imported-dependency" | "dependent-method" | "dependent-test" | "semantically-similar-method" | "structurally-similar-method" | "test-case" | AnyOtherString
+export type SemanticContextSlug = "imported-dependency" | "semantically-similar-method" | "structurally-similar-method" | "relevant-test-case" | AnyOtherString
 
 export type ContextType = ContextDefinitionItem["type"]
 export type ContextSlug = LocalContextSlug | SemanticContextSlug | GlobalContextSlug

@@ -1,6 +1,7 @@
 import { CodeBLEUFormattedMetrics } from "@/Protocols/CodeBLEUMetricsProtocol"
 import { CodeEmbeddingFormattedMetrics } from "@/Protocols/CodeEmbeddingMetricsProtocol"
 import { MethodContextExplorationOptions } from "@/Protocols/ExplorationProtocol"
+import { TestingMetrics } from "@/Protocols/MethodContextExplorerProtocol"
 import { ExploredMethod } from "@/Protocols/MethodExplorerProtocol"
 import { NodeType } from "@/Protocols/NodeJSCodeParserProtocol"
 
@@ -26,6 +27,11 @@ export const methodContextExplorationValidation = {
 	isSameFileFunction: (exploredMethod: ExploredMethod, node: NodeType<"method" | "function">): boolean => (
 		exploredMethod.name !== node.getName()
 		&& NodeJSCodeParserUtil.turnSyntaxKindIntoDeclarationType(node.getKind()) === "function"
+	),
+	isRelevantTestCase: (testingMetrics: TestingMetrics): boolean => (
+		testingMetrics.totalTestSuiteCount <= 1
+		&& testingMetrics.totalTestCaseCount > 5
+		&& testingMetrics.killedMutantsCount > 0
 	)
 }
 

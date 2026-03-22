@@ -3,8 +3,7 @@ import { ContextDefinitionItem } from "@/Protocols/ContextProtocol"
 import { DeclarationType, ExtractionRule } from "@/Protocols/NodeJSCodeParserProtocol"
 import { CodeBLEUFormattedMetrics } from "@/Protocols/CodeBLEUMetricsProtocol"
 import { CodeEmbeddingFormattedMetrics } from "@/Protocols/CodeEmbeddingMetricsProtocol"
-import { TestCaseRelevance } from "@/Protocols/PrototypingProtocol"
-import { CustomStrykerOptions } from "@/Protocols/TestMutationRelevanceProtocol"
+import { CustomStrykerOptions, MutationTestStrengthResult } from "@/Protocols/TestMutationRelevanceProtocol"
 
 export type ExploreContextTypeToCustomOptions = {
 	"same-location": void,
@@ -36,6 +35,11 @@ export type ExploreContextOptions<EContextType extends ExploreContextType = Expl
 	contextCustomOptions?: ExploreContextCustomOptions<EContextType>
 }
 
+export type TestingMetrics = Pick<MutationTestStrengthResult, "killedMutantsCount"> & {
+	totalTestSuiteCount: number
+	totalTestCaseCount: number
+}
+
 export type ExploredContext = {
 	method: {
 		name: string
@@ -48,11 +52,7 @@ export type ExploredContext = {
 		metrics: {
 			codeBLEU?: CodeBLEUFormattedMetrics
 			codeEmbedding?: CodeEmbeddingFormattedMetrics
-			testing?: {
-				totalTestSuiteCount: number
-				totalTestCaseCount: number
-				mutationScore: TestCaseRelevance["mutationScore"]
-			}
+			testing?: TestingMetrics
 		}
 	}>
 }
