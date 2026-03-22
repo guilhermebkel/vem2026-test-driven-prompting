@@ -29,8 +29,7 @@ class PromptBuilderService {
 
 			- **Method Name:** The exact name of the method whose implementation you must reconstruct.
 			- **Method File Content Without Method Body:** The original source file where the target method is defined, but with the method body removed. This file represents the *surrounding code context*, including imports, exports, class structure, helper functions, types, and other symbols that are allowed for use **only if they appear here**.
-			- **Method Test:** The full test suite for the method. These tests represent the *primary source of truth* for the expected behavior and must be treated as the authoritative specification.
-			- **Context**: Additional context items that may help reconstruct the method, such as: files imported by the method file, similar methods, type definitions, domain-related utilities, dependency usage, error logs from previous executions, or any other explicitly provided artifacts.
+			- **Context**: Additional context items that may help reconstruct the method, such as: files imported by the method file, method tests, similar methods, type definitions, domain-related utilities, dependency usage, error logs from previous executions, or any other explicitly provided artifacts.
 
 			You must rely **exclusively** on these inputs.  
 			If a concept, function, or rule does not appear in these explicit inputs, you must treat it as *unknown*.
@@ -41,8 +40,7 @@ class PromptBuilderService {
 
 			- Reconstruct **only the method body implementation**, unless the user input explicitly instructs otherwise.
 			- Your implementation must follow a strict TDD-driven interpretation:
-				- The test suite provided under **Method Test** is the primary specification.
-				- All behavior must be inferred from the test cases and from any directly relevant contextual information.
+				- All behavior must be inferred from any directly relevant contextual information.
 
 			### 3.1. Constraints
 
@@ -80,10 +78,6 @@ class PromptBuilderService {
 			# Method File Content Without Method Body
 
 			${PromptUtil.formatCodeBlock(options.methodFileContentWithoutMethodBody)}
-
-			# Method Test
-			
-			${PromptUtil.formatCodeBlock(options.methodTestContent)}
 
 			# Context
 

@@ -4,6 +4,7 @@ import { DeclarationType, ExtractionRule, NodeType } from "@/Protocols/NodeJSCod
 
 import DataNotFoundError from "@/Errors/DataNotFoundError"
 import { OptionalRecord } from "@/Protocols/TypeUtilityProtocol"
+import SanitizationUtil from "./SanitizationUtil"
 
 class NodeJSCodeParserUtil {
 	private readonly project = this.createProject()
@@ -139,13 +140,7 @@ class NodeJSCodeParserUtil {
 							return true
 						}
 
-						const testDescription = call.getArguments()[0]
-
-						if (!testDescription || !testDescription.isKind(SyntaxKind.StringLiteral)) {
-							return false
-						}
-
-						return testDescription.getLiteralText() === rule.name
+						return SanitizationUtil.extractTestCaseName(call) === rule.name
 					})
 			) as Array<NodeType<DType>>
 		}

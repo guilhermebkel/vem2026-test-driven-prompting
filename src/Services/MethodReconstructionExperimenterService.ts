@@ -19,6 +19,7 @@ import RepositoryManagerService from "@/Services/RepositoryManagerService"
 import LogService from "@/Services/LogService"
 
 import RepositoryTestSuiteFailedError from "@/Errors/RepositoryTestSuiteFailedError"
+import { methodReconstructionExperimentValidation } from "@/Config/MethodReconstructionExperimentConfig"
 
 class MethodReconstructionExperimenterService {
 	async experiment(options: ExperimentMethodReconstructionOptions): Promise<ExperimentMethodReconstructionResult> {
@@ -27,12 +28,26 @@ class MethodReconstructionExperimenterService {
 
 		const reconstructedMethodExperiments: ExperimentMethodReconstructionResult = []
 
+		let methodExperimentedCount = 0
+
 		for (const exploredMethod of exploredMethodResult) {
+			const hasReachedMaximumMethodExperimentedCount = methodReconstructionExperimentValidation.hasReachedMaximumMethodExperimentedCount(methodExperimentedCount)
+
+			if (hasReachedMaximumMethodExperimentedCount) {
+				break
+			}
+
 			const exploredMethodContext = exploredContextResult.find(({ method }) => (
 				method.name === exploredMethod.name
 				&& method.declarationType === exploredMethod.declarationType
 				&& method.resolvedFilePath === exploredMethod.resolvedMethodFilePath
 			))
+
+			const hasMinimumContextCount = methodReconstructionExperimentValidation.hasMinimumContextCount(exploredMethodContext)
+
+			if (!hasMinimumContextCount) {
+				continue
+			}
 
 			for (const experimentComparison of options.comparisons) {
 				const experimentTitle = `${exploredMethod.name} > ${experimentComparison.title}`
@@ -133,6 +148,8 @@ class MethodReconstructionExperimenterService {
 					}
 				})
 			}
+
+			methodExperimentedCount++
 		}
 
 		return reconstructedMethodExperiments
