@@ -51,13 +51,13 @@ class TestMutationRelevanceUtil {
 	private async setupStryker(options: SetupStrykerOptions): Promise<void> {
 		await this.ensureMutationDependencies(options)
 
-		const vitestWorkspaceConfigFilePath = await this.setupVitestWorkspaceConfig(options)
-
 		const config: Partial<StrykerOptions> = {
 			...this.defaultStrykerOptions,
 			...options.customStrykerOptions,
 			mutate: options.targetResolvedFilePaths
 		}
+
+		const vitestWorkspaceConfigFilePath = await this.setupVitestWorkspaceConfig(options)
 
 		if (vitestWorkspaceConfigFilePath) {
 			config.vitest = {
