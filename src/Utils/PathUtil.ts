@@ -29,6 +29,14 @@ class PathUtil {
 		return logsDirectoryPath
 	}
 
+	getCachesDirectoryPath(): string {
+		const rootDirectoryPath = process.cwd()
+
+		const logsDirectoryPath = path.join(rootDirectoryPath, "caches")
+
+		return logsDirectoryPath
+	}
+
 	getScriptsDirectoryPath(): string {
 		const rootDirectoryPath = process.cwd()
 

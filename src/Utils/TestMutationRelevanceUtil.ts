@@ -4,6 +4,7 @@ import path from "path"
 import { StrykerOptions } from "@stryker-mutator/api/core"
 
 import ShellUtil from "@/Utils/ShellUtil"
+import LocalPersistedCacheUtil from "@/Utils/LocalPersistedCacheUtil"
 
 import {
 	ExecuteOptions,
@@ -14,30 +15,34 @@ import {
 } from "@/Protocols/TestMutationRelevanceProtocol"
 
 class TestMutationRelevanceUtil {
+	private cache = new LocalPersistedCacheUtil<TestMutationAnalysisResult>({ namespace: "test-mutation-relevance" })
+
 	async execute(options: ExecuteOptions): Promise<TestMutationAnalysisResult> {
-		const { repositoryRootPath, targetResolvedFilePaths, customStrykerOptions } = options
+		return await this.cache.cachefy(options, async () => {
+			const { repositoryRootPath, targetResolvedFilePaths, customStrykerOptions } = options
 
-		const clonedRepositoryRootPath = await this.cloneRepository(repositoryRootPath)
+			const clonedRepositoryRootPath = await this.cloneRepository(repositoryRootPath)
 
-		try {
-			const clonedTargetResolvedFilePaths = targetResolvedFilePaths.map(targetFileResolvedPath => (
-				targetFileResolvedPath.replace(repositoryRootPath, clonedRepositoryRootPath)
-			))
+			try {
+				const clonedTargetResolvedFilePaths = targetResolvedFilePaths.map(targetFileResolvedPath => (
+					targetFileResolvedPath.replace(repositoryRootPath, clonedRepositoryRootPath)
+				))
 
-			await this.setupStryker({
-				repositoryRootPath: clonedRepositoryRootPath,
-				targetResolvedFilePaths: clonedTargetResolvedFilePaths,
-				customStrykerOptions
-			})
+				await this.setupStryker({
+					repositoryRootPath: clonedRepositoryRootPath,
+					targetResolvedFilePaths: clonedTargetResolvedFilePaths,
+					customStrykerOptions
+				})
 
-			await this.executeStryker(clonedRepositoryRootPath)
+				await this.executeStryker(clonedRepositoryRootPath)
 
-			const strykerMutationReport = await this.readStrykerMutationReport(clonedRepositoryRootPath)
+				const strykerMutationReport = await this.readStrykerMutationReport(clonedRepositoryRootPath)
 
-			return this.extractTestsStrengthFromStrykerMutationReport(repositoryRootPath, strykerMutationReport)
-		} finally {
-			await this.removeClonedRepository(clonedRepositoryRootPath)
-		}
+				return this.extractTestsStrengthFromStrykerMutationReport(repositoryRootPath, strykerMutationReport)
+			} finally {
+				await this.removeClonedRepository(clonedRepositoryRootPath)
+			}
+		})
 	}
 
 	private async setupStryker(options: SetupStrykerOptions): Promise<void> {
