@@ -1,3 +1,6 @@
 logs/** filter=lfs diff=lfs merge=lfs -text
 logs/**/*.json filter=lfs diff=lfs merge=lfs -text
 logs/method-context-exploration/** filter=lfs diff=lfs merge=lfs -text
+
+caches/** filter=lfs diff=lfs merge=lfs -text
+caches/**/*.json filter=lfs diff=lfs merge=lfs -text
