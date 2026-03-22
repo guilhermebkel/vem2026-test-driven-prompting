@@ -88,7 +88,7 @@ class TestMutationRelevanceUtil {
 		const workspaceFileContent = `
 			export default {
 				test: {
-					projects: ${JSON.stringify(vitestConfigFilePaths, null, 4)}
+					projects: ${JSON.stringify(vitestConfigFilePaths)}
 				}
 			}
 		`
