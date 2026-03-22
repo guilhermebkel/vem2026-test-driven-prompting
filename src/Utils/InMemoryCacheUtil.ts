@@ -8,7 +8,8 @@ class InMemoryCacheUtil<Model> {
 	constructor(options: ConstructorOptions) {
 		this.cache = new NodeCache({
 			stdTTL: options.defaultExpirationInSeconds,
-			checkperiod: options.defaultExpirationInSeconds
+			checkperiod: options.defaultExpirationInSeconds,
+			useClones: false
 		})
 	}
 
