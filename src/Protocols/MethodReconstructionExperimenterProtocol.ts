@@ -12,7 +12,7 @@ export type ExperimentComparison = {
 	}
 	context: {
 		definitions: Array<{ slug: ContextDefinitionItem["slug"] }>
-		permutationsCount: number
+		isPermutationEnabled: boolean
 	}
 }
 

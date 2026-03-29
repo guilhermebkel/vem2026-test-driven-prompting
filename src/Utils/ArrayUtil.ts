@@ -14,7 +14,8 @@ class ArrayUtil {
 	}
 
 	getValueFactorialPermutations<Value>(array: Value[]): Value[][] {
-		return Array.from({ length: array.length }, (_, i) => i + 1).flatMap(size => this.getValuePermutations(array, size))
+		return Array.from({ length: array.length }, (_, index) => index + 1)
+			.flatMap(size => this.getValuePermutations(array, size))
 	}
 
 	getValuePermutations<Value>(array: Value[], size: number): Value[][] {
@@ -23,10 +24,16 @@ class ArrayUtil {
 		}
 
 		if (size === 1) {
-			return array.map(v => [v])
+			return array.map(item => [item])
 		}
 
-		return array.flatMap((v, i) => (this.getValuePermutations([...array.slice(0, i), ...array.slice(i + 1)], size - 1).map(p => [v, ...p])))
+		return array.flatMap((item, index) => (
+			this.getValuePermutations([
+				...array.slice(0, index),
+				...array.slice(index + 1)
+			], size - 1)
+				.map(p => [item, ...p])
+		))
 	}
 }
 

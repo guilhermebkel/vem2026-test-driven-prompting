@@ -6,17 +6,17 @@ const DEFAULT_EXPERIMENT_COMPARISONS: ExperimentComparison[] = [
 	{
 		title: "gemini-3.0-flash|temperature-0|all-relevant-test-case",
 		model: { name: "gemini-3.0-flash", reasoningBudget: 0, temperature: 0 },
-		context: { definitions: [{ slug: "relevant-test-case" }], permutationsCount: 0 }
+		context: { definitions: [{ slug: "relevant-test-case" }], isPermutationEnabled: false }
 	},
 	{
 		title: "gemini-3.0-flash|temperature-0|permuted-relevant-test-case",
 		model: { name: "gemini-3.0-flash", reasoningBudget: 0, temperature: 0 },
-		context: { definitions: [{ slug: "relevant-test-case" }], permutationsCount: 3 }
+		context: { definitions: [{ slug: "relevant-test-case" }], isPermutationEnabled: true }
 	},
 	{
 		title: "gemini-3.0-flash|temperature-0|no-relevant-test-case",
 		model: { name: "gemini-3.0-flash", reasoningBudget: 0, temperature: 0 },
-		context: { definitions: [], permutationsCount: 0 }
+		context: { definitions: [], isPermutationEnabled: false }
 	}
 ]
 

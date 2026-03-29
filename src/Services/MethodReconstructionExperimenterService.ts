@@ -78,10 +78,9 @@ class MethodReconstructionExperimenterService {
 
 						const allTargetContextExperiments: ContextDefinition[] = []
 
-						if (experimentComparison.context.permutationsCount) {
-							const targetContextPermutations = ArrayUtil.getValueFactorialPermutations(originalTargetContext)
-							const randomPermutedTargetContexts = Array.from({ length: experimentComparison.context.permutationsCount }).map(() => ArrayUtil.getRandomValue(targetContextPermutations))
-							allTargetContextExperiments.push(...randomPermutedTargetContexts)
+						if (experimentComparison.context.isPermutationEnabled) {
+							const targetContextPermutations = await this.getExploredMethodTargetContextPermutations(originalTargetContext)
+							allTargetContextExperiments.push(...targetContextPermutations)
 						} else {
 							allTargetContextExperiments.push(originalTargetContext)
 						}
@@ -90,13 +89,7 @@ class MethodReconstructionExperimenterService {
 							batchSize: 1,
 							items: allTargetContextExperiments,
 							handlerFn: async (targetContext) => {
-								const experimentTitleParts: string[] = [exploredMethod.name, experimentComparison.title]
-
-								if (allTargetContextExperiments.length > 1) {
-									experimentTitleParts.push(`${methodContextExperimentedCount + 1}`)
-								}
-
-								const experimentTitle = experimentTitleParts.join(" > ")
+								const experimentTitle = `${exploredMethod.name} > ${experimentComparison.title} [${methodContextExperimentedCount + 1}/${allTargetContextExperiments.length}]`
 
 								await TracingUtil.traceTask(`Experiment: ${experimentTitle}`, async (config) => {
 									const noTargetContextFoundForExperiment = experimentComparison.context.definitions.length > 0 && targetContext.length === 0
@@ -248,7 +241,7 @@ class MethodReconstructionExperimenterService {
 	}
 
 	private async getExploredMethodTotalTestCasesCount(exploredMethod: ExploredMethod): Promise<number> {
-		const exploredMethodTotalTestCasesCount = await TracingUtil.traceAction("Load explored method total test cases count...", async () => {
+		return await TracingUtil.traceAction("Load explored method total test cases count...", async () => {
 			const exploredMethodMainResolvedTestFilePath = exploredMethod.resolvedTestFilePaths[0]!
 			const project = NodeJSCodeParserUtil.createProject()
 			const sourceFile = project.addSourceFileAtPath(exploredMethodMainResolvedTestFilePath)
@@ -259,8 +252,25 @@ class MethodReconstructionExperimenterService {
 
 			return testCases.length
 		}) as number
+	}
 
-		return exploredMethodTotalTestCasesCount
+	private async getExploredMethodTargetContextPermutations(originalTargetContext: ContextDefinition): Promise<ContextDefinition[]> {
+		return await TracingUtil.traceAction("Load explored method target context permutations...", async () => {
+			const contextPermutations: ContextDefinition[] = []
+
+			let pendingPermutations = originalTargetContext.length
+
+			while (pendingPermutations > 0) {
+				const targetContextPermutations = ArrayUtil.getValuePermutations(originalTargetContext, pendingPermutations)
+				const randomPermutedTargetContexts = ArrayUtil.getRandomValue(targetContextPermutations)
+
+				contextPermutations.push(randomPermutedTargetContexts)
+
+				pendingPermutations--
+			}
+
+			return contextPermutations
+		})
 	}
 }
 
