@@ -44,11 +44,11 @@ class RepositoryManagerService {
 
 			const sourceFile = project.addSourceFileAtPath(options.methodResolvedFilePath)
 
-			const diagnostics = project.getProgram().getSyntacticDiagnostics(sourceFile)
+			const syntacticDiagnostics = project.getProgram().getSyntacticDiagnostics(sourceFile)
 
 			project.removeSourceFile(sourceFile)
 
-			return diagnostics.length === 0
+			return syntacticDiagnostics.length === 0
 		})
 	}
 }
