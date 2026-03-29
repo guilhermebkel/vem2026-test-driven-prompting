@@ -258,15 +258,15 @@ class MethodReconstructionExperimenterService {
 		return await TracingUtil.traceAction("Load explored method target context permutations...", async () => {
 			const contextPermutations: ContextDefinition[] = []
 
-			let pendingPermutations = originalTargetContext.length
+			let pendingPermutationsCount = originalTargetContext.length
 
-			while (pendingPermutations > 0) {
-				const targetContextPermutations = ArrayUtil.getValuePermutations(originalTargetContext, pendingPermutations)
+			while (pendingPermutationsCount > 0) {
+				const targetContextPermutations = ArrayUtil.getValuePermutations(originalTargetContext, pendingPermutationsCount)
 				const randomPermutedTargetContexts = ArrayUtil.getRandomValue(targetContextPermutations)
 
 				contextPermutations.push(randomPermutedTargetContexts)
 
-				pendingPermutations--
+				pendingPermutationsCount--
 			}
 
 			return contextPermutations
