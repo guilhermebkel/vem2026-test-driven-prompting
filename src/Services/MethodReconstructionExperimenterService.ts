@@ -148,9 +148,10 @@ class MethodReconstructionExperimenterService {
 												config.setError(new RepositoryTestSuiteFailedError())
 											}
 
-											const totalTestCasesCount = await this.getExploredMethodTotalTestCasesCount(exploredMethod)
-											const failedTestCasesCount = TestResultHandlerUtil.extractFailedTestCaseCountFromDebugMessage(repositoryTestSuiteResult.debugMessage)
-											const passedTestCasesCount = totalTestCasesCount - failedTestCasesCount
+											const testSuiteTotalTestCaseCount = await this.getExploredMethodTotalTestCaseCount(exploredMethod)
+											const testSuiteFailedTestCaseCount = TestResultHandlerUtil.extractFailedTestCaseCountFromDebugMessage(repositoryTestSuiteResult.debugMessage)
+											const testSuitePassedTestCaseCount = testSuiteTotalTestCaseCount - testSuiteFailedTestCaseCount
+											const relevantTestCaseCount = targetContext.filter(context => context.slug === "relevant-test-case").length
 
 											const result: ReconstructedMethodExperiment = {
 												model: {
@@ -183,10 +184,10 @@ class MethodReconstructionExperimenterService {
 												metrics: {
 													isTestSuiteSuccessful: repositoryTestSuiteResult.success,
 													isModelResultCompilable: isReconstructedMethodCompilable,
-													relevantTestCaseCount: targetContext.filter(context => context.slug === "relevant-test-case").length,
-													testSuiteTotalTestCaseCount: totalTestCasesCount,
-													testSuitePassedTestCaseCount: passedTestCasesCount,
-													testSuiteFailedTestCaseCount: failedTestCasesCount
+													relevantTestCaseCount,
+													testSuiteTotalTestCaseCount,
+													testSuitePassedTestCaseCount,
+													testSuiteFailedTestCaseCount
 												}
 											}
 
@@ -240,7 +241,7 @@ class MethodReconstructionExperimenterService {
 		return exploreMethodResult
 	}
 
-	private async getExploredMethodTotalTestCasesCount(exploredMethod: ExploredMethod): Promise<number> {
+	private async getExploredMethodTotalTestCaseCount(exploredMethod: ExploredMethod): Promise<number> {
 		return await TracingUtil.traceAction("Load explored method total test cases count...", async () => {
 			const exploredMethodMainResolvedTestFilePath = exploredMethod.resolvedTestFilePaths[0]!
 			const project = NodeJSCodeParserUtil.createProject()
