@@ -8,13 +8,13 @@ import MethodReconstructionExperimenterService from "@/Services/MethodReconstruc
 
 class ExperimentationModule {
 	async experimentMethodReconstruction(options: MethodReconstructionExperimentationOptions): Promise<MethodReconstructionExperimentationResult> {
-		const experimentResult = await MethodReconstructionExperimenterService.experiment(options.experimentOptions)
+		const experimentResult = await MethodReconstructionExperimenterService.experiment(options.experimentOptions, async (result) => {
+			await LogService.saveMethodReconstructionExperimentLogs(options, { experimentResult: [result] })
+		})
 
 		const methodExplorationResult: MethodReconstructionExperimentationResult = {
 			experimentResult
 		}
-
-		await LogService.saveMethodReconstructionExperimentLogs(options, methodExplorationResult)
 
 		return methodExplorationResult
 	}

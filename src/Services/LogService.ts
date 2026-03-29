@@ -14,41 +14,46 @@ class LogService {
 		return await TracingUtil.traceAction("Saving experiment result logs...", async () => {
 			await Promise.all(
 				methodReconstructionExperimentationResult.experimentResult.map(async experimentResult => {
-					const {
-						repositoryName
-					} = methodReconstructionExperimentationOptions.experimentOptions
+					const sourceFileExtension = path.extname(experimentResult.experiment.input.methodResolvedFilePath)
+					const generalLogPath: string[] = ["method-reconstruction-experiment", methodReconstructionExperimentationOptions.experimentOptions.repositoryName]
 
-					const {
-						methodReconstructionResult,
-						repositoryTestSuiteResult,
-						sourceFileWithOriginalMethodBody,
-						sourceFileWithReconstructedMethodBody,
-						experimentTitle
-					} = experimentResult
+					const rawLogPath: string[] = [...generalLogPath, "raw", experimentResult.experiment.input.experimentTitle]
+					const testSuiteDebugMessageLogFilePath = this.getLogFilePath(rawLogPath, "testSuiteDebugMessage")
+					await FileUtil.setFileContent(testSuiteDebugMessageLogFilePath, experimentResult.experiment.output.repositoryTestSuiteResult.debugMessage)
+					const sourceFileWithReconstructedMethodBodyLogFilePath = this.getLogFilePath(rawLogPath, "sourceFileWithReconstructedMethodBody", sourceFileExtension)
+					await FileUtil.setFileContent(sourceFileWithReconstructedMethodBodyLogFilePath, experimentResult.experiment.output.sourceFileWithReconstructedMethodBody)
+					const sourceFileWithOriginalMethodBodyLogFilePath = this.getLogFilePath(rawLogPath, "sourceFileWithOriginalMethodBody", sourceFileExtension)
+					await FileUtil.setFileContent(sourceFileWithOriginalMethodBodyLogFilePath, experimentResult.experiment.output.sourceFileWithOriginalMethodBody)
+					const sourceFileWithoutOriginalMethodBodyLogFilePath = this.getLogFilePath(rawLogPath, "sourceFileWithoutOriginalMethodBody", sourceFileExtension)
+					await FileUtil.setFileContent(sourceFileWithoutOriginalMethodBodyLogFilePath, experimentResult.experiment.output.methodFileContentWithoutMethodBody)
+					const userPromptLogFilePath = this.getLogFilePath(rawLogPath, "userPrompt", ".md")
+					await FileUtil.setFileContent(userPromptLogFilePath, experimentResult.model.input.userPrompt)
+					const systemPromptLogFilePath = this.getLogFilePath(rawLogPath, "systemPrompt", ".md")
+					await FileUtil.setFileContent(systemPromptLogFilePath, experimentResult.model.input.systemPrompt)
+					const reasoningLogFilePath = this.getLogFilePath(rawLogPath, "reasoning", ".md")
+					await FileUtil.setFileContent(reasoningLogFilePath, experimentResult.model.output.reasoningText || "")
 
-					const sourceFileExtension = path.extname(methodReconstructionResult.methodResolvedFilePath)
-					const logPath: string[] = ["method-reconstruction-experiment", repositoryName, experimentTitle]
-
-					const testSuiteDebugMessageLogFilePath = this.getLogFilePath(logPath, "testSuiteDebugMessage")
-					await FileUtil.setFileContent(testSuiteDebugMessageLogFilePath, repositoryTestSuiteResult.debugMessage)
-
-					const sourceFileWithReconstructedMethodBodyLogFilePath = this.getLogFilePath(logPath, "sourceFileWithReconstructedMethodBody", sourceFileExtension)
-					await FileUtil.setFileContent(sourceFileWithReconstructedMethodBodyLogFilePath, sourceFileWithReconstructedMethodBody)
-
-					const sourceFileWithOriginalMethodBodyLogFilePath = this.getLogFilePath(logPath, "sourceFileWithOriginalMethodBody", sourceFileExtension)
-					await FileUtil.setFileContent(sourceFileWithOriginalMethodBodyLogFilePath, sourceFileWithOriginalMethodBody)
-
-					const sourceFileWithoutOriginalMethodBodyLogFilePath = this.getLogFilePath(logPath, "sourceFileWithoutOriginalMethodBody", sourceFileExtension)
-					await FileUtil.setFileContent(sourceFileWithoutOriginalMethodBodyLogFilePath, methodReconstructionResult.methodFileContentWithoutMethodBody)
-
-					const userPromptLogFilePath = this.getLogFilePath(logPath, "userPrompt", ".md")
-					await FileUtil.setFileContent(userPromptLogFilePath, methodReconstructionResult.userPrompt)
-
-					const systemPromptLogFilePath = this.getLogFilePath(logPath, "systemPrompt", ".md")
-					await FileUtil.setFileContent(systemPromptLogFilePath, methodReconstructionResult.systemPrompt)
-
-					const reasoningLogFilePath = this.getLogFilePath(logPath, "reasoning", ".md")
-					await FileUtil.setFileContent(reasoningLogFilePath, methodReconstructionResult.reasoningText || "")
+					const structuredLogPath: string[] = [...generalLogPath, "structured"]
+					const structuredCSVLogPath = this.getLogFilePath(structuredLogPath, "result", ".csv")
+					await FileUtil.appendCSVRow(structuredCSVLogPath, {
+						repositoryName: methodReconstructionExperimentationOptions.experimentOptions.repositoryName,
+						methodName: experimentResult.experiment.input.methodName,
+						methodResolvedFilePath: experimentResult.experiment.input.methodResolvedFilePath,
+						experimentTitle: experimentResult.experiment.input.experimentTitle,
+						experimentContextSlugs: experimentResult.experiment.input.contextDefinitions.map(definition => definition.slug).join("|"),
+						modelSystemPrompt: JSON.stringify(experimentResult.model.input.systemPrompt),
+						modelUserPrompt: JSON.stringify(experimentResult.model.input.userPrompt),
+						modelReasoningTextResult: JSON.stringify(experimentResult.model.output.reasoningText),
+						modelName: experimentResult.model.input.name,
+						modelReasoningBudget: experimentResult.model.input.reasoningBudget,
+						modelTemperature: experimentResult.model.input.temperature,
+						modelResult: JSON.stringify(experimentResult.model.output.result),
+						isTestSuiteSuccessful: experimentResult.metrics.isTestSuiteSuccessful,
+						isModelResultCompilable: experimentResult.metrics.isModelResultCompilable,
+						relevantTestCaseCount: experimentResult.metrics.relevantTestCaseCount,
+						testSuiteTotalTestCaseCount: experimentResult.metrics.testSuiteTotalTestCaseCount,
+						testSuitePassedTestCaseCount: experimentResult.metrics.testSuitePassedTestCaseCount
+					})
 				})
 			)
 		})

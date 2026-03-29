@@ -1,6 +1,7 @@
 import {
 	ExperimentMethodReconstructionOptions,
-	ExperimentMethodReconstructionResult
+	ExperimentMethodReconstructionResult,
+	ReconstructedMethodExperiment
 } from "@/Protocols/MethodReconstructionExperimenterProtocol"
 import { ExploreContextResult } from "@/Protocols/MethodContextExplorerProtocol"
 import { ContextDefinition } from "@/Protocols/ContextProtocol"
@@ -25,7 +26,10 @@ import RepositoryTestSuiteFailedError from "@/Errors/RepositoryTestSuiteFailedEr
 import { METHOD_FILE_PATH_PLACEHOLDER, methodReconstructionExperimentValidation } from "@/Config/MethodReconstructionExperimentConfig"
 
 class MethodReconstructionExperimenterService {
-	async experiment(options: ExperimentMethodReconstructionOptions): Promise<ExperimentMethodReconstructionResult> {
+	async experiment(
+		options: ExperimentMethodReconstructionOptions,
+		onSingleExperimentExecuted: (result: ReconstructedMethodExperiment) => Promise<void>
+	): Promise<ExperimentMethodReconstructionResult> {
 		const exploredMethodResult = await this.getExploredMethodResult(options)
 		const exploredContextResult = await this.getExploredContextResult(options)
 
@@ -59,7 +63,7 @@ class MethodReconstructionExperimenterService {
 					batchSize: 1,
 					items: options.comparisons,
 					handlerFn: async (experimentComparison) => {
-						let methodContextPermutationExperimentedCount = 0
+						let methodContextExperimentedCount = 0
 
 						const originalTargetContext: ContextDefinition = (exploredMethodContext?.context || [])
 							.filter(context => experimentComparison.context.definitions.some(({ slug }) => slug === context.slug))
@@ -70,19 +74,21 @@ class MethodReconstructionExperimenterService {
 								extractionRule: context.extractionRule as ExtractionRule<DeclarationType>
 							}))
 
-						const targetContextPermutations = ArrayUtil.getValueFactorialPermutations(originalTargetContext)
-						const randomPermutedTargetContexts = Array.from({ length: experimentComparison.context.permutationsCount }).map(() => ArrayUtil.getRandomValue(targetContextPermutations))
+						const allTargetContextExperiments: ContextDefinition[] = []
 
-						const allTargetContextExperiments: ContextDefinition[] = [
-							originalTargetContext,
-							...randomPermutedTargetContexts
-						]
+						if (experimentComparison.context.permutationsCount) {
+							const targetContextPermutations = ArrayUtil.getValueFactorialPermutations(originalTargetContext)
+							const randomPermutedTargetContexts = Array.from({ length: experimentComparison.context.permutationsCount }).map(() => ArrayUtil.getRandomValue(targetContextPermutations))
+							allTargetContextExperiments.push(...randomPermutedTargetContexts)
+						} else {
+							allTargetContextExperiments.push(originalTargetContext)
+						}
 
 						await DataProcessUtil.process({
 							batchSize: 1,
 							items: allTargetContextExperiments,
 							handlerFn: async (targetContext) => {
-								const experimentTitle = `${exploredMethod.name} > ${experimentComparison.title} > P${methodContextPermutationExperimentedCount + 1}`
+								const experimentTitle = `${exploredMethod.name} > ${experimentComparison.title} > ${methodContextExperimentedCount + 1}`
 
 								await TracingUtil.traceTask(`Experiment: ${experimentTitle}`, async (config) => {
 									const noTargetContextFoundForExperiment = experimentComparison.context.definitions.length > 0 && targetContext.length === 0
@@ -143,21 +149,46 @@ class MethodReconstructionExperimenterService {
 												config.setError(new RepositoryTestSuiteFailedError())
 											}
 
-											reconstructedMethodExperiments.push({
-												methodReconstructionResult: {
-													methodName: exploredMethod.name as string,
-													methodResolvedFilePath: exploredMethod.resolvedMethodFilePath,
-													reconstructedMethodBody: methodReconstructionResult.reconstructedMethodBody,
-													methodFileContentWithoutMethodBody: contextLoadResult.methodFileContentWithoutMethodBody,
-													systemPrompt: buildPromptResult.systemPrompt,
-													userPrompt: buildPromptResult.userPrompt,
-													reasoningText: methodReconstructionResult.reasoningText
+											const result: ReconstructedMethodExperiment = {
+												model: {
+													input: {
+														name: experimentComparison.model.name,
+														temperature: experimentComparison.model.temperature,
+														reasoningBudget: experimentComparison.model.reasoningBudget,
+														systemPrompt: buildPromptResult.systemPrompt,
+														userPrompt: buildPromptResult.userPrompt
+													},
+													output: {
+														result: methodReconstructionResult.reconstructedMethodBody,
+														reasoningText: methodReconstructionResult.reasoningText
+													}
 												},
-												experimentTitle,
-												repositoryTestSuiteResult,
-												sourceFileWithReconstructedMethodBody,
-												sourceFileWithOriginalMethodBody
-											})
+												experiment: {
+													input: {
+														experimentTitle,
+														methodName: exploredMethod.name,
+														methodResolvedFilePath: exploredMethod.resolvedMethodFilePath,
+														contextDefinitions: experimentComparison.context.definitions
+													},
+													output: {
+														repositoryTestSuiteResult,
+														sourceFileWithReconstructedMethodBody,
+														sourceFileWithOriginalMethodBody,
+														methodFileContentWithoutMethodBody: contextLoadResult.methodFileContentWithoutMethodBody
+													}
+												},
+												metrics: {
+													isTestSuiteSuccessful: repositoryTestSuiteResult.success,
+													isModelResultCompilable: true,
+													relevantTestCaseCount: targetContext.filter(context => context.slug === "relevant-test-case").length,
+													testSuiteTotalTestCaseCount: repositoryTestSuiteResult.parsedResult?.totalCount,
+													testSuitePassedTestCaseCount: repositoryTestSuiteResult.parsedResult?.passedCount
+												}
+											}
+
+											reconstructedMethodExperiments.push(result)
+
+											await onSingleExperimentExecuted(result)
 										} catch (error) {
 											ErrorHandlerUtil.handle(error)
 											throw error
@@ -171,7 +202,7 @@ class MethodReconstructionExperimenterService {
 									}
 								})
 
-								methodContextPermutationExperimentedCount++
+								methodContextExperimentedCount++
 							}
 						})
 					}

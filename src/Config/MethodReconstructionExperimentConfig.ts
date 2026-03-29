@@ -4,12 +4,17 @@ import { ExperimentComparison } from "@/Protocols/MethodReconstructionExperiment
 
 const DEFAULT_EXPERIMENT_COMPARISONS: ExperimentComparison[] = [
 	{
-		title: "gemini-3.0-flash|temperature-0|relevant-test-case",
+		title: "gemini-3.0-flash|temperature-0|all-relevant-test-case",
+		model: { name: "gemini-3.0-flash", reasoningBudget: 0, temperature: 0 },
+		context: { definitions: [{ slug: "relevant-test-case" }], permutationsCount: 0 }
+	},
+	{
+		title: "gemini-3.0-flash|temperature-0|permuted-relevant-test-case",
 		model: { name: "gemini-3.0-flash", reasoningBudget: 0, temperature: 0 },
 		context: { definitions: [{ slug: "relevant-test-case" }], permutationsCount: 3 }
 	},
 	{
-		title: "gemini-3.0-flash|temperature-0|no-context",
+		title: "gemini-3.0-flash|temperature-0|no-relevant-test-case",
 		model: { name: "gemini-3.0-flash", reasoningBudget: 0, temperature: 0 },
 		context: { definitions: [], permutationsCount: 0 }
 	}

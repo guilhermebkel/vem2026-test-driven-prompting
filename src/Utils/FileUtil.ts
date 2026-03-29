@@ -1,3 +1,4 @@
+import { existsSync } from "fs"
 import fs from "fs/promises"
 import path from "path"
 
@@ -36,6 +37,20 @@ class FileUtil {
 		}
 
 		return folderPathList
+	}
+
+	async appendCSVRow(csvFilePath: string, csvRow: Record<string, string | number | boolean | undefined>): Promise<void> {
+		const csvAlreadyExists = existsSync(csvFilePath)
+
+		const csvHeaders = Object.keys(csvRow)
+
+		if (!csvAlreadyExists) {
+			const headerRow = csvHeaders.join(",") + "\n"
+			await this.setFileContent(csvFilePath, headerRow)
+		}
+
+		const mappedCsvRow = csvHeaders.map(header => csvRow[header] ?? "").join(",") + "\n"
+		await fs.appendFile(csvFilePath, mappedCsvRow, "utf-8")
 	}
 }
 

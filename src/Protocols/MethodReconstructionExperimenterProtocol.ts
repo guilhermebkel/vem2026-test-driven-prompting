@@ -24,19 +24,40 @@ export type ExperimentMethodReconstructionOptions = {
 }
 
 export type ReconstructedMethodExperiment = {
-	methodReconstructionResult: {
-		methodName: string
-		methodResolvedFilePath: string
-		methodFileContentWithoutMethodBody: string
-		reconstructedMethodBody: string
-		systemPrompt: string
-		userPrompt: string
-		reasoningText?: string
+	experiment: {
+		input: {
+			experimentTitle: string
+			methodName: string
+			methodResolvedFilePath: string
+			contextDefinitions: ExperimentComparison["context"]["definitions"]
+		}
+		output: {
+			repositoryTestSuiteResult: RepositoryTestSuiteResult
+			sourceFileWithReconstructedMethodBody: string
+			sourceFileWithOriginalMethodBody: string
+			methodFileContentWithoutMethodBody: string
+		}
 	}
-	experimentTitle: string
-	repositoryTestSuiteResult: RepositoryTestSuiteResult
-	sourceFileWithReconstructedMethodBody: string
-	sourceFileWithOriginalMethodBody: string
+	model: {
+		input: {
+			name: LanguageModelName
+			reasoningBudget: number
+			temperature: number
+			systemPrompt: string
+			userPrompt: string
+		}
+		output: {
+			result: string
+			reasoningText?: string
+		}
+	}
+	metrics: {
+		isTestSuiteSuccessful: boolean
+		isModelResultCompilable: boolean
+		relevantTestCaseCount: number
+		testSuiteTotalTestCaseCount?: number
+		testSuitePassedTestCaseCount?: number
+	}
 }
 
 export type ExperimentMethodReconstructionResult = ReconstructedMethodExperiment[]
