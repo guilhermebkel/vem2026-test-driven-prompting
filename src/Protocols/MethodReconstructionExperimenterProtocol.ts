@@ -55,8 +55,9 @@ export type ReconstructedMethodExperiment = {
 		isTestSuiteSuccessful: boolean
 		isModelResultCompilable: boolean
 		relevantTestCaseCount: number
-		testSuiteTotalTestCaseCount?: number
-		testSuitePassedTestCaseCount?: number
+		testSuiteTotalTestCaseCount: number
+		testSuitePassedTestCaseCount: number
+		testSuiteFailedTestCaseCount: number
 	}
 }
 

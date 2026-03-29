@@ -10,13 +10,9 @@ export type ContextLoadOptions = {
 		declarationType: DeclarationType
 		resolvedFilePath: string
 	}
-	test: {
-		resolvedFilePath: string
-	}
 }
 
 export type ContextLoadResult = {
 	buildedContext: BuildedContext
 	methodFileContentWithoutMethodBody: string
-	methodTestContent: string
 }

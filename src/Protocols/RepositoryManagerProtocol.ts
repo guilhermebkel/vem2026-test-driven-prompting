@@ -1,21 +1,22 @@
 import { RepositoryName } from "@/Protocols/RepositoryProtocol"
 import { DeclarationType } from "@/Protocols/NodeJSCodeParserProtocol"
 
-export type SourceFileChangesReversionOptions = {
-	repositoryName: RepositoryName
+export type RevertSourceFileChangesOptions = {
 	sourceFileWithOriginalMethodBody: string
 	methodResolvedFilePath: string
 }
 
-export type SourceFileWithOriginalMethodBodyOptions = {
-	repositoryName: RepositoryName
+export type GetSourceFileWithOriginalMethodBodyOptions = {
 	methodResolvedFilePath: string
 }
 
-export type SourceFileWithReconstructedMethodBodyOptions = {
-	repositoryName: RepositoryName,
-	reconstructedMethodBody: string,
+export type SetSourceFileWithReconstructedMethodBodyOptions = {
+	reconstructedMethodBody: string
 	methodResolvedFilePath: string
 	methodDeclarationType: DeclarationType
 	methodName: string
+}
+
+export type CheckSourceFileCompilationOptions = {
+	methodResolvedFilePath: string
 }

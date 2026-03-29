@@ -3,19 +3,20 @@ import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
 import TracingUtil from "@/Utils/TracingUtil"
 
 import {
-	SourceFileChangesReversionOptions,
-	SourceFileWithOriginalMethodBodyOptions,
-	SourceFileWithReconstructedMethodBodyOptions
+	CheckSourceFileCompilationOptions,
+	SetSourceFileWithReconstructedMethodBodyOptions,
+	GetSourceFileWithOriginalMethodBodyOptions,
+	RevertSourceFileChangesOptions
 } from "@/Protocols/RepositoryManagerProtocol"
 
 class RepositoryManagerService {
-	async revertSourceFileChanges(options: SourceFileChangesReversionOptions): Promise<void> {
+	async revertSourceFileChanges(options: RevertSourceFileChangesOptions): Promise<void> {
 		return await TracingUtil.traceAction("Reverting source file changes...", async () => {
 			await FileUtil.setFileContent(options.methodResolvedFilePath, options.sourceFileWithOriginalMethodBody)
 		})
 	}
 
-	async getSourceFileWithOriginalMethodBody(options: SourceFileWithOriginalMethodBodyOptions): Promise<string> {
+	async getSourceFileWithOriginalMethodBody(options: GetSourceFileWithOriginalMethodBodyOptions): Promise<string> {
 		return await TracingUtil.traceAction("Retrieving source file with original method body...", async () => {
 			const sourceFileWithOriginalMethodBody = await FileUtil.getFileContent(options.methodResolvedFilePath)
 
@@ -23,7 +24,7 @@ class RepositoryManagerService {
 		})
 	}
 
-	async setSourceFileWithReconstructedMethodBody(options: SourceFileWithReconstructedMethodBodyOptions): Promise<string> {
+	async setSourceFileWithReconstructedMethodBody(options: SetSourceFileWithReconstructedMethodBodyOptions): Promise<string> {
 		return await TracingUtil.traceAction("Replacing source file with reconstructed method body...", async () => {
 			const sourceFileWithReconstructedMethodBody = NodeJSCodeParserUtil.replaceSpecificMethodOrFunctionBodyInSourceFile(
 				options.methodResolvedFilePath,
@@ -34,6 +35,20 @@ class RepositoryManagerService {
 			await FileUtil.setFileContent(options.methodResolvedFilePath, sourceFileWithReconstructedMethodBody)
 
 			return sourceFileWithReconstructedMethodBody
+		})
+	}
+
+	async checkSourceFileCompilation(options: CheckSourceFileCompilationOptions): Promise<boolean> {
+		return await TracingUtil.traceAction("Checking if method can be compiled...", async () => {
+			const project = NodeJSCodeParserUtil.createProject()
+
+			const sourceFile = project.addSourceFileAtPath(options.methodResolvedFilePath)
+
+			const diagnostics = project.getProgram().getSyntacticDiagnostics(sourceFile)
+
+			project.removeSourceFile(sourceFile)
+
+			return diagnostics.length === 0
 		})
 	}
 }

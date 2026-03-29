@@ -8,11 +8,6 @@ export type RepositoryTestSuiteOptions = {
 export type RepositoryTestSuiteResult = {
 	success: boolean
 	debugMessage: string
-	parsedResult?: {
-		totalCount: number
-		passedCount: number
-		failedCount: number
-	}
 }
 
 export type RepositoryTestSuiteCoverageReportOptions = {

@@ -5,7 +5,7 @@ import {
 } from "@/Protocols/MethodReconstructionExperimenterProtocol"
 import { ExploreContextResult } from "@/Protocols/MethodContextExplorerProtocol"
 import { ContextDefinition } from "@/Protocols/ContextProtocol"
-import { ExploreMethodResult } from "@/Protocols/MethodExplorerProtocol"
+import { ExploredMethod, ExploreMethodResult } from "@/Protocols/MethodExplorerProtocol"
 import { DeclarationType, ExtractionRule } from "@/Protocols/NodeJSCodeParserProtocol"
 
 import ErrorHandlerUtil from "@/Utils/ErrorHandlerUtil"
@@ -13,6 +13,8 @@ import TracingUtil from "@/Utils/TracingUtil"
 import FileUtil from "@/Utils/FileUtil"
 import ArrayUtil from "@/Utils/ArrayUtil"
 import DataProcessUtil from "@/Utils/DataProcessUtil"
+import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
+import TestResultHandlerUtil from "@/Utils/TestResultHandlerUtil"
 
 import TestExecutorService from "@/Services/TestExecutorService"
 import ContextLoaderService from "@/Services/ContextLoaderService"
@@ -88,7 +90,13 @@ class MethodReconstructionExperimenterService {
 							batchSize: 1,
 							items: allTargetContextExperiments,
 							handlerFn: async (targetContext) => {
-								const experimentTitle = `${exploredMethod.name} > ${experimentComparison.title} > ${methodContextExperimentedCount + 1}`
+								const experimentTitleParts: string[] = [exploredMethod.name, experimentComparison.title]
+
+								if (allTargetContextExperiments.length > 1) {
+									experimentTitleParts.push(`${methodContextExperimentedCount + 1}`)
+								}
+
+								const experimentTitle = experimentTitleParts.join(" > ")
 
 								await TracingUtil.traceTask(`Experiment: ${experimentTitle}`, async (config) => {
 									const noTargetContextFoundForExperiment = experimentComparison.context.definitions.length > 0 && targetContext.length === 0
@@ -97,8 +105,7 @@ class MethodReconstructionExperimenterService {
 										config.setOutput("No context was found for this experiment. Skipping...")
 									} else {
 										const sourceFileWithOriginalMethodBody = await RepositoryManagerService.getSourceFileWithOriginalMethodBody({
-											methodResolvedFilePath: exploredMethod.resolvedMethodFilePath,
-											repositoryName: options.repositoryName
+											methodResolvedFilePath: exploredMethod.resolvedMethodFilePath
 										})
 
 										try {
@@ -109,17 +116,13 @@ class MethodReconstructionExperimenterService {
 													declarationType: exploredMethod.declarationType as DeclarationType,
 													resolvedFilePath: exploredMethod.resolvedMethodFilePath
 												},
-												repositoryName: options.repositoryName,
-												test: {
-													resolvedFilePath: exploredMethod.resolvedTestFilePaths[0] as string
-												}
+												repositoryName: options.repositoryName
 											})
 
 											const buildPromptResult = PromptBuilderService.buildPrompt({
 												buildedContext: contextLoadResult.buildedContext,
 												methodFileContentWithoutMethodBody: contextLoadResult.methodFileContentWithoutMethodBody,
-												methodName: exploredMethod.name as string,
-												methodTestContent: contextLoadResult.methodTestContent
+												methodName: exploredMethod.name as string
 											})
 
 											const methodReconstructionResult = await LLMService.reconstructMethod({
@@ -136,8 +139,11 @@ class MethodReconstructionExperimenterService {
 												methodDeclarationType: exploredMethod.declarationType as DeclarationType,
 												methodName: exploredMethod.name as string,
 												methodResolvedFilePath: exploredMethod.resolvedMethodFilePath,
-												repositoryName: options.repositoryName,
 												reconstructedMethodBody: methodReconstructionResult.reconstructedMethodBody
+											})
+
+											const isReconstructedMethodCompilable = await RepositoryManagerService.checkSourceFileCompilation({
+												methodResolvedFilePath: exploredMethod.resolvedMethodFilePath
 											})
 
 											const repositoryTestSuiteResult = await TestExecutorService.runRepositoryTestSuite({
@@ -148,6 +154,10 @@ class MethodReconstructionExperimenterService {
 											if (!repositoryTestSuiteResult.success) {
 												config.setError(new RepositoryTestSuiteFailedError())
 											}
+
+											const totalTestCasesCount = await this.getExploredMethodTotalTestCasesCount(exploredMethod)
+											const failedTestCasesCount = TestResultHandlerUtil.extractFailedTestCaseCountFromDebugMessage(repositoryTestSuiteResult.debugMessage)
+											const passedTestCasesCount = totalTestCasesCount - failedTestCasesCount
 
 											const result: ReconstructedMethodExperiment = {
 												model: {
@@ -179,10 +189,11 @@ class MethodReconstructionExperimenterService {
 												},
 												metrics: {
 													isTestSuiteSuccessful: repositoryTestSuiteResult.success,
-													isModelResultCompilable: true,
+													isModelResultCompilable: isReconstructedMethodCompilable,
 													relevantTestCaseCount: targetContext.filter(context => context.slug === "relevant-test-case").length,
-													testSuiteTotalTestCaseCount: repositoryTestSuiteResult.parsedResult?.totalCount,
-													testSuitePassedTestCaseCount: repositoryTestSuiteResult.parsedResult?.passedCount
+													testSuiteTotalTestCaseCount: totalTestCasesCount,
+													testSuitePassedTestCaseCount: passedTestCasesCount,
+													testSuiteFailedTestCaseCount: failedTestCasesCount
 												}
 											}
 
@@ -195,7 +206,6 @@ class MethodReconstructionExperimenterService {
 										} finally {
 											await RepositoryManagerService.revertSourceFileChanges({
 												methodResolvedFilePath: exploredMethod.resolvedMethodFilePath,
-												repositoryName: options.repositoryName,
 												sourceFileWithOriginalMethodBody
 											})
 										}
@@ -235,6 +245,22 @@ class MethodReconstructionExperimenterService {
 		})
 
 		return exploreMethodResult
+	}
+
+	private async getExploredMethodTotalTestCasesCount(exploredMethod: ExploredMethod): Promise<number> {
+		const exploredMethodTotalTestCasesCount = await TracingUtil.traceAction("Load explored method total test cases count...", async () => {
+			const exploredMethodMainResolvedTestFilePath = exploredMethod.resolvedTestFilePaths[0]!
+			const project = NodeJSCodeParserUtil.createProject()
+			const sourceFile = project.addSourceFileAtPath(exploredMethodMainResolvedTestFilePath)
+
+			const testCases = NodeJSCodeParserUtil.extractNodes(sourceFile, [{ type: "test-case" }])
+
+			project.removeSourceFile(sourceFile)
+
+			return testCases.length
+		}) as number
+
+		return exploredMethodTotalTestCasesCount
 	}
 }
 

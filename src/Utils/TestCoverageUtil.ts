@@ -1,9 +1,9 @@
-import { NodeType } from "@/Protocols/NodeJSCodeParserProtocol"
+import { DeclarationType, NodeType } from "@/Protocols/NodeJSCodeParserProtocol"
 import { MethodTestCoverageDetails } from "@/Protocols/TestCoverageProtocol"
 import { CoverageReport, FileCoverageInfo } from "@/Protocols/TestExecutorProtocol"
 
 class TestCoverageUtil {
-	getMethodTestCoverageDetails(methodNode: NodeType, coverageReport: CoverageReport): MethodTestCoverageDetails {
+	getMethodTestCoverageDetails(methodNode: NodeType<DeclarationType>, coverageReport: CoverageReport): MethodTestCoverageDetails {
 		const methodFilePath = methodNode.getSourceFile().getFilePath()
 		const fileCoverageInfo = coverageReport[methodFilePath]
 
@@ -22,7 +22,7 @@ class TestCoverageUtil {
 		}
 	}
 
-	private calculateStatementCoveragePercentage(methodNode: NodeType, fileCoverageInfo: FileCoverageInfo): number {
+	private calculateStatementCoveragePercentage(methodNode: NodeType<DeclarationType>, fileCoverageInfo: FileCoverageInfo): number {
 		const methodStartLine = methodNode.getStartLineNumber()
 		const methodEndLine = methodNode.getEndLineNumber()
 
@@ -51,7 +51,7 @@ class TestCoverageUtil {
 		return statementCoveragePercentage
 	}
 
-	private calculateLineCoveragePercentage(methodNode: NodeType, fileCoverageInfo: FileCoverageInfo): number {
+	private calculateLineCoveragePercentage(methodNode: NodeType<DeclarationType>, fileCoverageInfo: FileCoverageInfo): number {
 		const methodStartLine = methodNode.getStartLineNumber()
 		const methodEndLine = methodNode.getEndLineNumber()
 
@@ -82,7 +82,7 @@ class TestCoverageUtil {
 		return lineCoveragePercentage
 	}
 
-	private calculateBranchCoveragePercentage(methodNode: NodeType, fileCoverageInfo: FileCoverageInfo): number {
+	private calculateBranchCoveragePercentage(methodNode: NodeType<DeclarationType>, fileCoverageInfo: FileCoverageInfo): number {
 		const methodStartLine = methodNode.getStartLineNumber()
 		const methodEndLine = methodNode.getEndLineNumber()
 

@@ -52,7 +52,8 @@ class LogService {
 						isModelResultCompilable: experimentResult.metrics.isModelResultCompilable,
 						relevantTestCaseCount: experimentResult.metrics.relevantTestCaseCount,
 						testSuiteTotalTestCaseCount: experimentResult.metrics.testSuiteTotalTestCaseCount,
-						testSuitePassedTestCaseCount: experimentResult.metrics.testSuitePassedTestCaseCount
+						testSuitePassedTestCaseCount: experimentResult.metrics.testSuitePassedTestCaseCount,
+						testSuiteFailedTestCaseCount: experimentResult.metrics.testSuiteFailedTestCaseCount
 					})
 				})
 			)
