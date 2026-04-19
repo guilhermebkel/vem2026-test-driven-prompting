@@ -1,22 +1,15 @@
 import {
-	MethodReconstructionExperimentationOptions,
-	MethodReconstructionExperimentationResult
+	MethodReconstructionExperimentationOptions
 } from "@/Protocols/ExperimentationProtocol"
 
 import LogService from "@/Services/LogService"
 import MethodReconstructionExperimenterService from "@/Services/MethodReconstructionExperimenterService"
 
 class ExperimentationModule {
-	async experimentMethodReconstruction(options: MethodReconstructionExperimentationOptions): Promise<MethodReconstructionExperimentationResult> {
-		const experimentResult = await MethodReconstructionExperimenterService.experiment(options.experimentOptions, async (result) => {
+	async experimentMethodReconstruction(options: MethodReconstructionExperimentationOptions): Promise<void> {
+		await MethodReconstructionExperimenterService.experiment(options.experimentOptions, async (result) => {
 			await LogService.saveMethodReconstructionExperimentLogs(options, { experimentResult: [result] })
 		})
-
-		const methodExplorationResult: MethodReconstructionExperimentationResult = {
-			experimentResult
-		}
-
-		return methodExplorationResult
 	}
 }
 

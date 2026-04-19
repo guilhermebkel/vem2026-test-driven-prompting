@@ -69,10 +69,10 @@ export const METHOD_FILE_PATH_PLACEHOLDER = "<method_file_path>"
 
 export const methodReconstructionExperimentValidation = {
 	hasMinimumContextCount: (exploredContext?: ExploredContext): boolean => (
-		Number(exploredContext?.context?.length) >= 3
+		Number(exploredContext?.context?.length) >= 5
 	),
 	hasReachedMaximumMethodExperimentedCount: (methodExperimentedCount: number): boolean => (
-		methodExperimentedCount >= 1
+		methodExperimentedCount >= 5
 	)
 }
 

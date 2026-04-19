@@ -19,7 +19,7 @@ class LogService {
 
 					const rawLogPath: string[] = [...generalLogPath, "raw", experimentResult.experiment.input.experimentDescription]
 					const testSuiteDebugMessageLogFilePath = this.getLogFilePath(rawLogPath, "testSuiteDebugMessage")
-					await FileUtil.setFileContent(testSuiteDebugMessageLogFilePath, experimentResult.experiment.output.repositoryTestSuiteResult.debugMessage)
+					await FileUtil.setFileContent(testSuiteDebugMessageLogFilePath, experimentResult.experiment.output.repositoryTestSuiteResultDebugMessage)
 					const sourceFileWithReconstructedMethodBodyLogFilePath = this.getLogFilePath(rawLogPath, "sourceFileWithReconstructedMethodBody", sourceFileExtension)
 					await FileUtil.setFileContent(sourceFileWithReconstructedMethodBodyLogFilePath, experimentResult.experiment.output.sourceFileWithReconstructedMethodBody)
 					const sourceFileWithOriginalMethodBodyLogFilePath = this.getLogFilePath(rawLogPath, "sourceFileWithOriginalMethodBody", sourceFileExtension)
@@ -52,7 +52,7 @@ class LogService {
 						modelReasoningBudget: experimentResult.model.input.reasoningBudget,
 						modelTemperature: experimentResult.model.input.temperature,
 						modelResult: JSON.stringify(experimentResult.model.output.result),
-						testSuiteExecutionLog: JSON.stringify(experimentResult.experiment.output.repositoryTestSuiteResult.debugMessage),
+						testSuiteExecutionLog: JSON.stringify(experimentResult.experiment.output.repositoryTestSuiteResultDebugMessage),
 						isTestSuiteSuccessful: experimentResult.metrics.isTestSuiteSuccessful,
 						isModelResultCompilable: experimentResult.metrics.isModelResultCompilable,
 						relevantTestCaseCount: experimentResult.metrics.relevantTestCaseCount,

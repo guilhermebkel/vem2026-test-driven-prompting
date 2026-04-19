@@ -1,7 +1,6 @@
 import {
 	ExperimentComparison,
 	ExperimentMethodReconstructionOptions,
-	ExperimentMethodReconstructionResult,
 	ReconstructedMethodExperiment
 } from "@/Protocols/MethodReconstructionExperimenterProtocol"
 import { ExploreContextResult } from "@/Protocols/MethodContextExplorerProtocol"
@@ -25,6 +24,7 @@ import RepositoryManagerService from "@/Services/RepositoryManagerService"
 import LogService from "@/Services/LogService"
 
 import RepositoryTestSuiteFailedError from "@/Errors/RepositoryTestSuiteFailedError"
+import ReconstructedMethodNotCompilableError from "@/Errors/ReconstructedMethodNotCompilableError"
 
 import { METHOD_FILE_PATH_PLACEHOLDER, methodReconstructionExperimentValidation } from "@/Config/MethodReconstructionExperimentConfig"
 
@@ -32,11 +32,9 @@ class MethodReconstructionExperimenterService {
 	async experiment(
 		options: ExperimentMethodReconstructionOptions,
 		onSingleExperimentExecuted: (result: ReconstructedMethodExperiment) => Promise<void>
-	): Promise<ExperimentMethodReconstructionResult> {
+	): Promise<void> {
 		const exploredMethodResult = await this.getExploredMethodResult(options)
 		const exploredContextResult = await this.getExploredContextResult(options)
-
-		const reconstructedMethodExperiments: ExperimentMethodReconstructionResult = []
 
 		let methodExperimentedCount = 0
 
@@ -132,29 +130,11 @@ class MethodReconstructionExperimenterService {
 												userPrompt: buildPromptResult.userPrompt
 											})
 
-											const sourceFileWithReconstructedMethodBody = await RepositoryManagerService.setSourceFileWithReconstructedMethodBody({
-												methodDeclarationType: exploredMethod.declarationType as DeclarationType,
-												methodName: exploredMethod.name as string,
-												methodResolvedFilePath: exploredMethod.resolvedMethodFilePath,
-												reconstructedMethodBody: methodReconstructionResult.reconstructedMethodBody
-											})
-
 											const isReconstructedMethodCompilable = await RepositoryManagerService.checkSourceFileCompilation({
 												methodResolvedFilePath: exploredMethod.resolvedMethodFilePath
 											})
 
-											const repositoryTestSuiteResult = await TestExecutorService.runRepositoryTestSuite({
-												repositoryName: options.repositoryName,
-												repositoryTestSuiteCommand: options.repositorySingleFileTestSuiteCommand.replace(METHOD_FILE_PATH_PLACEHOLDER, exploredMethod.resolvedMethodFilePath)
-											})
-
-											if (!repositoryTestSuiteResult.success) {
-												config.setError(new RepositoryTestSuiteFailedError())
-											}
-
 											const testSuiteTotalTestCaseCount = await this.getExploredMethodTotalTestCaseCount(exploredMethod)
-											const testSuiteFailedTestCaseCount = TestResultHandlerUtil.extractFailedTestCaseCountFromDebugMessage(repositoryTestSuiteResult.debugMessage)
-											const testSuitePassedTestCaseCount = testSuiteTotalTestCaseCount - testSuiteFailedTestCaseCount
 											const relevantTestCaseCount = targetContext.filter(context => context.slug === "relevant-test-case").length
 
 											const result: ReconstructedMethodExperiment = {
@@ -183,23 +163,48 @@ class MethodReconstructionExperimenterService {
 														contextDefinitions: experimentComparison.context.definitions
 													},
 													output: {
-														repositoryTestSuiteResult,
-														sourceFileWithReconstructedMethodBody,
 														sourceFileWithOriginalMethodBody,
-														methodFileContentWithoutMethodBody: contextLoadResult.methodFileContentWithoutMethodBody
+														methodFileContentWithoutMethodBody: contextLoadResult.methodFileContentWithoutMethodBody,
+														repositoryTestSuiteResultDebugMessage: "",
+														sourceFileWithReconstructedMethodBody: ""
 													}
 												},
 												metrics: {
-													isTestSuiteSuccessful: repositoryTestSuiteResult.success,
 													isModelResultCompilable: isReconstructedMethodCompilable,
 													relevantTestCaseCount,
 													testSuiteTotalTestCaseCount,
-													testSuitePassedTestCaseCount,
-													testSuiteFailedTestCaseCount
+													isTestSuiteSuccessful: false,
+													testSuitePassedTestCaseCount: 0,
+													testSuiteFailedTestCaseCount: testSuiteTotalTestCaseCount
 												}
 											}
 
-											reconstructedMethodExperiments.push(result)
+											if (isReconstructedMethodCompilable) {
+												result.experiment.output.sourceFileWithReconstructedMethodBody = await RepositoryManagerService.setSourceFileWithReconstructedMethodBody({
+													methodDeclarationType: exploredMethod.declarationType as DeclarationType,
+													methodName: exploredMethod.name as string,
+													methodResolvedFilePath: exploredMethod.resolvedMethodFilePath,
+													reconstructedMethodBody: methodReconstructionResult.reconstructedMethodBody
+												})
+
+												const repositoryTestSuiteResult = await TestExecutorService.runRepositoryTestSuite({
+													repositoryName: options.repositoryName,
+													repositoryTestSuiteCommand: options.repositorySingleFileTestSuiteCommand.replace(METHOD_FILE_PATH_PLACEHOLDER, exploredMethod.resolvedMethodFilePath)
+												})
+
+												if (!repositoryTestSuiteResult.success) {
+													config.setError(new RepositoryTestSuiteFailedError())
+												}
+
+												const testSuiteFailedTestCaseCount = TestResultHandlerUtil.extractFailedTestCaseCountFromDebugMessage(repositoryTestSuiteResult.debugMessage)
+
+												result.experiment.output.repositoryTestSuiteResultDebugMessage = repositoryTestSuiteResult.debugMessage
+												result.metrics.isTestSuiteSuccessful = repositoryTestSuiteResult.success
+												result.metrics.testSuitePassedTestCaseCount = testSuiteTotalTestCaseCount - testSuiteFailedTestCaseCount
+												result.metrics.testSuiteFailedTestCaseCount = testSuiteFailedTestCaseCount
+											} else {
+												config.setError(new ReconstructedMethodNotCompilableError())
+											}
 
 											await onSingleExperimentExecuted(result)
 										} catch (error) {
@@ -223,8 +228,6 @@ class MethodReconstructionExperimenterService {
 				methodExperimentedCount++
 			}
 		})
-
-		return reconstructedMethodExperiments
 	}
 
 	private async getExploredMethodResult(options: ExperimentMethodReconstructionOptions): Promise<ExploreMethodResult> {

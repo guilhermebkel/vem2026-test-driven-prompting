@@ -40,15 +40,19 @@ class RepositoryManagerService {
 
 	async checkSourceFileCompilation(options: CheckSourceFileCompilationOptions): Promise<boolean> {
 		return await TracingUtil.traceAction("Checking if method can be compiled...", async () => {
-			const project = NodeJSCodeParserUtil.createProject()
+			try {
+				const project = NodeJSCodeParserUtil.createProject()
 
-			const sourceFile = project.addSourceFileAtPath(options.methodResolvedFilePath)
+				const sourceFile = project.addSourceFileAtPath(options.methodResolvedFilePath)
 
-			const syntacticDiagnostics = project.getProgram().getSyntacticDiagnostics(sourceFile)
+				const syntacticDiagnostics = project.getProgram().getSyntacticDiagnostics(sourceFile)
 
-			project.removeSourceFile(sourceFile)
+				project.removeSourceFile(sourceFile)
 
-			return syntacticDiagnostics.length === 0
+				return syntacticDiagnostics.length === 0
+			} catch {
+				return false
+			}
 		})
 	}
 }

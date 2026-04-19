@@ -1,7 +1,6 @@
 import { LanguageModelName } from "@/Protocols/ModelProtocol"
 import { ContextDefinitionItem } from "@/Protocols/ContextProtocol"
 import { RepositoryName } from "@/Protocols/RepositoryProtocol"
-import { RepositoryTestSuiteResult } from "@/Protocols/TestExecutorProtocol"
 
 export type ExperimentComparison = {
 	title: string
@@ -36,7 +35,7 @@ export type ReconstructedMethodExperiment = {
 			contextDefinitions: ExperimentComparison["context"]["definitions"]
 		}
 		output: {
-			repositoryTestSuiteResult: RepositoryTestSuiteResult
+			repositoryTestSuiteResultDebugMessage: string
 			sourceFileWithReconstructedMethodBody: string
 			sourceFileWithOriginalMethodBody: string
 			methodFileContentWithoutMethodBody: string
