@@ -12,7 +12,7 @@ class LLMService {
 
 			const { text: rawReconstructedMethodBody, reasoningText } = await generateText({
 				model: languageModel,
-				abortSignal: AbortSignal.timeout(300_000),
+				abortSignal: AbortSignal.timeout(180_000),
 				messages: [
 					{
 						role: "system",
@@ -25,12 +25,7 @@ class LLMService {
 				],
 				temperature: options.model.temperature,
 				providerOptions: {
-					google: {
-						thinkingConfig: {
-							thinkingBudget: options.model.reasoningBudget,
-							includeThoughts: options.model.reasoningBudget > 0
-						}
-					}
+					...ModelUtil.getDefaultReasoningProviderOptions(options.model.name)
 				}
 			})
 

@@ -5,62 +5,32 @@ import { ExperimentComparison } from "@/Protocols/MethodReconstructionExperiment
 const DEFAULT_EXPERIMENT_COMPARISONS: ExperimentComparison[] = [
 	{
 		title: "all-relevant-test-case",
-		model: { name: "gemini-2.5-flash", reasoningBudget: 0, temperature: 0 },
+		model: { name: "gemini-2.5-flash", temperature: 0 },
 		context: { definitions: [{ slug: "relevant-test-case" }], isPermutationEnabled: false }
 	},
 	{
 		title: "permuted-relevant-test-case",
-		model: { name: "gemini-2.5-flash", reasoningBudget: 0, temperature: 0 },
+		model: { name: "gemini-2.5-flash", temperature: 0 },
 		context: { definitions: [{ slug: "relevant-test-case" }], isPermutationEnabled: true }
 	},
 	{
 		title: "no-relevant-test-case",
-		model: { name: "gemini-2.5-flash", reasoningBudget: 0, temperature: 0 },
+		model: { name: "gemini-2.5-flash", temperature: 0 },
 		context: { definitions: [], isPermutationEnabled: false }
 	},
 	{
 		title: "all-relevant-test-case",
-		model: { name: "gemini-2.5-pro", reasoningBudget: 2000, temperature: 0 },
+		model: { name: "gemini-3.0-flash", temperature: 0 },
 		context: { definitions: [{ slug: "relevant-test-case" }], isPermutationEnabled: false }
 	},
 	{
 		title: "permuted-relevant-test-case",
-		model: { name: "gemini-2.5-pro", reasoningBudget: 2000, temperature: 0 },
+		model: { name: "gemini-3.0-flash", temperature: 0 },
 		context: { definitions: [{ slug: "relevant-test-case" }], isPermutationEnabled: true }
 	},
 	{
 		title: "no-relevant-test-case",
-		model: { name: "gemini-2.5-pro", reasoningBudget: 2000, temperature: 0 },
-		context: { definitions: [], isPermutationEnabled: false }
-	},
-	{
-		title: "all-relevant-test-case",
-		model: { name: "gemini-3.0-flash", reasoningBudget: 0, temperature: 0 },
-		context: { definitions: [{ slug: "relevant-test-case" }], isPermutationEnabled: false }
-	},
-	{
-		title: "permuted-relevant-test-case",
-		model: { name: "gemini-3.0-flash", reasoningBudget: 0, temperature: 0 },
-		context: { definitions: [{ slug: "relevant-test-case" }], isPermutationEnabled: true }
-	},
-	{
-		title: "no-relevant-test-case",
-		model: { name: "gemini-3.0-flash", reasoningBudget: 0, temperature: 0 },
-		context: { definitions: [], isPermutationEnabled: false }
-	},
-	{
-		title: "all-relevant-test-case",
-		model: { name: "gemini-3.0-pro", reasoningBudget: 2000, temperature: 0 },
-		context: { definitions: [{ slug: "relevant-test-case" }], isPermutationEnabled: false }
-	},
-	{
-		title: "permuted-relevant-test-case",
-		model: { name: "gemini-3.0-pro", reasoningBudget: 2000, temperature: 0 },
-		context: { definitions: [{ slug: "relevant-test-case" }], isPermutationEnabled: true }
-	},
-	{
-		title: "no-relevant-test-case",
-		model: { name: "gemini-3.0-pro", reasoningBudget: 2000, temperature: 0 },
+		model: { name: "gemini-3.0-flash", temperature: 0 },
 		context: { definitions: [], isPermutationEnabled: false }
 	}
 ]
@@ -89,7 +59,7 @@ export const methodReconstructionExperimentConfig: MethodReconstructionExperimen
 		experimentOptions: {
 			repositoryName: "directus",
 			repositoryTestSuiteCommand: "pnpm --workspace-root test",
-			repositorySingleFileTestSuiteCommand: `pnpm -r --parallel exec sh -c 'npx vitest related ${METHOD_FILE_PATH_PLACEHOLDER} --run'  `,
+			repositorySingleFileTestSuiteCommand: `pnpm -r --parallel exec sh -c 'npx vitest related ${METHOD_FILE_PATH_PLACEHOLDER} --run'`,
 			comparisons: DEFAULT_EXPERIMENT_COMPARISONS
 		}
 	}

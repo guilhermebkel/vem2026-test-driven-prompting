@@ -12,7 +12,10 @@ class TestResultHandlerUtil {
 	}
 
 	describeTestSuiteFailureReason(debugMessage: string): FailureReason | null {
-		const errorMatches = debugMessage.match(/\b\w*Error\b/g)
+		const testCaseFailureDebugMessageTextBlocks = debugMessage.match(/FAIL[\s\S]*?\[\d+\/\d+\]/g) || []
+		const allTestCaseFailureDebugMessages = testCaseFailureDebugMessageTextBlocks.join("\n")
+
+		const errorMatches = allTestCaseFailureDebugMessages.match(/\b\w+Error(?=:)/g)
 
 		if (!errorMatches) {
 			return null

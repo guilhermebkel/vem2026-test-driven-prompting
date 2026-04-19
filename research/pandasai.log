@@ -14818,11 +14818,11 @@ result = {'type': 'plot', 'value': '/home/guilhermebkel/Personal/tcc-context-imp
     - name: experimentDescription
       type: object
       samples:
-      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-pro|reasoning-budget-2000|temperature-0
+      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-pro|temperature-0
         [4/5]
-      - areIntervalsOverlapping > all-relevant-test-case > model-gemini-3.0-pro|reasoning-budget-2000|temperature-0
+      - areIntervalsOverlapping > all-relevant-test-case > model-gemini-3.0-pro|temperature-0
         [1/1]
-      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-flash|reasoning-budget-0|temperature-0
+      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-flash|temperature-0
         [2/5]
     - name: experimentContextItemCount
       type: int64
@@ -15108,11 +15108,11 @@ Generate python code and return full updated code:
     - name: experimentDescription
       type: object
       samples:
-      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-pro|reasoning-budget-2000|temperature-0
+      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-pro|temperature-0
         [4/5]
-      - areIntervalsOverlapping > all-relevant-test-case > model-gemini-3.0-pro|reasoning-budget-2000|temperature-0
+      - areIntervalsOverlapping > all-relevant-test-case > model-gemini-3.0-pro|temperature-0
         [1/1]
-      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-flash|reasoning-budget-0|temperature-0
+      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-flash|temperature-0
         [2/5]
     - name: experimentContextItemCount
       type: int64
@@ -15449,11 +15449,11 @@ result = {'type': 'dataframe', 'value': success_rate_per_context_model}
     - name: experimentDescription
       type: object
       samples:
-      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-pro|reasoning-budget-2000|temperature-0
+      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-pro|temperature-0
         [4/5]
-      - areIntervalsOverlapping > all-relevant-test-case > model-gemini-3.0-pro|reasoning-budget-2000|temperature-0
+      - areIntervalsOverlapping > all-relevant-test-case > model-gemini-3.0-pro|temperature-0
         [1/1]
-      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-flash|reasoning-budget-0|temperature-0
+      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-flash|temperature-0
         [2/5]
     - name: experimentContextItemCount
       type: int64
@@ -15739,11 +15739,11 @@ Generate python code and return full updated code:
     - name: experimentDescription
       type: object
       samples:
-      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-pro|reasoning-budget-2000|temperature-0
+      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-pro|temperature-0
         [4/5]
-      - areIntervalsOverlapping > all-relevant-test-case > model-gemini-3.0-pro|reasoning-budget-2000|temperature-0
+      - areIntervalsOverlapping > all-relevant-test-case > model-gemini-3.0-pro|temperature-0
         [1/1]
-      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-flash|reasoning-budget-0|temperature-0
+      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-flash|temperature-0
         [2/5]
     - name: experimentContextItemCount
       type: int64
@@ -16117,11 +16117,11 @@ result = {'type': 'plot', 'value': output_filename}
     - name: experimentDescription
       type: object
       samples:
-      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-pro|reasoning-budget-2000|temperature-0
+      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-pro|temperature-0
         [4/5]
-      - areIntervalsOverlapping > all-relevant-test-case > model-gemini-3.0-pro|reasoning-budget-2000|temperature-0
+      - areIntervalsOverlapping > all-relevant-test-case > model-gemini-3.0-pro|temperature-0
         [1/1]
-      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-flash|reasoning-budget-0|temperature-0
+      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-flash|temperature-0
         [2/5]
     - name: experimentContextItemCount
       type: int64
@@ -16407,11 +16407,11 @@ Generate python code and return full updated code:
     - name: experimentDescription
       type: object
       samples:
-      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-pro|reasoning-budget-2000|temperature-0
+      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-pro|temperature-0
         [4/5]
-      - areIntervalsOverlapping > all-relevant-test-case > model-gemini-3.0-pro|reasoning-budget-2000|temperature-0
+      - areIntervalsOverlapping > all-relevant-test-case > model-gemini-3.0-pro|temperature-0
         [1/1]
-      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-flash|reasoning-budget-0|temperature-0
+      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-flash|temperature-0
         [2/5]
     - name: experimentContextItemCount
       type: int64
@@ -16788,11 +16788,11 @@ result = {'type': 'plot', 'value': output_file}
     - name: experimentDescription
       type: object
       samples:
-      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-pro|reasoning-budget-2000|temperature-0
+      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-pro|temperature-0
         [4/5]
-      - areIntervalsOverlapping > all-relevant-test-case > model-gemini-3.0-pro|reasoning-budget-2000|temperature-0
+      - areIntervalsOverlapping > all-relevant-test-case > model-gemini-3.0-pro|temperature-0
         [1/1]
-      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-flash|reasoning-budget-0|temperature-0
+      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-flash|temperature-0
         [2/5]
     - name: experimentContextItemCount
       type: int64
@@ -17078,11 +17078,11 @@ Generate python code and return full updated code:
     - name: experimentDescription
       type: object
       samples:
-      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-pro|reasoning-budget-2000|temperature-0
+      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-pro|temperature-0
         [4/5]
-      - areIntervalsOverlapping > all-relevant-test-case > model-gemini-3.0-pro|reasoning-budget-2000|temperature-0
+      - areIntervalsOverlapping > all-relevant-test-case > model-gemini-3.0-pro|temperature-0
         [1/1]
-      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-flash|reasoning-budget-0|temperature-0
+      - areIntervalsOverlapping > permuted-relevant-test-case > model-gemini-2.5-flash|temperature-0
         [2/5]
     - name: experimentContextItemCount
       type: int64

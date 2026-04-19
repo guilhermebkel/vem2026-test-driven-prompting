@@ -128,8 +128,7 @@ class MethodReconstructionExperimenterService {
 											const methodReconstructionResult = await LLMService.reconstructMethod({
 												model: {
 													name: experimentComparison.model.name,
-													temperature: experimentComparison.model.temperature,
-													reasoningBudget: experimentComparison.model.reasoningBudget
+													temperature: experimentComparison.model.temperature
 												},
 												systemPrompt: buildPromptResult.systemPrompt,
 												userPrompt: buildPromptResult.userPrompt
@@ -143,7 +142,6 @@ class MethodReconstructionExperimenterService {
 													input: {
 														name: experimentComparison.model.name,
 														temperature: experimentComparison.model.temperature,
-														reasoningBudget: experimentComparison.model.reasoningBudget,
 														systemPrompt: buildPromptResult.systemPrompt,
 														userPrompt: buildPromptResult.userPrompt
 													},
@@ -285,15 +283,9 @@ class MethodReconstructionExperimenterService {
 		return await TracingUtil.traceAction("Load explored method target context permutations...", async () => {
 			const contextPermutations: ContextDefinition[] = []
 
-			let pendingPermutationsCount = originalTargetContext.length
-
-			while (pendingPermutationsCount > 0) {
-				const targetContextPermutations = ArrayUtil.getValuePermutations(originalTargetContext, pendingPermutationsCount)
-				const randomPermutedTargetContexts = ArrayUtil.getRandomValue(targetContextPermutations)
-
+			for (let pendingPermutationsCount = originalTargetContext.length; pendingPermutationsCount > 0; pendingPermutationsCount--) {
+				const randomPermutedTargetContexts = ArrayUtil.getRandomPermutation(originalTargetContext, pendingPermutationsCount)
 				contextPermutations.push(randomPermutedTargetContexts)
-
-				pendingPermutationsCount--
 			}
 
 			return contextPermutations
@@ -304,7 +296,6 @@ class MethodReconstructionExperimenterService {
 		const subTitleParams: string[] = []
 
 		subTitleParams.push(`model-${experimentComparison.model.name}`)
-		subTitleParams.push(`reasoning-budget-${experimentComparison.model.reasoningBudget}`)
 		subTitleParams.push(`temperature-${experimentComparison.model.temperature}`)
 
 		return subTitleParams.join("|")

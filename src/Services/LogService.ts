@@ -70,7 +70,6 @@ class LogService {
 						modelUserPrompt: JSON.stringify(experimentResult.model.input.userPrompt),
 						modelReasoningTextResult: JSON.stringify(experimentResult.model.output.reasoningText || ""),
 						modelName: experimentResult.model.input.name,
-						modelReasoningBudget: experimentResult.model.input.reasoningBudget,
 						modelTemperature: experimentResult.model.input.temperature,
 						modelResult: JSON.stringify(experimentResult.model.output.result),
 						testSuiteExecutionLog: JSON.stringify(experimentResult.experiment.output.repositoryTestSuiteResultDebugMessage),

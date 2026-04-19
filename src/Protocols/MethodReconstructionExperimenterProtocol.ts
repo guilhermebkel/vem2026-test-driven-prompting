@@ -6,7 +6,6 @@ export type ExperimentComparison = {
 	title: string
 	model: {
 		name: LanguageModelName
-		reasoningBudget: number
 		temperature: number
 	}
 	context: {
@@ -44,7 +43,6 @@ export type ReconstructedMethodExperiment = {
 	model: {
 		input: {
 			name: LanguageModelName
-			reasoningBudget: number
 			temperature: number
 			systemPrompt: string
 			userPrompt: string

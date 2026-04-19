@@ -14,6 +14,45 @@ class ModelUtil {
 
 		return languageModelNameToLanguageModel[modelName]
 	}
+
+	getDefaultReasoningProviderOptions(modelName: LanguageModelName): object {
+		const languageModelNameToDefaultReasoningProviderOptions: Record<LanguageModelName, object> = {
+			"gemini-2.5-flash": {
+				google: {
+					thinkingConfig: {
+						thinkingBudget: 0,
+						includeThoughts: false
+					}
+				}
+			},
+			"gemini-2.5-pro": {
+				google: {
+					thinkingConfig: {
+						thinkingBudget: 2000,
+						includeThoughts: true
+					}
+				}
+			},
+			"gemini-3.0-flash": {
+				google: {
+					thinkingConfig: {
+						thinkingLevel: "low",
+						includeThoughts: true
+					}
+				}
+			},
+			"gemini-3.0-pro": {
+				google: {
+					thinkingConfig: {
+						thinkingLevel: "low",
+						includeThoughts: true
+					}
+				}
+			}
+		}
+
+		return languageModelNameToDefaultReasoningProviderOptions[modelName] || {}
+	}
 }
 
 export default new ModelUtil()

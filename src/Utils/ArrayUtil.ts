@@ -13,6 +13,17 @@ class ArrayUtil {
 		return array[randomIndex] as Value
 	}
 
+	getRandomPermutation<Value>(array: Value[], size: number): Value[] {
+		const copy = [...array]
+
+		for (let i = 0; i < size; i++) {
+			const j = i + MathUtil.generateRandomNumber(0, copy.length - 1 - i)
+				;[copy[i], copy[j]] = [copy[j] as Value, copy[i] as Value]
+		}
+
+		return copy.slice(0, size)
+	}
+
 	getValueFactorialPermutations<Value>(array: Value[]): Value[][] {
 		return Array.from({ length: array.length }, (_, index) => index + 1)
 			.flatMap(size => this.getValuePermutations(array, size))
