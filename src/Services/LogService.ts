@@ -17,7 +17,7 @@ class LogService {
 					const sourceFileExtension = path.extname(experimentResult.experiment.input.methodResolvedFilePath)
 					const generalLogPath: string[] = ["method-reconstruction-experiment", methodReconstructionExperimentationOptions.experimentOptions.repositoryName]
 
-					const rawLogPath: string[] = [...generalLogPath, "raw", experimentResult.experiment.input.experimentTitle]
+					const rawLogPath: string[] = [...generalLogPath, "raw", experimentResult.experiment.input.experimentDescription]
 					const testSuiteDebugMessageLogFilePath = this.getLogFilePath(rawLogPath, "testSuiteDebugMessage")
 					await FileUtil.setFileContent(testSuiteDebugMessageLogFilePath, experimentResult.experiment.output.repositoryTestSuiteResult.debugMessage)
 					const sourceFileWithReconstructedMethodBodyLogFilePath = this.getLogFilePath(rawLogPath, "sourceFileWithReconstructedMethodBody", sourceFileExtension)
@@ -40,14 +40,19 @@ class LogService {
 						methodName: experimentResult.experiment.input.methodName,
 						methodResolvedFilePath: experimentResult.experiment.input.methodResolvedFilePath,
 						experimentTitle: experimentResult.experiment.input.experimentTitle,
+						experimentDescription: experimentResult.experiment.input.experimentDescription,
+						experimentContextItemCount: experimentResult.experiment.input.experimentContextItemCount,
+						experimentIndex: experimentResult.experiment.input.experimentIndex,
+						experimentSize: experimentResult.experiment.input.experimentSize,
 						experimentContextSlugs: experimentResult.experiment.input.contextDefinitions.map(definition => definition.slug).join("|"),
 						modelSystemPrompt: JSON.stringify(experimentResult.model.input.systemPrompt),
 						modelUserPrompt: JSON.stringify(experimentResult.model.input.userPrompt),
-						modelReasoningTextResult: JSON.stringify(experimentResult.model.output.reasoningText),
+						modelReasoningTextResult: JSON.stringify(experimentResult.model.output.reasoningText || ""),
 						modelName: experimentResult.model.input.name,
 						modelReasoningBudget: experimentResult.model.input.reasoningBudget,
 						modelTemperature: experimentResult.model.input.temperature,
 						modelResult: JSON.stringify(experimentResult.model.output.result),
+						testSuiteExecutionLog: JSON.stringify(experimentResult.experiment.output.repositoryTestSuiteResult.debugMessage),
 						isTestSuiteSuccessful: experimentResult.metrics.isTestSuiteSuccessful,
 						isModelResultCompilable: experimentResult.metrics.isModelResultCompilable,
 						relevantTestCaseCount: experimentResult.metrics.relevantTestCaseCount,

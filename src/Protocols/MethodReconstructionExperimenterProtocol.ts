@@ -27,6 +27,10 @@ export type ReconstructedMethodExperiment = {
 	experiment: {
 		input: {
 			experimentTitle: string
+			experimentDescription: string
+			experimentContextItemCount: number
+			experimentIndex: number
+			experimentSize: number
 			methodName: string
 			methodResolvedFilePath: string
 			contextDefinitions: ExperimentComparison["context"]["definitions"]

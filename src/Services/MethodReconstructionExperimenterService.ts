@@ -1,4 +1,5 @@
 import {
+	ExperimentComparison,
 	ExperimentMethodReconstructionOptions,
 	ExperimentMethodReconstructionResult,
 	ReconstructedMethodExperiment
@@ -89,9 +90,12 @@ class MethodReconstructionExperimenterService {
 							batchSize: 1,
 							items: allTargetContextExperiments,
 							handlerFn: async (targetContext) => {
-								const experimentTitle = `${exploredMethod.name} > ${experimentComparison.title} [${methodContextExperimentedCount + 1}/${allTargetContextExperiments.length}]`
+								const experimentSize = allTargetContextExperiments.length
+								const experimentIndex = methodContextExperimentedCount + 1
+								const experimentSubtitle = this.buildExperimentSubtitle(experimentComparison)
+								const experimentDescription = `${exploredMethod.name} > ${experimentComparison.title} > ${experimentSubtitle} [${experimentIndex}/${experimentSize}]`
 
-								await TracingUtil.traceTask(`Experiment: ${experimentTitle}`, async (config) => {
+								await TracingUtil.traceTask(`Experiment: ${experimentDescription}`, async (config) => {
 									const noTargetContextFoundForExperiment = experimentComparison.context.definitions.length > 0 && targetContext.length === 0
 
 									if (noTargetContextFoundForExperiment) {
@@ -169,7 +173,11 @@ class MethodReconstructionExperimenterService {
 												},
 												experiment: {
 													input: {
-														experimentTitle,
+														experimentTitle: experimentComparison.title,
+														experimentDescription,
+														experimentContextItemCount: targetContext.length,
+														experimentIndex,
+														experimentSize,
 														methodName: exploredMethod.name,
 														methodResolvedFilePath: exploredMethod.resolvedMethodFilePath,
 														contextDefinitions: experimentComparison.context.definitions
@@ -272,6 +280,16 @@ class MethodReconstructionExperimenterService {
 
 			return contextPermutations
 		})
+	}
+
+	private buildExperimentSubtitle(experimentComparison: ExperimentComparison): string {
+		const subTitleParams: string[] = []
+
+		subTitleParams.push(`model-${experimentComparison.model.name}`)
+		subTitleParams.push(`reasoning-budget-${experimentComparison.model.reasoningBudget}`)
+		subTitleParams.push(`temperature-${experimentComparison.model.temperature}`)
+
+		return subTitleParams.join("|")
 	}
 }
 
