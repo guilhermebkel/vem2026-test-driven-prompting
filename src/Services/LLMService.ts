@@ -12,6 +12,7 @@ class LLMService {
 
 			const { text: rawReconstructedMethodBody, reasoningText } = await generateText({
 				model: languageModel,
+				abortSignal: AbortSignal.timeout(300_000),
 				messages: [
 					{
 						role: "system",
