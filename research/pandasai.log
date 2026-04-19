@@ -17426,3 +17426,23 @@ result = {'type': 'plot', 'value': output_file}
 2026-04-19 08:32:01 [INFO] Executing Step 7: ResultValidation
 2026-04-19 08:32:01 [INFO] Answer: {'type': 'plot', 'value': '/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/research/exports/charts/temp_chart.png'}
 2026-04-19 08:32:01 [INFO] Executing Step 8: ResultParsing
+2026-04-19 12:43:31 [ERROR] Task exception was never retrieved
+future: <Task finished name='Task-427' coro=<_async_in_context.<locals>.run_in_context() done, defined at /home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/research/.venv/lib/python3.13/site-packages/ipykernel/utils.py:57> exception=KeyError('9234c71f-8cea-4573-a715-ac2c9e7bc9ba')>
+Traceback (most recent call last):
+  File "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/research/.venv/lib/python3.13/site-packages/ipykernel/utils.py", line 60, in run_in_context
+    return await asyncio.create_task(coro, context=context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/research/.venv/lib/python3.13/site-packages/ipykernel/kernelbase.py", line 621, in shell_main
+    await self.dispatch_shell(msg, subshell_id=subshell_id)
+  File "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/research/.venv/lib/python3.13/site-packages/ipykernel/kernelbase.py", line 435, in dispatch_shell
+    stream = self.shell_channel_thread.manager.get_subshell_to_shell_channel_socket(
+        subshell_id
+    )
+  File "/home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/research/.venv/lib/python3.13/site-packages/ipykernel/subshell_manager.py", line 101, in get_subshell_to_shell_channel_socket
+    return self._cache[subshell_id].subshell_to_shell_channel.from_socket
+           ~~~~~~~~~~~^^^^^^^^^^^^^
+KeyError: '9234c71f-8cea-4573-a715-ac2c9e7bc9ba'
+2026-04-19 12:43:44 [ERROR] Task was destroyed but it is pending!
+task: <Task pending name='Task-391' coro=<_async_in_context.<locals>.run_in_context() done, defined at /home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/research/.venv/lib/python3.13/site-packages/ipykernel/utils.py:57> wait_for=<Task pending name='Task-392' coro=<Kernel.shell_main() running at /home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/research/.venv/lib/python3.13/site-packages/ipykernel/kernelbase.py:597> cb=[Task.task_wakeup()]> cb=[ZMQStream._run_callback.<locals>._log_error() at /home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/research/.venv/lib/python3.13/site-packages/zmq/eventloop/zmqstream.py:563]>
+2026-04-19 12:43:44 [ERROR] Task was destroyed but it is pending!
+task: <Task pending name='Task-392' coro=<Kernel.shell_main() running at /home/guilhermebkel/Personal/tcc-context-importance-in-llm-development-tasks/research/.venv/lib/python3.13/site-packages/ipykernel/kernelbase.py:597> cb=[Task.task_wakeup()]>

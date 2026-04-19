@@ -100,7 +100,7 @@ class MethodReconstructionExperimenterService {
 									const isExperimentAlreadyDone = await FileUtil.folderExists(experimentFolderPath)
 
 									if (isExperimentAlreadyDone) {
-										config.setOutput(`Experiment already done and saved at '${experimentFolderPath}'. Skipping...`)
+										config.setOutput("Experiment already done. Skipping...")
 									} else if (noTargetContextFoundForExperiment) {
 										config.setOutput("No context was found for this experiment. Skipping...")
 									} else {
