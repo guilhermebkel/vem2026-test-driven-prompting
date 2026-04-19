@@ -16,6 +16,16 @@ class FileUtil {
 		await fs.writeFile(filePath, content, "utf-8")
 	}
 
+	async folderExists(folderPath: string): Promise<boolean> {
+		try {
+			const stats = await fs.stat(folderPath)
+
+			return stats.isDirectory()
+		} catch {
+			return false
+		}
+	}
+
 	async deleteFile(filePath: string): Promise<void> {
 		await fs.rm(filePath)
 	}

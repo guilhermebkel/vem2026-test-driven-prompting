@@ -10,31 +10,52 @@ import { RepositoryName } from "@/Protocols/RepositoryProtocol"
 import { PrototypeOptions, PrototypeResult } from "@/Protocols/PrototypingProtocol"
 
 class LogService {
+	getStructuredMethodReconstructionExperimentResultPathParts(repositoryName: RepositoryName): string[] {
+		const generalLogPathParts: string[] = ["method-reconstruction-experiment", repositoryName]
+
+		const rawLogPathParts: string[] = [...generalLogPathParts, "structured"]
+
+		return rawLogPathParts
+	}
+
+	getRawMethodReconstructionExperimentResultPathParts(repositoryName: RepositoryName, experimentDescription: string): string[] {
+		const generalLogPathParts: string[] = ["method-reconstruction-experiment", repositoryName]
+
+		const rawLogPathParts: string[] = [...generalLogPathParts, "raw", experimentDescription]
+
+		return rawLogPathParts
+	}
+
+	getRawMethodReconstructionExperimentResultFolderPath(repositoryName: RepositoryName, experimentDescription: string): string {
+		const rawLogPathParts = this.getRawMethodReconstructionExperimentResultPathParts(repositoryName, experimentDescription)
+
+		return this.getLogFolderPath(rawLogPathParts)
+	}
+
 	async saveMethodReconstructionExperimentLogs(methodReconstructionExperimentationOptions: MethodReconstructionExperimentationOptions, methodReconstructionExperimentationResult: MethodReconstructionExperimentationResult): Promise<void> {
 		return await TracingUtil.traceAction("Saving experiment result logs...", async () => {
 			await Promise.all(
 				methodReconstructionExperimentationResult.experimentResult.map(async experimentResult => {
 					const sourceFileExtension = path.extname(experimentResult.experiment.input.methodResolvedFilePath)
-					const generalLogPath: string[] = ["method-reconstruction-experiment", methodReconstructionExperimentationOptions.experimentOptions.repositoryName]
+					const rawLogPathParts = this.getRawMethodReconstructionExperimentResultPathParts(methodReconstructionExperimentationOptions.experimentOptions.repositoryName, experimentResult.experiment.input.experimentDescription)
 
-					const rawLogPath: string[] = [...generalLogPath, "raw", experimentResult.experiment.input.experimentDescription]
-					const testSuiteDebugMessageLogFilePath = this.getLogFilePath(rawLogPath, "testSuiteDebugMessage")
+					const testSuiteDebugMessageLogFilePath = this.getLogFilePath(rawLogPathParts, "testSuiteDebugMessage")
 					await FileUtil.setFileContent(testSuiteDebugMessageLogFilePath, experimentResult.experiment.output.repositoryTestSuiteResultDebugMessage)
-					const sourceFileWithReconstructedMethodBodyLogFilePath = this.getLogFilePath(rawLogPath, "sourceFileWithReconstructedMethodBody", sourceFileExtension)
+					const sourceFileWithReconstructedMethodBodyLogFilePath = this.getLogFilePath(rawLogPathParts, "sourceFileWithReconstructedMethodBody", sourceFileExtension)
 					await FileUtil.setFileContent(sourceFileWithReconstructedMethodBodyLogFilePath, experimentResult.experiment.output.sourceFileWithReconstructedMethodBody)
-					const sourceFileWithOriginalMethodBodyLogFilePath = this.getLogFilePath(rawLogPath, "sourceFileWithOriginalMethodBody", sourceFileExtension)
+					const sourceFileWithOriginalMethodBodyLogFilePath = this.getLogFilePath(rawLogPathParts, "sourceFileWithOriginalMethodBody", sourceFileExtension)
 					await FileUtil.setFileContent(sourceFileWithOriginalMethodBodyLogFilePath, experimentResult.experiment.output.sourceFileWithOriginalMethodBody)
-					const sourceFileWithoutOriginalMethodBodyLogFilePath = this.getLogFilePath(rawLogPath, "sourceFileWithoutOriginalMethodBody", sourceFileExtension)
+					const sourceFileWithoutOriginalMethodBodyLogFilePath = this.getLogFilePath(rawLogPathParts, "sourceFileWithoutOriginalMethodBody", sourceFileExtension)
 					await FileUtil.setFileContent(sourceFileWithoutOriginalMethodBodyLogFilePath, experimentResult.experiment.output.methodFileContentWithoutMethodBody)
-					const userPromptLogFilePath = this.getLogFilePath(rawLogPath, "userPrompt", ".md")
+					const userPromptLogFilePath = this.getLogFilePath(rawLogPathParts, "userPrompt", ".md")
 					await FileUtil.setFileContent(userPromptLogFilePath, experimentResult.model.input.userPrompt)
-					const systemPromptLogFilePath = this.getLogFilePath(rawLogPath, "systemPrompt", ".md")
+					const systemPromptLogFilePath = this.getLogFilePath(rawLogPathParts, "systemPrompt", ".md")
 					await FileUtil.setFileContent(systemPromptLogFilePath, experimentResult.model.input.systemPrompt)
-					const reasoningLogFilePath = this.getLogFilePath(rawLogPath, "reasoning", ".md")
+					const reasoningLogFilePath = this.getLogFilePath(rawLogPathParts, "reasoning", ".md")
 					await FileUtil.setFileContent(reasoningLogFilePath, experimentResult.model.output.reasoningText || "")
 
-					const structuredLogPath: string[] = [...generalLogPath, "structured"]
-					const structuredCSVLogPath = this.getLogFilePath(structuredLogPath, "result", ".csv")
+					const structuredLogPathParts = this.getStructuredMethodReconstructionExperimentResultPathParts(methodReconstructionExperimentationOptions.experimentOptions.repositoryName)
+					const structuredCSVLogPath = this.getLogFilePath(structuredLogPathParts, "result", ".csv")
 					await FileUtil.appendCSVRow(structuredCSVLogPath, {
 						repositoryName: methodReconstructionExperimentationOptions.experimentOptions.repositoryName,
 						methodName: experimentResult.experiment.input.methodName,
@@ -66,9 +87,9 @@ class LogService {
 	}
 
 	getMethodExplorationResultLogFilePath(repositoryName: RepositoryName): string {
-		const logPath: string[] = ["method-exploration", repositoryName]
+		const logPathParts: string[] = ["method-exploration", repositoryName]
 
-		return this.getLogFilePath(logPath, "exploreResult", ".json")
+		return this.getLogFilePath(logPathParts, "exploreResult", ".json")
 	}
 
 	async saveMethodExplorationLogs(methodExplorationOptions: MethodExplorationOptions, methodExplorationResult: MethodExplorationResult): Promise<void> {
@@ -80,9 +101,9 @@ class LogService {
 	}
 
 	getMethodContextExplorationResultLogFilePath(repositoryName: RepositoryName): string {
-		const logPath: string[] = ["method-context-exploration", repositoryName]
+		const logPathParts: string[] = ["method-context-exploration", repositoryName]
 
-		return this.getLogFilePath(logPath, "exploreResult", ".json")
+		return this.getLogFilePath(logPathParts, "exploreResult", ".json")
 	}
 
 	async saveMethodContextExplorationLogs(methodContextExplorationOptions: MethodContextExplorationOptions, methodContextExplorationResult: MethodContextExplorationResult): Promise<void> {
@@ -94,9 +115,9 @@ class LogService {
 	}
 
 	getPrototypeResultLogFilePath(repositoryName: RepositoryName, prototypeItemName: keyof PrototypeResult): string {
-		const logPath: string[] = ["prototype", repositoryName]
+		const logPathParts: string[] = ["prototype", repositoryName]
 
-		return this.getLogFilePath(logPath, prototypeItemName, ".json")
+		return this.getLogFilePath(logPathParts, prototypeItemName, ".json")
 	}
 
 	async savePrototypeLogs(prototypeOptions: PrototypeOptions, prototypeResult: PrototypeResult): Promise<void> {
@@ -108,10 +129,18 @@ class LogService {
 		)
 	}
 
-	private getLogFilePath(logPath: string[], logFileName: string, logFileExtension = ".txt"): string {
+	private getLogFolderPath(logPathParts: string[]): string {
 		const logDirectoryPath = PathUtil.getLogsDirectoryPath()
 
-		const logFilePath = path.join(logDirectoryPath, ...logPath, `${logFileName}${logFileExtension}`)
+		const logFolderPath = path.join(logDirectoryPath, ...logPathParts)
+
+		return logFolderPath
+	}
+
+	private getLogFilePath(logPathParts: string[], logFileName: string, logFileExtension = ".txt"): string {
+		const logDirectoryPath = PathUtil.getLogsDirectoryPath()
+
+		const logFilePath = path.join(logDirectoryPath, ...logPathParts, `${logFileName}${logFileExtension}`)
 
 		return logFilePath
 	}

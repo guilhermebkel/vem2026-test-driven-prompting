@@ -96,7 +96,12 @@ class MethodReconstructionExperimenterService {
 								await TracingUtil.traceTask(`Experiment: ${experimentDescription}`, async (config) => {
 									const noTargetContextFoundForExperiment = experimentComparison.context.definitions.length > 0 && targetContext.length === 0
 
-									if (noTargetContextFoundForExperiment) {
+									const experimentFolderPath = LogService.getRawMethodReconstructionExperimentResultFolderPath(options.repositoryName, experimentDescription)
+									const isExperimentAlreadyDone = await FileUtil.folderExists(experimentFolderPath)
+
+									if (isExperimentAlreadyDone) {
+										config.setOutput(`Experiment already done and saved at '${experimentFolderPath}'. Skipping...`)
+									} else if (noTargetContextFoundForExperiment) {
 										config.setOutput("No context was found for this experiment. Skipping...")
 									} else {
 										const sourceFileWithOriginalMethodBody = await RepositoryManagerService.getSourceFileWithOriginalMethodBody({
@@ -128,10 +133,6 @@ class MethodReconstructionExperimenterService {
 												},
 												systemPrompt: buildPromptResult.systemPrompt,
 												userPrompt: buildPromptResult.userPrompt
-											})
-
-											const isReconstructedMethodCompilable = await RepositoryManagerService.checkSourceFileCompilation({
-												methodResolvedFilePath: exploredMethod.resolvedMethodFilePath
 											})
 
 											const testSuiteTotalTestCaseCount = await this.getExploredMethodTotalTestCaseCount(exploredMethod)
@@ -170,7 +171,7 @@ class MethodReconstructionExperimenterService {
 													}
 												},
 												metrics: {
-													isModelResultCompilable: isReconstructedMethodCompilable,
+													isModelResultCompilable: false,
 													relevantTestCaseCount,
 													testSuiteTotalTestCaseCount,
 													isTestSuiteSuccessful: false,
@@ -179,7 +180,7 @@ class MethodReconstructionExperimenterService {
 												}
 											}
 
-											if (isReconstructedMethodCompilable) {
+											try {
 												result.experiment.output.sourceFileWithReconstructedMethodBody = await RepositoryManagerService.setSourceFileWithReconstructedMethodBody({
 													methodDeclarationType: exploredMethod.declarationType as DeclarationType,
 													methodName: exploredMethod.name as string,
@@ -187,13 +188,22 @@ class MethodReconstructionExperimenterService {
 													reconstructedMethodBody: methodReconstructionResult.reconstructedMethodBody
 												})
 
+												result.metrics.isModelResultCompilable = true
+
 												const repositoryTestSuiteResult = await TestExecutorService.runRepositoryTestSuite({
 													repositoryName: options.repositoryName,
 													repositoryTestSuiteCommand: options.repositorySingleFileTestSuiteCommand.replace(METHOD_FILE_PATH_PLACEHOLDER, exploredMethod.resolvedMethodFilePath)
 												})
 
 												if (!repositoryTestSuiteResult.success) {
-													config.setError(new RepositoryTestSuiteFailedError())
+													const testSuiteFailureReason = TestResultHandlerUtil.describeTestSuiteFailureReason(repositoryTestSuiteResult.debugMessage)
+
+													if (testSuiteFailureReason === "Syntax") {
+														config.setError(new ReconstructedMethodNotCompilableError())
+														result.metrics.isModelResultCompilable = false
+													} else {
+														config.setError(new RepositoryTestSuiteFailedError())
+													}
 												}
 
 												const testSuiteFailedTestCaseCount = TestResultHandlerUtil.extractFailedTestCaseCountFromDebugMessage(repositoryTestSuiteResult.debugMessage)
@@ -202,8 +212,13 @@ class MethodReconstructionExperimenterService {
 												result.metrics.isTestSuiteSuccessful = repositoryTestSuiteResult.success
 												result.metrics.testSuitePassedTestCaseCount = testSuiteTotalTestCaseCount - testSuiteFailedTestCaseCount
 												result.metrics.testSuiteFailedTestCaseCount = testSuiteFailedTestCaseCount
-											} else {
+											} catch {
 												config.setError(new ReconstructedMethodNotCompilableError())
+
+												result.metrics.isModelResultCompilable = false
+												result.metrics.isTestSuiteSuccessful = false
+												result.metrics.testSuitePassedTestCaseCount = 0
+												result.metrics.testSuiteFailedTestCaseCount = testSuiteTotalTestCaseCount
 											}
 
 											await onSingleExperimentExecuted(result)

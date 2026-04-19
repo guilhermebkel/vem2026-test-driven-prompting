@@ -1,4 +1,3 @@
-import { RepositoryName } from "@/Protocols/RepositoryProtocol"
 import { DeclarationType } from "@/Protocols/NodeJSCodeParserProtocol"
 
 export type RevertSourceFileChangesOptions = {
@@ -15,8 +14,4 @@ export type SetSourceFileWithReconstructedMethodBodyOptions = {
 	methodResolvedFilePath: string
 	methodDeclarationType: DeclarationType
 	methodName: string
-}
-
-export type CheckSourceFileCompilationOptions = {
-	methodResolvedFilePath: string
 }

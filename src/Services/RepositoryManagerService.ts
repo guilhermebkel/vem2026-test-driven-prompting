@@ -3,7 +3,6 @@ import NodeJSCodeParserUtil from "@/Utils/NodeJSCodeParserUtil"
 import TracingUtil from "@/Utils/TracingUtil"
 
 import {
-	CheckSourceFileCompilationOptions,
 	SetSourceFileWithReconstructedMethodBodyOptions,
 	GetSourceFileWithOriginalMethodBodyOptions,
 	RevertSourceFileChangesOptions
@@ -24,6 +23,10 @@ class RepositoryManagerService {
 		})
 	}
 
+	/**
+	 * WARNING:
+	 * - This method throws an error in case the new source file content cannot be compiled.
+	 */
 	async setSourceFileWithReconstructedMethodBody(options: SetSourceFileWithReconstructedMethodBodyOptions): Promise<string> {
 		return await TracingUtil.traceAction("Replacing source file with reconstructed method body...", async () => {
 			const sourceFileWithReconstructedMethodBody = NodeJSCodeParserUtil.replaceSpecificMethodOrFunctionBodyInSourceFile(
@@ -35,24 +38,6 @@ class RepositoryManagerService {
 			await FileUtil.setFileContent(options.methodResolvedFilePath, sourceFileWithReconstructedMethodBody)
 
 			return sourceFileWithReconstructedMethodBody
-		})
-	}
-
-	async checkSourceFileCompilation(options: CheckSourceFileCompilationOptions): Promise<boolean> {
-		return await TracingUtil.traceAction("Checking if method can be compiled...", async () => {
-			try {
-				const project = NodeJSCodeParserUtil.createProject()
-
-				const sourceFile = project.addSourceFileAtPath(options.methodResolvedFilePath)
-
-				const syntacticDiagnostics = project.getProgram().getSyntacticDiagnostics(sourceFile)
-
-				project.removeSourceFile(sourceFile)
-
-				return syntacticDiagnostics.length === 0
-			} catch {
-				return false
-			}
 		})
 	}
 }
