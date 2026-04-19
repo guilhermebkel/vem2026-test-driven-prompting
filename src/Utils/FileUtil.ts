@@ -49,8 +49,21 @@ class FileUtil {
 			await this.setFileContent(csvFilePath, headerRow)
 		}
 
-		const mappedCsvRow = csvHeaders.map(header => csvRow[header] ?? "").join(",") + "\n"
+		const mappedCsvRow = csvHeaders.map(header => this.escapeCSVFieldValue(csvRow[header])).join(",") + "\n"
 		await fs.appendFile(csvFilePath, mappedCsvRow, "utf-8")
+	}
+
+	private escapeCSVFieldValue = (fieldValue: string | number | boolean | undefined): string => {
+		const fieldValueInString = String(fieldValue ?? "")
+
+		const csvSpecialCharacters = [",", '"', "\n"]
+		const shouldEscapeFieldValue = csvSpecialCharacters.some(token => fieldValueInString.includes(token))
+
+		if (shouldEscapeFieldValue) {
+			return `"${fieldValueInString.replace(/"/g, '""')}"`
+		}
+
+		return fieldValueInString
 	}
 }
 
