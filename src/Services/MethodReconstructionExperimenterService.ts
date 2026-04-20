@@ -26,7 +26,7 @@ import LogService from "@/Services/LogService"
 import RepositoryTestSuiteFailedError from "@/Errors/RepositoryTestSuiteFailedError"
 import ReconstructedMethodNotCompilableError from "@/Errors/ReconstructedMethodNotCompilableError"
 
-import { METHOD_FILE_PATH_PLACEHOLDER, methodReconstructionExperimentValidation } from "@/Config/MethodReconstructionExperimentConfig"
+import { METHOD_TEST_FILE_PATH_PLACEHOLDER, methodReconstructionExperimentValidation } from "@/Config/MethodReconstructionExperimentConfig"
 
 class MethodReconstructionExperimenterService {
 	async experiment(
@@ -190,7 +190,7 @@ class MethodReconstructionExperimenterService {
 
 												const repositoryTestSuiteResult = await TestExecutorService.runRepositoryTestSuite({
 													repositoryName: options.repositoryName,
-													repositoryTestSuiteCommand: options.repositorySingleFileTestSuiteCommand.replace(METHOD_FILE_PATH_PLACEHOLDER, exploredMethod.resolvedMethodFilePath)
+													repositoryTestSuiteCommand: options.repositorySingleFileTestSuiteCommand.replaceAll(METHOD_TEST_FILE_PATH_PLACEHOLDER, exploredMethod.resolvedTestFilePaths[0]!)
 												})
 
 												if (!repositoryTestSuiteResult.success) {
@@ -204,7 +204,7 @@ class MethodReconstructionExperimenterService {
 													}
 												}
 
-												const testSuiteFailedTestCaseCount = TestResultHandlerUtil.extractFailedTestCaseCountFromDebugMessage(repositoryTestSuiteResult.debugMessage)
+												const testSuiteFailedTestCaseCount = TestResultHandlerUtil.describeFailedTestCaseCount(repositoryTestSuiteResult.debugMessage)
 
 												result.experiment.output.repositoryTestSuiteResultDebugMessage = repositoryTestSuiteResult.debugMessage
 												result.metrics.isTestSuiteSuccessful = repositoryTestSuiteResult.success

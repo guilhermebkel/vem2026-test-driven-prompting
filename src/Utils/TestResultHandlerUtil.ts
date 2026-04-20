@@ -1,18 +1,14 @@
 import { FailureReason } from "@/Protocols/TestResultHandlerProtocol"
 
 class TestResultHandlerUtil {
-	extractFailedTestCaseCountFromDebugMessage(debugMessage: string): number {
-		const failedTestCaseCountMatch = debugMessage.match(/Failed Tests (\d+)/)
+	describeFailedTestCaseCount(debugMessage: string): number {
+		const testCaseFailureDebugMessageTextBlocks = this.extractTestCaseFailureDebugMessageTextBlocks(debugMessage)
 
-		if (failedTestCaseCountMatch && failedTestCaseCountMatch[1]) {
-			return parseInt(failedTestCaseCountMatch[1], 10)
-		}
-
-		return 0
+		return testCaseFailureDebugMessageTextBlocks.length
 	}
 
 	describeTestSuiteFailureReason(debugMessage: string): FailureReason | null {
-		const testCaseFailureDebugMessageTextBlocks = debugMessage.match(/FAIL[\s\S]*?\[\d+\/\d+\]/g) || []
+		const testCaseFailureDebugMessageTextBlocks = this.extractTestCaseFailureDebugMessageTextBlocks(debugMessage)
 		const allTestCaseFailureDebugMessages = testCaseFailureDebugMessageTextBlocks.join("\n")
 
 		const errorMatches = allTestCaseFailureDebugMessages.match(/\b\w+Error(?=:)/g)
@@ -24,6 +20,10 @@ class TestResultHandlerUtil {
 		const hasSyntaxError = errorMatches.some(error => error !== "AssertionError")
 
 		return hasSyntaxError ? "Syntax" : "Assertion"
+	}
+
+	private extractTestCaseFailureDebugMessageTextBlocks(debugMessage: string): string[] {
+		return debugMessage.match(/FAIL[\s\S]*?\[\d+\/\d+\]/g) || []
 	}
 }
 

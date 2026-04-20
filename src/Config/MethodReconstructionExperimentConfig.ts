@@ -35,7 +35,8 @@ const DEFAULT_EXPERIMENT_COMPARISONS: ExperimentComparison[] = [
 	}
 ]
 
-export const METHOD_FILE_PATH_PLACEHOLDER = "<method_file_path>"
+export const METHOD_CONTENT_FILE_PATH_PLACEHOLDER = "<method_content_file_path>"
+export const METHOD_TEST_FILE_PATH_PLACEHOLDER = "<method_test_file_path>"
 
 export const methodReconstructionExperimentValidation = {
 	hasMinimumContextCount: (exploredContext?: ExploredContext): boolean => (
@@ -51,7 +52,7 @@ export const methodReconstructionExperimentConfig: MethodReconstructionExperimen
 		experimentOptions: {
 			repositoryName: "date-fns",
 			repositoryTestSuiteCommand: "pnpm run test",
-			repositorySingleFileTestSuiteCommand: `npx vitest related ${METHOD_FILE_PATH_PLACEHOLDER}`,
+			repositorySingleFileTestSuiteCommand: `npx vitest ${METHOD_TEST_FILE_PATH_PLACEHOLDER} --run`,
 			comparisons: DEFAULT_EXPERIMENT_COMPARISONS
 		}
 	},
@@ -59,7 +60,7 @@ export const methodReconstructionExperimentConfig: MethodReconstructionExperimen
 		experimentOptions: {
 			repositoryName: "directus",
 			repositoryTestSuiteCommand: "pnpm --workspace-root test",
-			repositorySingleFileTestSuiteCommand: `pnpm -r --parallel exec sh -c 'npx vitest related ${METHOD_FILE_PATH_PLACEHOLDER} --run'`,
+			repositorySingleFileTestSuiteCommand: `sh -c 'root="${METHOD_TEST_FILE_PATH_PLACEHOLDER}"; while [ ! -f "$root/vitest.config.ts" ] && [ ! -f "$root/vitest.config.js" ] && [ "$root" != "/" ]; do root=$(dirname "$root"); done; cd "$root" && npx vitest "${METHOD_TEST_FILE_PATH_PLACEHOLDER}" --run'`,
 			comparisons: DEFAULT_EXPERIMENT_COMPARISONS
 		}
 	}

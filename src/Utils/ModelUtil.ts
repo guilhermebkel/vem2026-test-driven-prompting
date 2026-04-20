@@ -1,4 +1,4 @@
-import { google } from "@ai-sdk/google"
+import { google, GoogleLanguageModelOptions } from "@ai-sdk/google"
 import { LanguageModel } from "ai"
 
 import { LanguageModelName } from "@/Protocols/ModelProtocol"
@@ -23,7 +23,7 @@ class ModelUtil {
 						thinkingBudget: 0,
 						includeThoughts: false
 					}
-				}
+				} satisfies GoogleLanguageModelOptions
 			},
 			"gemini-2.5-pro": {
 				google: {
@@ -31,7 +31,7 @@ class ModelUtil {
 						thinkingBudget: 2000,
 						includeThoughts: true
 					}
-				}
+				} satisfies GoogleLanguageModelOptions
 			},
 			"gemini-3.0-flash": {
 				google: {
@@ -39,7 +39,7 @@ class ModelUtil {
 						thinkingLevel: "low",
 						includeThoughts: true
 					}
-				}
+				} satisfies GoogleLanguageModelOptions
 			},
 			"gemini-3.0-pro": {
 				google: {
@@ -47,7 +47,7 @@ class ModelUtil {
 						thinkingLevel: "low",
 						includeThoughts: true
 					}
-				}
+				} satisfies GoogleLanguageModelOptions
 			}
 		}
 
