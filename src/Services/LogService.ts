@@ -72,13 +72,13 @@ class LogService {
 						modelName: experimentResult.model.input.name,
 						modelTemperature: experimentResult.model.input.temperature,
 						modelResult: JSON.stringify(experimentResult.model.output.result),
-						testSuiteExecutionLog: JSON.stringify(experimentResult.experiment.output.repositoryTestSuiteResultDebugMessage),
 						isTestSuiteSuccessful: experimentResult.metrics.isTestSuiteSuccessful,
 						isModelResultCompilable: experimentResult.metrics.isModelResultCompilable,
 						relevantTestCaseCount: experimentResult.metrics.relevantTestCaseCount,
 						testSuiteTotalTestCaseCount: experimentResult.metrics.testSuiteTotalTestCaseCount,
 						testSuitePassedTestCaseCount: experimentResult.metrics.testSuitePassedTestCaseCount,
 						testSuiteFailedTestCaseCount: experimentResult.metrics.testSuiteFailedTestCaseCount,
+						testSuiteExecutionLog: JSON.stringify(experimentResult.experiment.output.repositoryTestSuiteResultDebugMessage),
 						sourceFileWithOriginalMethodBody: JSON.stringify(experimentResult.experiment.output.sourceFileWithOriginalMethodBody),
 						sourceFileWithReconstructedMethodBody: JSON.stringify(experimentResult.experiment.output.sourceFileWithReconstructedMethodBody)
 					})
