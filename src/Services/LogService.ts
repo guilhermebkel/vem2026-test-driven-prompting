@@ -78,7 +78,9 @@ class LogService {
 						relevantTestCaseCount: experimentResult.metrics.relevantTestCaseCount,
 						testSuiteTotalTestCaseCount: experimentResult.metrics.testSuiteTotalTestCaseCount,
 						testSuitePassedTestCaseCount: experimentResult.metrics.testSuitePassedTestCaseCount,
-						testSuiteFailedTestCaseCount: experimentResult.metrics.testSuiteFailedTestCaseCount
+						testSuiteFailedTestCaseCount: experimentResult.metrics.testSuiteFailedTestCaseCount,
+						sourceFileWithOriginalMethodBody: JSON.stringify(experimentResult.experiment.output.sourceFileWithOriginalMethodBody),
+						sourceFileWithReconstructedMethodBody: JSON.stringify(experimentResult.experiment.output.sourceFileWithReconstructedMethodBody)
 					})
 				})
 			)
