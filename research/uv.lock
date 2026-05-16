@@ -2190,6 +2190,7 @@ dependencies = [
     { name = "pandas" },
     { name = "pandasai" },
     { name = "python-dotenv" },
+    { name = "scipy" },
     { name = "seaborn" },
 ]
 
@@ -2202,6 +2203,7 @@ requires-dist = [
     { name = "pandas", specifier = ">=2.0" },
     { name = "pandasai", specifier = ">=2.0" },
     { name = "python-dotenv", specifier = ">=1.0" },
+    { name = "scipy", specifier = ">=1.11" },
     { name = "seaborn", specifier = ">=0.13" },
 ]
 

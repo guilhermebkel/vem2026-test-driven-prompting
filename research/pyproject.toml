@@ -11,4 +11,5 @@ dependencies = [
     "pandasai>=2.0",
     "google-genai>=1.0",
     "python-dotenv>=1.0",
+    "scipy>=1.11",
 ]
