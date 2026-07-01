@@ -1,70 +1,154 @@
-# TCC: Context Importance in LLM Development Tasks
+# Replication Package: Test-Driven Prompting
+## An Empirical Evaluation of Methods Reconstruction based on Unit Tests
 
-This repository contains the code and experiments for my TCC project on analyzing the importance of context in development tasks using Large Language Models (LLMs).
+> VEM 2026 — 14th Workshop on Software Visualization, Evolution and Maintenance
 
-## 🚀 Setup
+This repository contains the replication package for the paper 
+**"Test-Driven Prompting: An Empirical Evaluation of Methods Reconstruction 
+based on Unit Tests"**, including all scripts, raw data, and analysis 
+notebooks used in the study.
 
-Follow these steps to get the project running locally:
+---
 
-1. **Install Node version** (using nvm):
+## 📦 Repository Structure
+
+| Path | Description |
+|------|-------------|
+| `src/` | Pipelines for method exploration, mutation testing, and reconstruction |
+| `logs/` | Raw results of all 516 experiment executions |
+| `research/` | Jupyter Notebooks for statistical analysis and figure generation |
+| `caches/test-mutation-relevance/` | StrykerJS mutation testing results per method |
+| `experiment-repos/` | Git submodules pinned to the exact commits used in the study |
+
+---
+
+## 🔁 Reproducing the Study
+
+The experiment is organized into four sequential pipelines. 
+Run them in order to reproduce the results from scratch.
+
+### Prerequisites
+
+- Node.js 22 (via [nvm](https://github.com/nvm-sh/nvm))
+- Python 3.x (for the analysis notebooks)
+- A [Google AI Studio](https://aistudio.google.com/) API key 
+  with access to `gemini-2.5-flash` and `gemini-3-flash-preview`
+
+### 1. Environment Setup
+
+Install the required Node version and dependencies:
 
 ```bash
 nvm install
-```
-
-2. **Install dependencies**:
-
-```bash
 pnpm install
 ```
 
-3. **Fetch all experiment repositories**:
+Copy the environment file and fill in your API key:
+
+```bash
+cp .env.example .env
+```
+
+```env
+GEMINI_API_KEY=your_api_key_here
+```
+
+### 2. Fetch and Set Up Experiment Repositories
+
+Fetches `date-fns` and `Directus` submodules, pinned to the exact 
+commits used in the study:
 
 ```bash
 pnpm run experiment-repo:fetch-all
-```
-
-4. **Setup all experiment repositories**:
-
-```bash
 pnpm run experiment-repo:setup-all
 ```
 
-> The project uses **Node.js 22**, **TypeScript**, **ESLint** and **tsx** for development.
+### 3. Run the Pipelines
 
-## 🛠️ Commands
+**Step 1 — Method Exploration**  
+Identifies eligible methods with 100% line, statement, and branch coverage:
+```bash
+pnpm run dev:method-exploration
+```
+
+**Step 2 — Context Exploration (Mutation Testing)**  
+Runs StrykerJS to identify which tests are relevant for each method:
+```bash
+pnpm run dev:method-context-exploration
+```
+> ⚠️ This step is computationally expensive. Pre-computed results are 
+> available in `caches/test-mutation-relevance/` and will be used 
+> automatically if present.
+
+**Step 3 — Reconstruction Experiment**  
+Runs the Test-Driven Prompting workflow, submitting prompts to the 
+Gemini API and recording results:
+```bash
+pnpm run dev:method-reconstruction-experiment
+```
+> Results are saved to `logs/`. Pre-computed logs from the original 
+> study are already included in this repository.
+
+### 4. Reproduce the Analysis and Figures
+
+Install Python dependencies and open the notebooks:
+
+```bash
+pnpm run python-scripts:dependencies:setup-all
+pnpm run research:notebook
+```
+
+The notebooks in `research/` reproduce all figures and statistics 
+reported in the paper, organized by research question (RQ1, RQ2, RQ3).
+
+---
+
+## 🛠️ All Available Commands
 
 ### Development
-
 | Command | Description |
 |---------|-------------|
-| `pnpm run dev:method-exploration` | Runs the `method-exploration` pipeline |
-| `pnpm run dev:method-context-exploration` | Runs the `method-context-exploration` pipeline |
-| `pnpm run dev:method-reconstruction-experiment` | Runs the `method-reconstruction-experiment` pipeline |
-| `pnpm run dev:prototype` | Runs the `prototype` pipeline |
+| `pnpm run dev:method-exploration` | Runs the method exploration pipeline |
+| `pnpm run dev:method-context-exploration` | Runs the mutation testing pipeline |
+| `pnpm run dev:method-reconstruction-experiment` | Runs the reconstruction experiment |
+| `pnpm run dev:prototype` | Runs the prototype pipeline |
 
 ### Experiment Repositories
-
 | Command | Description |
 |---------|-------------|
-| `pnpm run experiment-repo:add <repo-url>` | Adds a new external repository as a git submodule inside `experiment-repos/`. The folder name is automatically derived from the repository name. |
-| `pnpm run experiment-repo:fetch-all` | Initializes and fetches all existing submodules recursively. |
-| `pnpm run experiment-repo:setup-all` | Setup dependencies for all existing submodules. |
-| `pnpm run experiment-repo:refresh-all` | Updates all submodules to the latest commit from their remote repositories. |
-
-### Python Scripts
-
-| Command | Description |
-|---------|-------------|
-| `pnpm run python-scripts:dependencies:setup-all` | Installs dependencies for all Python scripts. |
+| `pnpm run experiment-repo:add <repo-url>` | Adds a new repository as a git submodule |
+| `pnpm run experiment-repo:fetch-all` | Initializes and fetches all submodules |
+| `pnpm run experiment-repo:setup-all` | Installs dependencies for all submodules |
+| `pnpm run experiment-repo:refresh-all` | Updates submodules to their latest commit |
 
 ### Analysis
-
 | Command | Description |
 |---------|-------------|
-| `pnpm run research:notebook` | Opens Jupyter Notebook for the research analysis. |
+| `pnpm run python-scripts:dependencies:setup-all` | Installs Python dependencies |
+| `pnpm run research:notebook` | Opens Jupyter Notebook for analysis |
+
+---
+
+## 📄 Citation
+
+If you use this replication package, please cite:
+
+```bibtex
+@inproceedings{lima2026tdp,
+  author = {Lima, Guilherme Mota Bromonschenkel and Montandon, João Eduardo},
+  title = {Test-Driven Prompting: An Empirical Evaluation of Methods Reconstruction based on Unit Tests},
+  booktitle = {14th Workshop on Software Visualization, Evolution and Maintenance (VEM)},
+  year = {2026},
+  address = {São Paulo, SP, Brazil}
+}
+```
+
+---
 
 ## 📚 References
 
-```
-```
+- [date-fns](https://github.com/date-fns/date-fns)
+- [Directus](https://github.com/directus/directus)
+- [StrykerJS](https://stryker-mutator.io/)
+- [ts-morph](https://ts-morph.com/)
+- [Google Gemini API](https://ai.google.dev/)
