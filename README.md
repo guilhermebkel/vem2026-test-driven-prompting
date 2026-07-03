@@ -130,22 +130,6 @@ reported in the paper, organized by research question (RQ1, RQ2, RQ3).
 
 ---
 
-## 📄 Citation
-
-If you use this replication package, please cite:
-
-```bibtex
-@inproceedings{lima2026tdp,
-  author = {Lima, Guilherme Mota Bromonschenkel and Montandon, João Eduardo},
-  title = {Test-Driven Prompting: An Empirical Evaluation of Methods Reconstruction based on Unit Tests},
-  booktitle = {14th Workshop on Software Visualization, Evolution and Maintenance (VEM)},
-  year = {2026},
-  address = {São Paulo, SP, Brazil}
-}
-```
-
----
-
 ## 📚 References
 
 - [date-fns](https://github.com/date-fns/date-fns)
