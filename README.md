@@ -1,7 +1,5 @@
 # Replication Package: Test-Driven Prompting
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21118793.svg)](https://doi.org/10.5281/zenodo.21118793)
-
 ## An Empirical Evaluation of Methods Reconstruction based on Unit Tests
 
 > VEM 2026 — 14th Workshop on Software Visualization, Evolution and Maintenance
